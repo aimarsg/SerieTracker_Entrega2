@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SerieTracker</string>
+    <string name="siguiendo">Jarraitzen</string>
+    <string name="pendiente">Ikusteko</string>
+    <string name="Temporada">Denboraldia</string>
+    <string name="Episodio">Kapitulua</string>
+    <string name="Añadir">Gehitu</string>
+    <string name="Atras">Atzera</string>
+    <string name="Mas">Gehiago</string>
+    <string name="Ajustes">Ezarpenak</string>
+    <string name="Menos">Gutxiago</string>
+    <string name="Opciones">Aukerak</string>
+    <string name="Compartir">Partekatu</string>
+    <string name="Borrar">Ezabatu</string>
+    <string name="Editar">Editatu</string>
+    <string name="Seguir">Jarraitu</string>
+    <string name="FechaRecordatorio">Gogoratu egun honetan</string>
+    <string name="SeleccionarIdioma">Aukeratu hizkuntza:</string>
+    <string name="ModoOscuro">Modu iluna</string>
+    <string name="ModoClaro">Modu argia</string>
+    <string name="SeleccionaModo">Aukeratu modua:</string>
+    <string name="Titulo">Izenburua</string>
+    <string name="Guardar">Gorde</string>
+    <string name="Cancelar">Utzi</string>
+    <string name="exportardatos">Gorde nire datuak JSON fitxategi baten</string>
+</resources>

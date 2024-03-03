@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SerieTracker</string>
+    <string name="siguiendo">Siguiendo</string>
+    <string name="pendiente">Pendiente</string>
+    <string name="Temporada">Temporada</string>
+    <string name="Episodio">Episodio</string>
+    <string name="Añadir">Añadir</string>
+    <string name="Atras">Atras</string>
+    <string name="Mas">Más</string>
+    <string name="Ajustes">Ajustes</string>
+    <string name="Menos">Menos</string>
+    <string name="Opciones">Opciones</string>
+    <string name="Compartir">Compartir</string>
+    <string name="Borrar">Borrar</string>
+    <string name="Editar">Editar</string>
+    <string name="Seguir">Seguir</string>
+    <string name="FechaRecordatorio">Fecha de recordatorio</string>
+    <string name="SeleccionarIdioma">Selecciona el idioma:</string>
+    <string name="ModoOscuro">Modo oscuro</string>
+    <string name="ModoClaro">Modo claro</string>
+    <string name="SeleccionaModo">Selecciona el modo:</string>
+    <string name="Titulo">Título</string>
+    <string name="Guardar">Guardar</string>
+    <string name="Cancelar">Cancelar</string>
+    <string name="exportardatos">Exportar mis datos a un fichero JSON</string>
+</resources>
