@@ -10,6 +10,7 @@ import javax.inject.Singleton
 interface ICatalogoRepository{
     fun getAllSeries(): Flow<List<SerieCatalogo>>
     suspend fun addSerie(serieCatalogo: SerieCatalogo)
+    suspend fun deleteSerie(serieCatalogo: SerieCatalogo)
 }
 
 @Singleton
@@ -19,4 +20,6 @@ class CatalogoRepository @Inject constructor(
     override fun getAllSeries(): Flow<List<SerieCatalogo>> = serieCatalogoDao.getSeriesCatalogo()
 
     override suspend fun addSerie(serieCatalogo: SerieCatalogo) = serieCatalogoDao.insert(serieCatalogo)
+
+    override suspend fun deleteSerie(serieCatalogo: SerieCatalogo) = serieCatalogoDao.delete(serieCatalogo)
 }

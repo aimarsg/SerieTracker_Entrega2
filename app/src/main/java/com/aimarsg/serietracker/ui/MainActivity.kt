@@ -1,24 +1,18 @@
-package com.aimarsg.serietracker
+package com.aimarsg.serietracker.ui
 
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import com.aimarsg.serietracker.ui.SerieTrackerApp
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -33,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             SerieTrackerTheme(
                 useDarkTheme = viewmodel.tema.collectAsState(initial = true).value
             ){
-                Log.d("a", "idioma oncreate ${viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value}")
+                //Log.d("a", "idioma oncreate ${viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value}")
                 viewmodel.reloadLang(viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value, this)
                 Surface(
                     modifier = Modifier.fillMaxSize(),

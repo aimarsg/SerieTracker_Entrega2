@@ -1,4 +1,4 @@
-package com.aimarsg.serietracker.ui
+package com.aimarsg.serietracker.ui.pantallas
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.data.Idioma
 import com.aimarsg.serietracker.R
+import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 
 @Composable
@@ -100,9 +101,6 @@ fun Ajustes(
 
             Column(
             ) {
-                //var expanded by remember { mutableStateOf(false) }
-                val modos =
-                    listOf(stringResource(R.string.ModoClaro), stringResource(R.string.ModoOscuro))
                 val booleanState by viewModel.tema.collectAsState(initial = true)
 
                 Text(

@@ -1,4 +1,4 @@
-package com.aimarsg.serietracker.ui
+package com.aimarsg.serietracker.ui.pantallas
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -6,15 +6,14 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
@@ -26,34 +25,37 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
-import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
+import com.aimarsg.serietracker.data.entities.SerieUsuario
+import com.aimarsg.serietracker.ui.pantallas.componentes.NuevoPendiente
+import com.aimarsg.serietracker.ui.SeriesViewModel
 
 @Composable
 fun PendienteScreen(
     modifier: Modifier = Modifier,
-    onUserInputChanged: (String) -> Unit,
-    userInput  :String
+    viewModel: SeriesViewModel,
 ){
     val openNewDialog = rememberSaveable { mutableStateOf(false) }
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+        val lista by viewModel.seriesPendiente.collectAsState(initial = emptyList())
         LazyColumn(
             modifier = modifier.padding(top = 20.dp)
         ) {
-            item {
-                /* TODO Por cada elemento de la lista se llama a un itemSerieSiguiiendo
-                    y con eso ya se displayea la lista*/
-                ItemPendiente()
+
+            items(items = lista, key = {it.titulo}){ item ->
+                ItemPendiente(serie = item, viewModel = viewModel)
             }
+
         }
         ExtendedFloatingActionButton(
             onClick = { openNewDialog.value = true },
@@ -67,8 +69,6 @@ fun PendienteScreen(
             NuevoPendiente(
                 onDismissRequest = { openNewDialog.value = false },
                 onNextButtonClicked = {} , // TODO onNextButtonClicked,
-                onUserInputChanged = onUserInputChanged,
-                userInput = userInput
             )
         }
     }
@@ -76,7 +76,9 @@ fun PendienteScreen(
 
 @Composable
 fun ItemPendiente(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SeriesViewModel,
+    serie: SerieUsuario
 ){
     Card(
         modifier = modifier
@@ -103,7 +105,7 @@ fun ItemPendiente(
 
             ) {
                 Text(
-                    text = "PLACEHOLDER TITULO ", /* TODO titulo*/
+                    text = serie.titulo,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier.padding(bottom = 10.dp)
                 )
@@ -116,7 +118,7 @@ fun ItemPendiente(
                             modifier = Modifier,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "XX/XX/XXXX")/*TODO*/
+                            Text(text = serie.recordatorio.toString())
                             IconButton(onClick = { /*TODO*/ }) {
                                 Icon(
                                     imageVector = Icons.Filled.Edit,
@@ -131,7 +133,10 @@ fun ItemPendiente(
 
             Column {
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        val serieAct = serie.copy(siguiendo = true)
+                        viewModel.editarSerie(serieAct)
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.PlayArrow,
@@ -139,7 +144,9 @@ fun ItemPendiente(
                     )
                 }
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        viewModel.eliminarSerie(serie)
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
@@ -150,7 +157,7 @@ fun ItemPendiente(
         }
     }
 }
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewElementoPendiente(){
@@ -166,5 +173,5 @@ fun PreviewPendiente(){
         PendienteScreen(modifier = Modifier.fillMaxSize(), onUserInputChanged = {}, userInput = "")
     })
 }
-
+*/
 

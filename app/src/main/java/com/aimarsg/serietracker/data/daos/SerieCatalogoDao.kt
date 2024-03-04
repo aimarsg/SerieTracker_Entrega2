@@ -16,10 +16,10 @@ interface SerieCatalogoDao{
     suspend fun insert(serieCatalogo: SerieCatalogo)
 
     /*@Update
-    suspend fun update(serieCatalogo: SerieCatalogo)
+    suspend fun update(serieCatalogo: SerieCatalogo)*/
 
     @Delete
-    suspend fun delete(serieCatalogo: SerieCatalogo)*/
+    suspend fun delete(serieCatalogo: SerieCatalogo)
 
     @Query("SELECT * from SerieCatalogo ORDER BY titulo ASC")
     fun getSeriesCatalogo(): Flow<List<SerieCatalogo>>

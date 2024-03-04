@@ -1,4 +1,4 @@
-package com.aimarsg.serietracker
+package com.aimarsg.serietracker.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
@@ -35,10 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.aimarsg.serietracker.ui.Ajustes
-import com.aimarsg.serietracker.ui.PendienteScreen
-import com.aimarsg.serietracker.ui.SeriesViewModel
-import com.aimarsg.serietracker.ui.SiguiendoScreen
+import com.aimarsg.serietracker.R
+import com.aimarsg.serietracker.ui.pantallas.Ajustes
+import com.aimarsg.serietracker.ui.pantallas.PendienteScreen
+import com.aimarsg.serietracker.ui.pantallas.SiguiendoScreen
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 
 //  RUTAS PARA LA NAVEGACION
@@ -124,7 +124,9 @@ private fun BottomBar(
                 if (siguiendo){
                     Icon(imageVector = Icons.Default.Favorite, contentDescription = stringResource(R.string.siguiendo))
                 }else{
-                    Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = stringResource(R.string.siguiendo))
+                    Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = stringResource(
+                        R.string.siguiendo
+                    ))
                 }
             },
             label = {
@@ -183,7 +185,7 @@ fun SerieTrackerApp(
         floatingActionButton = {
 
         },
-        bottomBar = { BottomBar(navController = navController,  siguiendo = siguiendo)}
+        bottomBar = { BottomBar(navController = navController,  siguiendo = siguiendo) }
     ) {
             innerPadding ->
 
@@ -195,16 +197,14 @@ fun SerieTrackerApp(
 
             composable(route = TrackerScreen.Siguiendo.name){
                 SiguiendoScreen(
-                    userInput = viewModel.tituloInput,
-                    onUserInputChanged = {viewModel.tituloInput = it}
+                    viewModel = viewModel
                 )
                 setSiguiendo(true)
             }
 
             composable(route = TrackerScreen.Pendiente.name){
                 PendienteScreen(
-                    userInput = viewModel.tituloInput,
-                    onUserInputChanged = {viewModel.tituloInput = it}
+                    viewModel = viewModel
                 )
                 setSiguiendo(false)
             }

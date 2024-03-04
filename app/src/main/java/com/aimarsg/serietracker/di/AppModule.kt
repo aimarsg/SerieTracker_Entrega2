@@ -18,6 +18,15 @@ object AppModule {
     @Provides
     fun providesDatabase(@ApplicationContext app: Context) =
         Room.databaseBuilder(app, Database::class.java, "serieTracker")
+            .createFromAsset("database/serieTracker.db")
             .fallbackToDestructiveMigration()
             .build()
+
+    @Singleton
+    @Provides
+    fun provideSerieCatalogoDao(db:Database) = db.serieCatalogoDao()
+
+    @Singleton
+    @Provides
+    fun provideSerieUsuarioDao(db:Database) = db.serieUsuarioDao()
 }

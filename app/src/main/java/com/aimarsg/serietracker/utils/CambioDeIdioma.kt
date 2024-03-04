@@ -5,6 +5,8 @@ import android.content.ContextWrapper
 import android.content.res.Configuration
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import com.aimarsg.serietracker.data.Idioma
 import java.util.*
 import javax.inject.Inject
@@ -21,12 +23,12 @@ class CambioDeIdioma @Inject constructor() {
             Idioma.Castellano}
     }
 
-    fun cambiarIdioma(idioma: Idioma, context: Context, recreate: Boolean = true) {
-        Log.d("A","idioma actual: ${idiomaActual.codigo}")
-        Log.d("A","idioma nuevo: ${idioma.codigo}")
+    fun cambiarIdioma(idioma: Idioma, context: Context, recreate: Boolean = false) {
+        //Log.d("A","idioma actual: ${idiomaActual.codigo}")
+        //Log.d("A","idioma nuevo: ${idioma.codigo}")
         if (idioma != idiomaActual || idiomaActual.codigo != Locale.getDefault().language) {
 
-            context.resources.apply {
+            /*context.resources.apply {
                 val locale = Locale(idioma.codigo)
                 val config = Configuration(configuration)
 
@@ -36,10 +38,16 @@ class CambioDeIdioma @Inject constructor() {
 
                 @Suppress("DEPRECATION")
                 context.resources.updateConfiguration(config, displayMetrics)
-            }
+            }*/
+
+
+
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(idioma.codigo))
+
+
 
             idiomaActual = idioma
-            if (recreate) context.getActivity()?.recreate()
+            //if (recreate) context.getActivity()?.recreate()
 
         }
     }

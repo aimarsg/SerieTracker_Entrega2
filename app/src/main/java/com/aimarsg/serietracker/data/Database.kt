@@ -8,16 +8,18 @@ import com.aimarsg.serietracker.data.daos.SerieCatalogoDao
 import com.aimarsg.serietracker.data.daos.SerieUsuarioDao
 import com.aimarsg.serietracker.data.entities.SerieCatalogo
 import com.aimarsg.serietracker.data.entities.SerieUsuario
-import java.time.LocalDate
-import java.time.LocalDateTime
-
+import com.aimarsg.serietracker.utils.epochSecond
+import com.aimarsg.serietracker.utils.epochSeconds
+import com.aimarsg.serietracker.utils.fromEpochSeconds
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 @Database(
     entities = [SerieCatalogo::class, SerieUsuario::class],
     version = 1,
     exportSchema = false
 )
-//@TypeConverters(Converters::class)
+@TypeConverters(Converters::class)
 abstract class Database : RoomDatabase(){
     abstract fun serieUsuarioDao(): SerieUsuarioDao
     abstract fun serieCatalogoDao(): SerieCatalogoDao
@@ -28,7 +30,7 @@ class Converters {
 
     // They convert from ZonedDateTime to long format and backwards. Time zone value is kept.
 
-    /*@TypeConverter
+    @TypeConverter
     fun fromLongToDate(value: Long): LocalDate = LocalDate.fromEpochSeconds(value)
 
 
@@ -41,8 +43,7 @@ class Converters {
 
 
     @TypeConverter
-    fun datetimeToTimestamp(date: LocalDateTime): Long = date.epochSecond*/
-    // TODO TYPE CONVERTERS
+    fun datetimeToTimestamp(date: LocalDateTime): Long = date.epochSecond
 
 
 }

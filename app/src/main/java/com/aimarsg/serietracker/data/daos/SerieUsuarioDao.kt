@@ -17,11 +17,14 @@ interface SerieUsuarioDao{
     suspend fun insert(serieUsuario: SerieUsuario)
 
     @Update
-    suspend fun update(serieCatalogo: SerieCatalogo)
+    suspend fun update(serieUsuario: SerieUsuario)
 
     @Delete
-    suspend fun delete(serieCatalogo: SerieCatalogo)
+    suspend fun delete(serieUsuario: SerieUsuario)
 
-    @Query("SELECT * from SerieUsuario ORDER BY titulo ASC")
-    fun getSeriesCatalogo(): Flow<List<SerieCatalogo>>
+    @Query("SELECT * from SerieUsuario WHERE siguiendo ORDER BY titulo ASC")
+    fun getSeriesUsuarioSiguiendo(): Flow<List<SerieUsuario>>
+
+    @Query("SELECT * from SerieUsuario WHERE not siguiendo ORDER BY titulo ASC")
+    fun getSeriesUsuarioPendiente(): Flow<List<SerieUsuario>>
 }
