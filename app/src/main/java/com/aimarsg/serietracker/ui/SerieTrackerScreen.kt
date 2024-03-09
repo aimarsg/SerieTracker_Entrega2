@@ -175,22 +175,3 @@ fun SerieTrackerAppLandscape(
         }
     }
 }
-
-
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun topBarPreview(){
-    SerieTrackerTheme(content = {
-        //SerieTrackerTopBar(canNavigateBack = true /*  TODO*/ , navigateUp = { /*TODO*/ }, navController = NavHostController(this))
-    })
-}
-
-@Preview(showBackground = true)
-@Composable
-fun serieAppPreviewNav(){
-    SerieTrackerTheme(content = {
-        //SerieTrackerApp()
-    })
-}*/

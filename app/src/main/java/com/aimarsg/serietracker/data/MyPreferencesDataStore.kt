@@ -67,16 +67,3 @@ class MyPreferencesDataStore @Inject constructor(
     }
 }
 
-// TODO me falta el repositorio del datastore - o igual no
-// del repositorio hacia arriba inclusive tod0 teine que ser singleton
-// las clases que hereden de las interfaces que luego sea servido por un provider en el
-// modulo de hilt tienen que tener el @singleton porqeu probablemente el provider tambien lo tenga
-
-
-/**
- * flow -> datastore y room generan los paquetes del flow -> el viewmodel recibe el flow -> collectAsState hace que cambie
- * el map hace el intermediario
- *
- *
- *
- */
