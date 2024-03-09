@@ -16,7 +16,10 @@ import com.aimarsg.serietracker.utils.CambioDeIdioma
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.flow.first
 
 @HiltViewModel
 class SeriesViewModel @Inject constructor(
@@ -72,6 +75,24 @@ class SeriesViewModel @Inject constructor(
         }
     }
 
+    fun seriesSiguiendoToJson(): String {
+        val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
+
+        return runBlocking {
+            val seriesSiguiendo = trackerRepository.getSeriesSiguiendo().first()
+                .map { serieUsuario ->
+                    mapOf(
+                        "titulo" to serieUsuario.titulo,
+                        "numero temporadas" to serieUsuario.numTemps,
+                        "episodio actual" to serieUsuario.epActual.toString(),
+                        "temporada actual" to serieUsuario.tempActual.toString(),
+                        "valoracion" to serieUsuario.valoracion.toString()
+                    )
+                }
+
+            return@runBlocking gsonBuilder.toJson(seriesSiguiendo)
+        }
+    }
 
 
 

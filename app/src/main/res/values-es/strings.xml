@@ -24,4 +24,6 @@
     <string name="Guardar">Guardar</string>
     <string name="Cancelar">Cancelar</string>
     <string name="exportardatos">Exportar mis datos a un fichero JSON</string>
+    <string name="Buscar">Buscar</string>
+    <string name="confirmarborrar">¿Deseas borrar esta serie?</string>
 </resources>

@@ -29,14 +29,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.data.entities.SerieUsuario
-import com.aimarsg.serietracker.ui.pantallas.componentes.NuevoPendiente
+import com.aimarsg.serietracker.ui.componentes.NuevoPendiente
 import com.aimarsg.serietracker.ui.SeriesViewModel
+import com.aimarsg.serietracker.ui.componentes.DateDialog
+import com.aimarsg.serietracker.ui.componentes.DialogoBorrar
+import com.aimarsg.serietracker.utils.today
+import kotlinx.datetime.LocalDate
 
 @Composable
 fun PendienteScreen(
@@ -68,7 +73,8 @@ fun PendienteScreen(
         if (openNewDialog.value){
             NuevoPendiente(
                 onDismissRequest = { openNewDialog.value = false },
-                onNextButtonClicked = {} , // TODO onNextButtonClicked,
+                onDoneButtonClicked = {} , // TODO onNextButtonClicked,
+                viewModel = viewModel
             )
         }
     }
@@ -109,6 +115,8 @@ fun ItemPendiente(
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier.padding(bottom = 10.dp)
                 )
+                var datePickerOpened by rememberSaveable { mutableStateOf(false) }
+                var selectedDate by rememberSaveable { mutableStateOf(LocalDate.today.toString()) }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
@@ -119,18 +127,30 @@ fun ItemPendiente(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(text = serie.recordatorio.toString())
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = {
+                                datePickerOpened = true
+                            }) {
                                 Icon(
                                     imageVector = Icons.Filled.Edit,
                                     contentDescription = stringResource(R.string.Editar),
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
+                            if (datePickerOpened) {
+                                DateDialog(
+                                    onDismissRequest = { datePickerOpened = false },
+                                    onDateEntered = { selectedDate = it.toString()
+                                        datePickerOpened = false
+                                        val serieAct = serie.copy(recordatorio = LocalDate.parse(selectedDate))
+                                        viewModel.editarSerie(serieAct)
+                                    },
+                                )
+                            }
                         }
                     }
                 }
             }
-
+            var dialogoBorrarAct by rememberSaveable { mutableStateOf(false) }
             Column {
                 IconButton(
                     onClick = {
@@ -145,7 +165,7 @@ fun ItemPendiente(
                 }
                 IconButton(
                     onClick = {
-                        viewModel.eliminarSerie(serie)
+                        dialogoBorrarAct = true
                     }
                 ) {
                     Icon(
@@ -153,6 +173,14 @@ fun ItemPendiente(
                         contentDescription = stringResource(R.string.Borrar)
                     )
                 }
+            }
+            if ( dialogoBorrarAct ){
+                DialogoBorrar(
+                    onDismiss = { dialogoBorrarAct = false },
+                    onDelete = {
+                        viewModel.eliminarSerie(serie)
+                        dialogoBorrarAct = false
+                    })
             }
         }
     }

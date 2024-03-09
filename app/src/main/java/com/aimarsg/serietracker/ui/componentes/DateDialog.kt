@@ -1,4 +1,4 @@
-package com.aimarsg.serietracker.ui.pantallas.componentes
+package com.aimarsg.serietracker.ui.componentes
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check

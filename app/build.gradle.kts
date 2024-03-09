@@ -74,7 +74,11 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("com.wdullaer:materialdatetimepicker:4.2.3")
+
+    //librerias añadidas para funciones concretas
     implementation("com.github.a914-gowtham:compose-ratingbar:1.3.4")
+    //implementation("com.github.Breens-Mbaka:Searchable-Dropdown-Menu-Jetpack-Compose:0.2.8")
+    //implementation("com.github.aimarsg:Searchable-Dropdown-Menu-Jetpack-Compose:2702c9b")
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -93,5 +97,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
+
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    // GSON
+    implementation ("com.google.code.gson:gson:2.8.6")
+
 
 }

@@ -24,4 +24,6 @@
     <string name="Guardar">Save</string>
     <string name="Cancelar">Cancel</string>
     <string name="exportardatos">Save my data in a JSON file</string>
+    <string name="Buscar">Search</string>
+    <string name="confirmarborrar">Do you want to delete this serie?</string>
 </resources>

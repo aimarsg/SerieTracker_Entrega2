@@ -24,8 +24,7 @@ class CambioDeIdioma @Inject constructor() {
     }
 
     fun cambiarIdioma(idioma: Idioma, context: Context, recreate: Boolean = false) {
-        //Log.d("A","idioma actual: ${idiomaActual.codigo}")
-        //Log.d("A","idioma nuevo: ${idioma.codigo}")
+
         if (idioma != idiomaActual || idiomaActual.codigo != Locale.getDefault().language) {
 
             /*context.resources.apply {
@@ -40,11 +39,7 @@ class CambioDeIdioma @Inject constructor() {
                 context.resources.updateConfiguration(config, displayMetrics)
             }*/
 
-
-
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(idioma.codigo))
-
-
 
             idiomaActual = idioma
             //if (recreate) context.getActivity()?.recreate()

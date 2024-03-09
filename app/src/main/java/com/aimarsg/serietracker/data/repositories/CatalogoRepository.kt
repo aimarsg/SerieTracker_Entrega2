@@ -7,12 +7,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
-interface ICatalogoRepository{
-    fun getAllSeries(): Flow<List<SerieCatalogo>>
-    suspend fun addSerie(serieCatalogo: SerieCatalogo)
-    suspend fun deleteSerie(serieCatalogo: SerieCatalogo)
-}
-
 @Singleton
 class CatalogoRepository @Inject constructor(
     private val serieCatalogoDao: SerieCatalogoDao

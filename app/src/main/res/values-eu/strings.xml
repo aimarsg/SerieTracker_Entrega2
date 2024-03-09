@@ -24,4 +24,6 @@
     <string name="Guardar">Gorde</string>
     <string name="Cancelar">Utzi</string>
     <string name="exportardatos">Gorde nire datuak JSON fitxategi baten</string>
+    <string name="Buscar">Bilatu</string>
+    <string name="confirmarborrar">Serie hau ezabatu nahi duzu?</string>
 </resources>

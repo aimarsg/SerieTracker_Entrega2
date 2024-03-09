@@ -1,7 +1,6 @@
 package com.aimarsg.serietracker.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.aimarsg.serietracker.ui.SerieTrackerApp
-import com.aimarsg.serietracker.ui.SeriesViewModel
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.navigation.compose.rememberNavController
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,65 +23,43 @@ class MainActivity : AppCompatActivity() {
     private val viewmodel by viewModels<SeriesViewModel>()  //hiltviewmodel
     //private val viewmodel : SeriesViewModel = HiltViewModel()
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val windowSize = calculateWindowSizeClass(this)
             SerieTrackerTheme(
                 useDarkTheme = viewmodel.tema.collectAsState(initial = true).value
             ){
                 //Log.d("a", "idioma oncreate ${viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value}")
                 viewmodel.reloadLang(viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value, this)
+                var navHostController  = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     //color = MaterialTheme.colorScheme.background
                 ) {
-                    SerieTrackerApp(
+                    /*SerieTrackerApp(
                         viewModel = viewmodel
-                    )
+                    )*/
+                    when (windowSize.widthSizeClass) {
+                        WindowWidthSizeClass.Compact -> {
+                            SerieTrackerApp(
+                                viewModel = viewmodel,
+                                navController = navHostController
+                            )
+                        }
+                        WindowWidthSizeClass.Expanded -> {
+                            SerieTrackerAppLandscape(
+                                viewModel = viewmodel,
+                                navController = navHostController
+                            )
+                        }
+                    }
                 }
 
             }
         }
     }
-
-    /*private fun cambiarIdioma(idioma: State<Idioma>, context: Context){
-        //Log.d("a", "ha llegado")
-        /*
-        resources.configuration.setLocale(Locale(codigo))
-        //resources.updateConfiguration(resources.configuration, resources.displayMetrics)
-
-        resources.configuration.locale = Locale(codigo)
-        resources.updateConfiguration(resources.configuration, resources.displayMetrics)*/
-
-        /*val locale = Locale(idioma.value.codigo)
-        Locale.setDefault(locale)
-        val resources = context.getResources()
-        val configuration = resources.getConfiguration()
-        configuration.locale = locale
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics())*/
-
-        // Check if there's any difference in language variables
-        if (idioma.value.codigo != Locale.getDefault().language) {
-
-            // With the context create a new Locale and update configuration
-            context.resources.apply {
-                val locale = Locale(idioma.value.codigo)
-                val config = Configuration(configuration)
-
-                context.createConfigurationContext(configuration)
-                Locale.setDefault(locale)
-                config.setLocale(locale)
-
-                @Suppress("DEPRECATION")
-                context.resources.updateConfiguration(config, displayMetrics)
-            }
-
-            val recreate = true
-
-            // If asked recreate the interface (this does not finish the activity)
-            // if (recreate) context.getActivity()?.recreate()
-        }
-    }*/
 }
 
 

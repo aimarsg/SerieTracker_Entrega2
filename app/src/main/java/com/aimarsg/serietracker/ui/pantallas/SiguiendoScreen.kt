@@ -1,5 +1,7 @@
 package com.aimarsg.serietracker.ui.pantallas
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -25,6 +28,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,15 +36,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.data.entities.SerieUsuario
-import com.aimarsg.serietracker.ui.pantallas.componentes.NuevoSiguiendo
+import com.aimarsg.serietracker.ui.componentes.NuevoSiguiendo
 import com.aimarsg.serietracker.ui.SeriesViewModel
+import com.aimarsg.serietracker.ui.componentes.DialogoBorrar
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 
@@ -86,6 +94,7 @@ fun ItemSerieSiguiendo(
     viewModel: SeriesViewModel,
     serie: SerieUsuario
 ) {
+    var context = LocalContext.current
     Card(
         modifier = modifier
             .padding(vertical = 10.dp, horizontal = 15.dp)
@@ -132,8 +141,10 @@ fun ItemSerieSiguiendo(
                         ) {
                             IconButton(
                                 onClick = {
-                                    val serieAct = serie.copy(tempActual = serie.tempActual-1)
-                                    viewModel.editarSerie(serieAct)
+                                    if (serie.tempActual>1) {
+                                        val serieAct = serie.copy(tempActual = serie.tempActual - 1, epActual = 1)
+                                        viewModel.editarSerie(serieAct)
+                                    }
                                 }
                             ) {
                                 Icon(
@@ -144,8 +155,10 @@ fun ItemSerieSiguiendo(
                             }
                             Text(text = serie.tempActual.toString())
                             IconButton(onClick = {
-                                val serieAct = serie.copy(tempActual = serie.tempActual+1)
-                                viewModel.editarSerie(serieAct)
+                                if (serie.tempActual<serie.numTemps) {
+                                    val serieAct = serie.copy(tempActual = serie.tempActual + 1, epActual = 1)
+                                    viewModel.editarSerie(serieAct)
+                                }
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.KeyboardArrowUp,
@@ -166,8 +179,20 @@ fun ItemSerieSiguiendo(
                         ) {
                             IconButton(
                                 onClick = {
-                                    val serieAct = serie.copy(epActual = serie.epActual-1)
-                                    viewModel.editarSerie(serieAct)
+                                    if (serie.tempActual == 1){
+                                        if ( serie.epActual > 1){
+                                            val serieAct = serie.copy(epActual = serie.epActual-1)
+                                            viewModel.editarSerie(serieAct)
+                                        }
+                                    }else{
+                                        if ( serie.epActual > 1){
+                                            val serieAct = serie.copy(epActual = serie.epActual-1)
+                                            viewModel.editarSerie(serieAct)
+                                        }else{
+                                            val serieAct = serie.copy(epActual = obtenerEpisodiosTemporada(serie.tempActual-1, serie.epTemp), tempActual = serie.tempActual-1)
+                                            viewModel.editarSerie(serieAct)
+                                        }
+                                    }
                                 }
                             ) {
                                 Icon(
@@ -178,8 +203,20 @@ fun ItemSerieSiguiendo(
                             }
                             Text(text = serie.epActual.toString())
                             IconButton(onClick = {
-                                val serieAct = serie.copy(epActual = serie.epActual+1)
-                                viewModel.editarSerie(serieAct)
+                                if (serie.tempActual == serie.numTemps){
+                                    if ( serie.epActual < obtenerEpisodiosTemporada(serie.tempActual, serie.epTemp)){
+                                        val serieAct = serie.copy(epActual = serie.epActual+1)
+                                        viewModel.editarSerie(serieAct)
+                                    }
+                                }else{
+                                    if ( serie.epActual < obtenerEpisodiosTemporada(serie.tempActual, serie.epTemp)){
+                                        val serieAct = serie.copy(epActual = serie.epActual+1)
+                                        viewModel.editarSerie(serieAct)
+                                    }else{
+                                        val serieAct = serie.copy(epActual = 1, tempActual = serie.tempActual+1)
+                                        viewModel.editarSerie(serieAct)
+                                    }
+                                }
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.KeyboardArrowUp,
@@ -191,10 +228,15 @@ fun ItemSerieSiguiendo(
                     }
                 }
             }
-
+            var dialogoBorrarAct by rememberSaveable { mutableStateOf(false) }
             Column {
                 IconButton(
-                    onClick = { /* TODO*/ }
+                    onClick = {
+                        compartirSerie(context = context,
+                            subject = "",
+                            summary = "${serie.titulo}, ${serie.valoracion}"
+                            )
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Share,
@@ -202,16 +244,24 @@ fun ItemSerieSiguiendo(
                     )
                 }
                 IconButton(
-                    onClick = { viewModel.eliminarSerie(serie) }
+                    onClick = { dialogoBorrarAct = true }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.Borrar)
                     )
                 }
+                if ( dialogoBorrarAct ){
+                    DialogoBorrar(
+                        onDismiss = { dialogoBorrarAct = false },
+                        onDelete = {
+                            viewModel.eliminarSerie(serie)
+                            dialogoBorrarAct = false
+                        })
+                }
             }
         }
-        Row (
+        /*Row (
             modifier = Modifier.padding(horizontal = 30.dp)
         ){
             Divider(
@@ -220,7 +270,10 @@ fun ItemSerieSiguiendo(
                 thickness = 0.75.dp,
                 color = MaterialTheme.colorScheme.secondary
             )
-        }
+        }*/
+
+        LinearProgressIndicator(progress = calcularPorcentajeVisto(serie.epActual, serie.tempActual, serie.epTemp),
+                                modifier = Modifier.padding(start = 30.dp), trackColor = MaterialTheme.colorScheme.outline)
 
         //var rating: Float by remember { mutableStateOf(3.2f) }
 
@@ -229,7 +282,7 @@ fun ItemSerieSiguiendo(
                 .padding(bottom = 20.dp, top = 15.dp, start = 5.dp, end = 5.dp)
                 .scale(0.75F),
             value = serie.valoracion,
-            style = RatingBarStyle.Fill(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary),
+            style = RatingBarStyle.Fill(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.outline),
             //painterEmpty = painterResource(id = android.R.drawable.btn_star_big_off),
             //painterFilled = painterResource(id = android.R.drawable.btn_star_big_on),
             onValueChange = {
@@ -242,6 +295,48 @@ fun ItemSerieSiguiendo(
         )
     }
 }
+
+// FUCNIONALIDAD DE COMPARTIR / SHARE MENU
+private fun compartirSerie(context: Context, subject: String, summary: String){
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, subject)
+        putExtra(Intent.EXTRA_TEXT, summary)
+    }
+    context.startActivity(
+        Intent.createChooser(
+            intent,
+            context.getString(R.string.Compartir)
+        )
+    )
+}
+
+private fun calcularPorcentajeVisto(epActual: Int,  tempActual: Int, epTemp: String): Float{
+    // Convertir el string de episodios a una lista de enteros
+    val episodiosPorTemporada = epTemp.split(",").map { it.toInt() }
+
+    // Calcular el total de episodios en todas las temporadas anteriores a la temporada actual
+    val totalEpisodiosAnteriores = episodiosPorTemporada.subList(0, tempActual - 1).sum()
+
+    // Añadir los episodios vistos en la temporada actual
+    val totalEpisodiosVistos = totalEpisodiosAnteriores + epActual
+
+    // Calcular el total de episodios en toda la serie
+    val totalEpisodios = episodiosPorTemporada.sum()
+
+    // Calcular el porcentaje de la serie vista
+    val porcentajeVisto = (totalEpisodiosVistos.toFloat() / totalEpisodios.toFloat())
+
+    return porcentajeVisto
+}
+
+private fun obtenerEpisodiosTemporada(tempActual: Int, epTemp: String): Int{
+    val episodiosPorTemporada = epTemp.split(",").map { it.toInt() }
+
+    // Obtener el número de episodios de la temporada proporcionada
+    return episodiosPorTemporada[tempActual - 1]
+}
+
 /*
 @Preview(showBackground = true)
 @Composable

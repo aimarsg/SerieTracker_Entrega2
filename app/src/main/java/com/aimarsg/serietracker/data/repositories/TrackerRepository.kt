@@ -8,14 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface ITrackerRepository{
-    suspend fun addSerie(serieUsuario: SerieUsuario)
-    suspend fun deleteSerie(serieUsuario: SerieUsuario)
-    suspend fun updateSerie(serieUsuario: SerieUsuario)
-    fun getSeriesSiguiendo(): Flow<List<SerieUsuario>>
-    fun getSeriesPendiente(): Flow<List<SerieUsuario>>
-}
-
 @Singleton
 class TrackerRepository @Inject constructor(
     private val serieUsuarioDao: SerieUsuarioDao
