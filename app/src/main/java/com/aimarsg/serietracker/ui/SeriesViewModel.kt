@@ -13,14 +13,20 @@ import com.aimarsg.serietracker.data.entities.SerieUsuario
 import com.aimarsg.serietracker.data.repositories.CatalogoRepository
 import com.aimarsg.serietracker.data.repositories.TrackerRepository
 import com.aimarsg.serietracker.utils.CambioDeIdioma
+import com.google.gson.GsonBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
-import com.google.gson.GsonBuilder
-import kotlinx.coroutines.flow.first
 
+
+/**
+ * Apps main viewmodel, used to store variables temporarily and
+ * exchange information with the database, following the model-view-viewmodel (MVVM) architecture
+ * Hilt is used to inject the dependencies on the constructor
+ */
 @HiltViewModel
 class SeriesViewModel @Inject constructor(
     private val myPreferencesDataStore: MyPreferencesDataStore,
@@ -28,6 +34,8 @@ class SeriesViewModel @Inject constructor(
     private val trackerRepository: TrackerRepository,
     private val cambioDeIdioma: CambioDeIdioma
 ): ViewModel() {
+
+    // get the theme and language from the data store
     val tema = myPreferencesDataStore.preferencesStatusFlow.map {
         it.temaClaro
     }
@@ -35,21 +43,33 @@ class SeriesViewModel @Inject constructor(
         it.idioma
     }
 
+    // selected language
     val idiomaActual by cambioDeIdioma::idiomaActual
 
+    // series lists
     val seriesCatalogo = catalogoRepository.getAllSeries()
-
     val seriesSiguiendo = trackerRepository.getSeriesSiguiendo()
     val seriesPendiente = trackerRepository.getSeriesPendiente()
 
+    // variable to store the selected serie
     var serieSeleccionada by mutableStateOf(SerieCatalogo("", 0, ""))
 
+
+    /**
+     * Update the selected theme on the preferences data store
+     * @param theme false if dark, true else
+     */
     fun updateTheme(theme: Boolean){
         viewModelScope.launch {
             myPreferencesDataStore.updateTheme(theme)
         }
     }
 
+
+    /**
+     * Update the selected language on the preferences data store and update the app language
+     * @param idioma new language
+     */
     fun updateIdioma(idioma: Idioma, context: Context){
         cambioDeIdioma.cambiarIdioma(idioma, context)
         viewModelScope.launch {
@@ -59,6 +79,7 @@ class SeriesViewModel @Inject constructor(
 
     fun reloadLang(idioma: Idioma, context: Context) = cambioDeIdioma.cambiarIdioma(idioma, context, false)
 
+    // functions to add / edit / modify users series
     fun addSerie(serie: SerieUsuario) {
         viewModelScope.launch {
             trackerRepository.addSerie(serie)
@@ -75,6 +96,10 @@ class SeriesViewModel @Inject constructor(
         }
     }
 
+
+    /**
+     * function to get the user's series serialized as JSON to export all data
+      */
     fun seriesSiguiendoToJson(): String {
         val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 

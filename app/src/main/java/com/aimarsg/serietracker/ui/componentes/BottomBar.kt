@@ -16,6 +16,14 @@ import androidx.navigation.NavHostController
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.TrackerScreen
 
+
+/**
+ * Bottombar of the app, to be shown on the portrait mode
+ * it has a bottom for both main screens of the app
+ * @param navController: navController of the app
+ * @param siguiendo: boolean that indicates wich one is the current screen.
+ *  [true] means 'Following, [False] means 'pending'
+ */
 @Composable
 public fun BottomBar(
     modifier: Modifier = Modifier,

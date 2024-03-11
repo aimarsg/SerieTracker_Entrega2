@@ -26,6 +26,9 @@ import com.aimarsg.serietracker.data.entities.SerieUsuario
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import kotlinx.datetime.LocalDate
 
+/**
+ * Dialog that is shown to confirm the deletion of the elements from the main screens
+ */
 @Composable
 fun DialogoBorrar(
     onDismiss: () -> Unit,

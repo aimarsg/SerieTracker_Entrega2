@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,18 +38,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.data.entities.SerieUsuario
-import com.aimarsg.serietracker.ui.componentes.NuevoSiguiendo
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.DialogoBorrar
+import com.aimarsg.serietracker.ui.componentes.NuevoSiguiendo
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 
+/**
+ * Screen that shows a list of the series that the user has marked as following,
+ * with a floating button to add a new one
+ * @param viewModel app's viewmodel
+ */
 @Composable
 fun SiguiendoScreen(
     modifier: Modifier = Modifier,
@@ -66,10 +68,15 @@ fun SiguiendoScreen(
             modifier = modifier.padding(top = 20.dp)
         ) {
 
+            // DISPLAY A LIST OF THE FOLLOWING SERIES //
+
             items(items = lista, key = {it.titulo}){ item ->
                 ItemSerieSiguiendo(serie = item, viewModel = viewModel)
             }
         }
+
+        // FLOATING BUTTON TO ADD A NEW SERIE //
+
         ExtendedFloatingActionButton(
             onClick = { openNewDialog.value = true },
             icon = { Icon(Icons.Filled.Add, stringResource(R.string.Añadir)) },
@@ -88,13 +95,22 @@ fun SiguiendoScreen(
     }
 }
 
+
+/**
+ * Composable to display each following series as a card with two buttons, share and delete.
+ * It has buttons to modify the current season or chapter, and it shows a progressbar
+ * representing the amount of viewed chapters.
+ * At the botton it renders a clickable rating bar with the series rating.
+ * @param viewModel: apps main viewmodel
+ * @param serie: series item to be displayed
+ */
 @Composable
 fun ItemSerieSiguiendo(
     modifier: Modifier = Modifier,
     viewModel: SeriesViewModel,
     serie: SerieUsuario
 ) {
-    var context = LocalContext.current
+    val context = LocalContext.current
     Card(
         modifier = modifier
             .padding(vertical = 10.dp, horizontal = 15.dp)
@@ -131,6 +147,9 @@ fun ItemSerieSiguiendo(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                        // CURRENT SEASON AND BOTTONS TO MODIFY IT //
+
                         Text(
                             text = stringResource(R.string.Temporada),
                             style = MaterialTheme.typography.labelMedium
@@ -169,6 +188,9 @@ fun ItemSerieSiguiendo(
                         }
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                        // CURRENT CHAPTER AND BOTTONS TO MODIFY //
+
                         Text(
                             text = stringResource(R.string.Episodio),
                             style = MaterialTheme.typography.labelMedium
@@ -228,13 +250,17 @@ fun ItemSerieSiguiendo(
                     }
                 }
             }
+
+            // SHARE AND DELETE BUTTONS //
+
             var dialogoBorrarAct by rememberSaveable { mutableStateOf(false) }
+            val mensaje = stringResource(R.string.estoyViendo) + "'" + serie.titulo + "'" + stringResource(R.string.enTemporada) + serie.tempActual.toString() + stringResource(R.string.enEpisodio) + serie.epActual.toString()
             Column {
                 IconButton(
                     onClick = {
                         compartirSerie(context = context,
                             subject = "",
-                            summary = "${serie.titulo}, ${serie.valoracion}"
+                            summary = mensaje
                             )
                     }
                 ) {
@@ -261,21 +287,16 @@ fun ItemSerieSiguiendo(
                 }
             }
         }
-        /*Row (
-            modifier = Modifier.padding(horizontal = 30.dp)
-        ){
-            Divider(
-                modifier = Modifier,
-                    //.background(MaterialTheme.colorScheme.secondary)
-                thickness = 0.75.dp,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        }*/
 
-        LinearProgressIndicator(progress = calcularPorcentajeVisto(serie.epActual, serie.tempActual, serie.epTemp),
-                                modifier = Modifier.padding(start = 30.dp), trackColor = MaterialTheme.colorScheme.outline)
+        // PROGRESS BAR INDICATING THE % OF VIEWED EPISODES
 
-        //var rating: Float by remember { mutableStateOf(3.2f) }
+        LinearProgressIndicator(
+            progress = { calcularPorcentajeVisto(serie.epActual, serie.tempActual, serie.epTemp) },
+            modifier = Modifier.padding(start = 30.dp),
+            trackColor = MaterialTheme.colorScheme.outline,
+        )
+
+        // RATING BAR
 
         RatingBar(
             modifier = Modifier
@@ -283,8 +304,6 @@ fun ItemSerieSiguiendo(
                 .scale(0.75F),
             value = serie.valoracion,
             style = RatingBarStyle.Fill(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.outline),
-            //painterEmpty = painterResource(id = android.R.drawable.btn_star_big_off),
-            //painterFilled = painterResource(id = android.R.drawable.btn_star_big_on),
             onValueChange = {
                             val serieAct = serie.copy(valoracion = it)
                             viewModel.editarSerie(serieAct)
@@ -296,7 +315,13 @@ fun ItemSerieSiguiendo(
     }
 }
 
-// FUCNIONALIDAD DE COMPARTIR / SHARE MENU
+/**
+ * Function to create the implicit intent to share the series information to another app
+ * It shares the current chapter and season information as a string
+ * @param context: apps context
+ * @param subject: message's subject
+ * @param summary: the text to send to the other apps
+ */
 private fun compartirSerie(context: Context, subject: String, summary: String){
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
@@ -311,6 +336,13 @@ private fun compartirSerie(context: Context, subject: String, summary: String){
     )
 }
 
+/**
+ * Function that calculates the % of the seen episodes, based on the series infomation and the users
+ * last episode
+ * @param epActual: users current episode
+ * @param tempActual: users current season
+ * @param epTemp: series information about the episodes per season
+ */
 private fun calcularPorcentajeVisto(epActual: Int,  tempActual: Int, epTemp: String): Float{
     // Convertir el string de episodios a una lista de enteros
     val episodiosPorTemporada = epTemp.split(",").map { it.toInt() }
@@ -330,6 +362,11 @@ private fun calcularPorcentajeVisto(epActual: Int,  tempActual: Int, epTemp: Str
     return porcentajeVisto
 }
 
+/**
+ * This function reuturns the number of episodes of a specific season of a series
+ * @param tempActual: the season of wich number of episodes we want to calculate
+ * @param epTemp: information about the episodes per season of that series
+ */
 private fun obtenerEpisodiosTemporada(tempActual: Int, epTemp: String): Int{
     val episodiosPorTemporada = epTemp.split(",").map { it.toInt() }
 

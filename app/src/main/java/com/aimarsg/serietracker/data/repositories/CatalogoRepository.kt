@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * This repository makes use of the serieCatlogo DAO, which is injected by hilt here
+ * It implements the CRUD operations defined in the interface using the dao methods
+ */
 
 @Singleton
 class CatalogoRepository @Inject constructor(

@@ -24,6 +24,14 @@ import androidx.navigation.NavHostController
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.TrackerScreen
 
+/**
+ * Top bar of the app. It shows the screen's name. When not in main screen, 'back' button is shown.
+ * It has a dropdown menu and a link to the settings screen.
+ * @param currentScreen: CurrentScreen object which contains screen name
+ * @param canNavigateBack: false if the current screen is the main screen, true else
+ * @param navigateUp: action to be completed when navigating back
+ * @param navController: navcontroller of the app
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SerieTrackerTopBar(

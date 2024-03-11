@@ -14,6 +14,10 @@ import com.aimarsg.serietracker.utils.fromEpochSeconds
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
+/**
+ * DEFINITION OF DATABASE AND ITS ENTITIES/ TABLES
+ */
+
 @Database(
     entities = [SerieCatalogo::class, SerieUsuario::class],
     version = 1,

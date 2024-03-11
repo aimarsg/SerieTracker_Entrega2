@@ -15,21 +15,34 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * THE DATASTORE (preferencedatastore) IS USED TO STORE USERS SETTINGS OR PREFERENCES PERMANENTLY
+ * the information is sotred as key-value pairs
+ *
+ * This datastore is used to store users language and theme selection
+ */
+
+
 val Context.myPreferencesDataStore : DataStore<Preferences> by preferencesDataStore("settings")
 
+// definition of the available languages and their codes
 enum class Idioma(val codigo:String){
     Castellano(codigo = "es"),
     English(codigo = "en"),
     Euskera(codigo = "eu")
 }
 
+// definition of the themes
 data class Settings(
     val temaClaro : Boolean,
     val idioma: Idioma
 )
 
 
-//LO DE AQUI ABAJO ES EQUIVALENTE AL REPOSITORIO
+/**
+ * The preference data store is annotated as singleton so there is only one instance on the whole app
+ * This class implements the data store
+ */
 @Singleton
 class MyPreferencesDataStore @Inject constructor(
     @ApplicationContext context: Context

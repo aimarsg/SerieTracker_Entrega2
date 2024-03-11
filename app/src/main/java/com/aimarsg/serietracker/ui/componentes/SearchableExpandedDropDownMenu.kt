@@ -1,5 +1,15 @@
 package com.aimarsg.serietracker.ui.componentes
 
+/****************************************************************************
+ *  SOURCE  OF THIS COMPOSABLE
+ *  https://github.com/Breens-Mbaka/Searchable-Dropdown-Menu-Jetpack-Compose
+ *
+ *  the code has been adapted as some methods have been deprecated
+ ****************************************************************************/
+
+
+
+
 /*
  * Copyright 2023 d.light Limited.
  *
@@ -24,6 +34,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -32,10 +46,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,7 +66,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
-import kotlinx.coroutines.flow.collect
 
 /**
  * 🚀 A Jetpack Compose Android Library to create a dropdown menu that is searchable.

@@ -22,7 +22,13 @@
     <string name="Titulo">Titulo</string>
     <string name="Guardar">Guardar</string>
     <string name="Cancelar">Cancelar</string>
-    <string name="exportardatos">Exportar mis datos a un archivo JSON</string>
+    <string name="exportardatos">Exportar mis datos a un archivo</string>
     <string name="Buscar">Buscar</string>
     <string name="confirmarborrar">¿Deseas borrar esta serie?</string>
+    <string name="archivoDescargadoNot">Archivo guardado correctamente</string>
+    <string name="nombreFicheroDefault">misDatos.txt</string>
+    <string name="descargadoContent">El fichero se ha guardado con el nombre</string>
+    <string name="estoyViendo">"Estoy viendo  "</string>
+    <string name="enEpisodio">" y el episodio "</string>
+    <string name="enTemporada">" y estoy en la temporada "</string>
 </resources>

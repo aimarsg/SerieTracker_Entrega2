@@ -23,7 +23,13 @@
     <string name="Titulo">Izenburua</string>
     <string name="Guardar">Gorde</string>
     <string name="Cancelar">Utzi</string>
-    <string name="exportardatos">Gorde nire datuak JSON fitxategi baten</string>
+    <string name="exportardatos">Gorde nire datuak fitxategi baten</string>
     <string name="Buscar">Bilatu</string>
     <string name="confirmarborrar">Serie hau ezabatu nahi duzu?</string>
+    <string name="archivoDescargadoNot">Fitxategia ondo gorde da</string>
+    <string name="nombreFicheroDefault">nireDatuak.txt</string>
+    <string name="descargadoContent">"Fitxategia izen honekin gorde da: "</string>
+    <string name="estoyViendo">"Serie hau ikusten ari naiz  "</string>
+    <string name="enEpisodio">" da eta kapitulua  "</string>
+    <string name="enTemporada">" eta orain ikusten ari naizen denboraldia "</string>
 </resources>

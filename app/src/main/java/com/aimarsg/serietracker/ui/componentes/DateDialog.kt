@@ -18,8 +18,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import com.aimarsg.serietracker.utils.fromEpochMilliseconds
-import kotlinx.datetime.*
+import kotlinx.datetime.LocalDate
 
+
+/**
+ * Implementation of the default datepicker dialog of Material3
+ * A dialog that shows a datepicker
+ * @param onDismissRequest: action to be performed on dissmiss
+ * @param onDateEntered: action performed when a date is selected an OK button is clicked
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateDialog(

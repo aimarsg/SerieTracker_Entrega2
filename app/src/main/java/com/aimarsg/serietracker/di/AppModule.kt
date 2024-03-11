@@ -10,10 +10,18 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * This is the hilt module. this module is installed in singletoncomponent, meaning that all the instance here are stored in
+ * the application level, so they arent destroyed until the app is closed and can be shared between activitites
+ */
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    /**
+     * GENERATE ROOM DATABASE
+     */
     @Singleton
     @Provides
     fun providesDatabase(@ApplicationContext app: Context) =
@@ -22,6 +30,10 @@ object AppModule {
             .fallbackToDestructiveMigration()
             .build()
 
+
+    /**
+    DATABASE REPOSITORIES
+     */
     @Singleton
     @Provides
     fun provideSerieCatalogoDao(db:Database) = db.serieCatalogoDao()

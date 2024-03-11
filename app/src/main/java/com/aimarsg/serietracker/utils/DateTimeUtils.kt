@@ -3,6 +3,10 @@ package com.aimarsg.serietracker.utils
 import kotlinx.datetime.*
 import java.time.format.DateTimeFormatter
 
+/**
+ * Functions related to date format, to make different conversions
+ */
+
 
 val LocalDate.Companion.today get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 fun LocalDate.format(formatPattern: String): String = this.format(DateTimeFormatter.ofPattern(formatPattern))

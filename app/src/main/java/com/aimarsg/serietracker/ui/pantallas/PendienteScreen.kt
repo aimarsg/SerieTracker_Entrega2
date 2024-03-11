@@ -6,12 +6,12 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -36,13 +36,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.data.entities.SerieUsuario
-import com.aimarsg.serietracker.ui.componentes.NuevoPendiente
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.DateDialog
 import com.aimarsg.serietracker.ui.componentes.DialogoBorrar
+import com.aimarsg.serietracker.ui.componentes.NuevoPendiente
 import com.aimarsg.serietracker.utils.today
 import kotlinx.datetime.LocalDate
 
+/**
+ * Screen that shows a list of the series that the user has marked as pending,
+ * with a floating button to add a new one
+ * @param viewModel app's viewmodel
+ */
 @Composable
 fun PendienteScreen(
     modifier: Modifier = Modifier,
@@ -52,6 +57,9 @@ fun PendienteScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+
+        // Display a list of the series
+
         val lista by viewModel.seriesPendiente.collectAsState(initial = emptyList())
         LazyColumn(
             modifier = modifier.padding(top = 20.dp)
@@ -62,6 +70,9 @@ fun PendienteScreen(
             }
 
         }
+
+        // Floating button to add a new serie
+
         ExtendedFloatingActionButton(
             onClick = { openNewDialog.value = true },
             icon = { Icon(Icons.Filled.Add, stringResource(R.string.Añadir)) },
@@ -80,6 +91,13 @@ fun PendienteScreen(
     }
 }
 
+
+/**
+ * Composable to display each pending series as a card with two buttons, play (start following) and delete
+ * Each series has also a reminder date that can be modified
+ * @param viewModel app's main viewmodel
+ * @param serie: series item that has to be displayed
+ */
 @Composable
 fun ItemPendiente(
     modifier: Modifier = Modifier,
@@ -106,15 +124,13 @@ fun ItemPendiente(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                //.padding(bottom = extraPadding.coerceAtLeast(0.dp))
-                //Weight al composable inicial
-
             ) {
                 Text(
                     text = serie.titulo,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier.padding(bottom = 10.dp)
                 )
+
                 var datePickerOpened by rememberSaveable { mutableStateOf(false) }
                 var selectedDate by rememberSaveable { mutableStateOf(LocalDate.today.toString()) }
                 Row(
@@ -126,6 +142,9 @@ fun ItemPendiente(
                             modifier = Modifier,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+
+                            // CODE TO OPEN THE DATEPICKER IN ORDER TO MODIFY THE REMINDER DATE //
+
                             Text(text = serie.recordatorio.toString())
                             IconButton(onClick = {
                                 datePickerOpened = true
@@ -150,6 +169,9 @@ fun ItemPendiente(
                     }
                 }
             }
+
+            // DELETE BUTTON AND CONFIRMATION DIALOG //
+
             var dialogoBorrarAct by rememberSaveable { mutableStateOf(false) }
             Column {
                 IconButton(

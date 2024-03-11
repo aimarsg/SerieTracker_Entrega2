@@ -10,6 +10,10 @@ import com.aimarsg.serietracker.data.entities.SerieCatalogo
 import com.aimarsg.serietracker.data.entities.SerieUsuario
 import kotlinx.coroutines.flow.Flow
 
+
+/**
+ * DAO defining the room database access API related to the users series data
+ */
 @Dao
 interface SerieUsuarioDao{
 

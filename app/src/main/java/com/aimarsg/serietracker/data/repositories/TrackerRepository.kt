@@ -1,12 +1,15 @@
 package com.aimarsg.serietracker.data.repositories
 
-import com.aimarsg.serietracker.data.daos.SerieCatalogoDao
 import com.aimarsg.serietracker.data.daos.SerieUsuarioDao
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
 import com.aimarsg.serietracker.data.entities.SerieUsuario
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
+
+/**
+ * This repository makes use of the SerieUsuarioDao DAO, which is injected by hilt here
+ * It implements the CRUD operations defined in the interface using the dao methods
+ */
 
 @Singleton
 class TrackerRepository @Inject constructor(

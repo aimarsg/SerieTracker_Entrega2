@@ -9,6 +9,9 @@ import androidx.room.Update
 import com.aimarsg.serietracker.data.entities.SerieCatalogo
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * DAO defining the room database access API related to the catalogue series data
+ */
 @Dao
 interface SerieCatalogoDao{
 

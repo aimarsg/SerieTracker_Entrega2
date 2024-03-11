@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
@@ -16,7 +15,6 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,6 +24,15 @@ import androidx.navigation.NavHostController
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.TrackerScreen
 
+
+/**
+ * Navigation rail of the app, equivalent to the bottom bar but
+ * to be shown on the landscape mode.
+ * it has a bottom for both main screens of the app
+ * @param navController: navController of the app
+ * @param siguiendo: boolean that indicates wich one is the current screen.
+ *  [true] means 'Following, [False] means 'pending'
+ */
 @Composable
 public fun AppNavigationRail(
     modifier: Modifier = Modifier,

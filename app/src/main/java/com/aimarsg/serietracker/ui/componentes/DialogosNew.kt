@@ -1,35 +1,23 @@
 package com.aimarsg.serietracker.ui.componentes
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,7 +30,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,12 +41,15 @@ import com.aimarsg.serietracker.data.entities.SerieUsuario
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import com.aimarsg.serietracker.utils.today
-//import com.kanyidev.searchable_dropdown.SearchableExpandedDropDownMenu
 import kotlinx.datetime.LocalDate
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
+/**
+ * Dialog for the creation of a new element on the Following screen
+ * It has a dropdown menu with the series list and a search bar
+ * @param onDismissRequest action to be performed on dissmiss
+ * @param viewModel apps viewmodel
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NuevoSiguiendo(
@@ -84,40 +74,6 @@ fun NuevoSiguiendo(
 
             var expanded by remember{mutableStateOf(false)}
             val lista by viewModel.seriesCatalogo.collectAsState(initial = emptyList())
-            /*Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //.padding(32.dp)
-            ) {
-                ExposedDropdownMenuBox(
-                    expanded = expanded, onExpandedChange = { expanded = !expanded }
-                ) {
-                    TextField(
-                        value = viewModel.serieSeleccionada.titulo,
-                        onValueChange = { },
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        //label = { Text(text = stringResource(R.string.Titulo))},
-                        modifier = Modifier
-                            .padding(start = 20.dp, end = 20.dp)
-                            .menuAnchor()
-                    )
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }) {
-                        lista.forEach { item ->
-                            DropdownMenuItem(
-                                text = { Text(item.titulo) },
-                                onClick = {
-                                    viewModel.serieSeleccionada = item
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            */
             val keyboardController = LocalSoftwareKeyboardController.current
             SearchableExpandedDropDownMenu(
                 listOfItems = lista,
@@ -175,6 +131,14 @@ fun NuevoSiguiendo(
     }
 }
 
+
+/**
+ * Dialog for the creation of a new element on the Pending screen.
+ * It has a dropdown menu with the series list and a search bar.
+ * It has a datepicker field to select the reminder date
+ * @param onDismissRequest action to be performed on dissmiss
+ * @param viewModel apps viewmodel
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NuevoPendiente(
