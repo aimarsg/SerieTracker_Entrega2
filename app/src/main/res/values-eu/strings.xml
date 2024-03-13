@@ -32,4 +32,10 @@
     <string name="estoyViendo">"Serie hau ikusten ari naiz  "</string>
     <string name="enEpisodio">" da eta kapitulua  "</string>
     <string name="enTemporada">" eta orain ikusten ari naizen denboraldia "</string>
+    <string name="ayuda">Laguntza</string>
+    <string name="comoFunciona">¿Nola funtzionatzen du aplikazioak?</string>
+    <string name="INSintro">Aplikazio honek orain ikusten ari zaren telesailak jarraitzeko balio du, eta horrez gain, ikusteko gogoak dituzun horiek apuntatzeko, tartetxo bat bilatzen diezun bitartean ;)</string>
+    <string name="INSSiguiendo">Jarraitzen: Hemen orain ikusten ari zaren serieak gehitu ditzakezu. Ikusten zabiltzan denboraldia eta kapitulua apuntatu dezakezu, eta dagoeneko zenbat ikusi duzun ikus dezakezu. Serieak baloratu eta partekatu ahal dituzu nahi izanez gero!</string>
+    <string name="INSPendiente">Ikusteko: hemen etorkizunean ikusi nahi dituzun serieak gorde ditzakezu. Data sartuta, notifikazio bat helduko zaizu egun horretan seriea ikusi behar duzula gogoratzeko. Play botoia sakatuz, seriea jarraizen atalera pasako da.</string>
+    <string name="ErrorAñadir">Serie hau jada gehituta dago, ezin da berriz gehitu</string>
 </resources>

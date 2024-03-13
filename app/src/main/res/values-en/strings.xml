@@ -32,4 +32,10 @@
     <string name="estoyViendo">"I'm currently watching  "</string>
     <string name="enEpisodio">" and chapter "</string>
     <string name="enTemporada">", season "</string>
+    <string name="ayuda">Help</string>
+    <string name="comoFunciona">¿How does the app work?</string>
+    <string name="INSintro">This app is to follow de series you are currently watching, and also to save that ones you want to watch but you haven\'t started yet ;)</string>
+    <string name="INSSiguiendo">Following: Here you can add the series you are currently watching, and see your progress. Also, you can rate the series and share them if you want!</string>
+    <string name="INSPendiente">Pending: Here you can add the series you have pending to see. You can add a reminder date and you will receive a notification that day reminding to see the serie. With the play button, you will start following the serie.</string>
+    <string name="ErrorAñadir">This serie is already added, you cannot add it again</string>
 </resources>

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.SerieTrackerSplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icono_s</item>
+        <item name="postSplashScreenTheme">@style/Theme.SerieTracker</item>
+    </style>
+
     <style name="Theme.SerieTracker" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>

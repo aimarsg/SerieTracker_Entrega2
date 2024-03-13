@@ -17,4 +17,12 @@ data class SerieCatalogo(
     override fun toString(): String {
         return "$titulo"
     }
+
+    /*override fun equals(other: Any?): Boolean {
+        when (other){
+            is SerieCatalogo -> return other.titulo == this.titulo
+            is SerieUsuario -> return other.titulo == this.titulo
+            else -> return false
+        }
+    }*/
 }

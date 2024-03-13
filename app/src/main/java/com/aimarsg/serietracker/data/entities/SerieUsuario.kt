@@ -25,4 +25,12 @@ data class SerieUsuario(
     val epActual: Int,
     val tempActual: Int,
     val valoracion: Float
-)
+){
+    /*override fun equals(other: Any?): Boolean {
+        when (other){
+            is SerieCatalogo -> return other.titulo == this.titulo
+            is SerieUsuario -> return other.titulo == this.titulo
+            else -> return false
+        }
+    }*/
+}

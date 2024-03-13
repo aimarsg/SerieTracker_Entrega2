@@ -31,4 +31,10 @@
     <string name="estoyViendo">"Estoy viendo  "</string>
     <string name="enEpisodio">" y el episodio "</string>
     <string name="enTemporada">" y estoy en la temporada "</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="comoFunciona">¿Cómo funciona la app?</string>
+    <string name="INSintro">Esta app sirve para poder llevar un seguimiento de las series que actualmente estás viendo, y también de esas series que quieres ver pero aún no les has encontrado un hueco y prefieres dejarlas pendientes ;)</string>
+    <string name="INSSiguiendo">Siguiendo: aquí puedes añadir las series que estás viendo, apuntar en qué capítulo vas actualmente y ver tu progreso. También puedes valorarlas y compartirlas si deseas!</string>
+    <string name="INSPendiente">Pendiente: aquí puedes añadir las series que tienes pendientes de ver. Puedes añadir una fecha de recordatorio, y ese día te llegará una notificación para que te acuerdes de ver la serie. Dandole al play, la serie pasará a la ventana \'siguiendo\'.</string>
+    <string name="ErrorAñadir">Esta serie ya está añadida, no se puede volver a añadir</string>
 </resources>

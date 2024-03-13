@@ -1,5 +1,6 @@
 package com.aimarsg.serietracker.ui.componentes
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -74,10 +76,15 @@ fun NuevoSiguiendo(
 
             var expanded by remember{mutableStateOf(false)}
             val lista by viewModel.seriesCatalogo.collectAsState(initial = emptyList())
+            val listaPendiente by viewModel.seriesPendiente.collectAsState(initial = emptyList())
+            val listaSiguiendo by viewModel.seriesSiguiendo.collectAsState(initial = emptyList())
             val keyboardController = LocalSoftwareKeyboardController.current
+            val context = LocalContext.current
             SearchableExpandedDropDownMenu(
                 listOfItems = lista,
-                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
                 onDropDownItemSelected = { item -> // Returns the item selected in the dropdown
                     viewModel.serieSeleccionada = item
                     expanded = false
@@ -117,7 +124,12 @@ fun NuevoSiguiendo(
                         valoracion = 0.0F
                     )
                     viewModel.serieSeleccionada = SerieCatalogo("", 0, "")
-                    viewModel.addSerie(nuevaSerie)
+                    if (esta(nuevaSerie, listaPendiente) || esta(nuevaSerie, listaSiguiendo)){
+                        val toast = Toast.makeText(context, context.getString(R.string.ErrorAñadir), Toast.LENGTH_SHORT) // in Activity
+                        toast.show()
+                    }else{
+                        viewModel.addSerie(nuevaSerie)
+                    }
                     onDismissRequest()
                 }) {
                     Text(text = "")
@@ -161,10 +173,15 @@ fun NuevoPendiente(
 
             var expanded by remember{mutableStateOf(false)}
             val lista by viewModel.seriesCatalogo.collectAsState(initial = emptyList())
+            val listaPendiente by viewModel.seriesPendiente.collectAsState(initial = emptyList())
+            val listaSiguiendo by viewModel.seriesSiguiendo.collectAsState(initial = emptyList())
             val keyboardController = LocalSoftwareKeyboardController.current
+            var context = LocalContext.current
             SearchableExpandedDropDownMenu(
                 listOfItems = lista,
-                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
                 onDropDownItemSelected = { item -> // Returns the item selected in the dropdown
                     viewModel.serieSeleccionada = item
                     expanded = false
@@ -230,7 +247,12 @@ fun NuevoPendiente(
                         valoracion = 0.0F
                     )
                     viewModel.serieSeleccionada = SerieCatalogo("", 0, "")
-                    viewModel.addSerie(nuevaSerie)
+                    if (esta(nuevaSerie, listaPendiente) || esta(nuevaSerie, listaSiguiendo)){
+                        val toast = Toast.makeText(context, context.getString(R.string.ErrorAñadir), Toast.LENGTH_SHORT) // in Activity
+                        toast.show()
+                    }else{
+                        viewModel.addSerie(nuevaSerie)
+                    }
                     onDismissRequest()
                 }) {
                     Text(text = "")
@@ -244,6 +266,14 @@ fun NuevoPendiente(
     }
 }
 
+fun esta(nuevaSerie: SerieUsuario, listaSiguiendo: List<SerieUsuario>): Boolean {
+    for (serie in listaSiguiendo){
+        if (serie.titulo==nuevaSerie.titulo){
+            return true
+        }
+    }
+    return false
+}
 
 @Preview(showBackground = true)
 @Composable

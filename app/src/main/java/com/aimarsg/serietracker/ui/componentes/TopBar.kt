@@ -14,9 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -42,6 +45,7 @@ fun SerieTrackerTopBar(
     modifier: Modifier = Modifier
 ) {
     val (isExpanded, setExpanded) = rememberSaveable { mutableStateOf(false) }
+    var helpExpanded by rememberSaveable { mutableStateOf(false) }
     TopAppBar(
         title = {  Text(text = stringResource(currentScreen.title), color = MaterialTheme.colorScheme.onPrimary) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -62,6 +66,12 @@ fun SerieTrackerTopBar(
         },
 
         actions = {
+            IconButton(onClick = { helpExpanded = true }) {
+                Icon(painter = painterResource(R.drawable.baseline_help_24), contentDescription = stringResource(R.string.ayuda), tint = (MaterialTheme.colorScheme.onPrimary))
+            }
+            if (helpExpanded){
+                HelpDialog(onDismissRequest = {helpExpanded = false}, onConfirmation = {helpExpanded = false})
+            }
             IconButton(onClick = { setExpanded(true) }) {
                 Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.Opciones), tint = (MaterialTheme.colorScheme.onPrimary))
                 DropdownMenu(
