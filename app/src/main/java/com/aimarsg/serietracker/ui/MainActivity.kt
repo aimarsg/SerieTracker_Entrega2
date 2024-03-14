@@ -11,6 +11,10 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
@@ -45,27 +49,17 @@ class MainActivity : AppCompatActivity() {
 
                 // initialize the navigation controller
                 var navHostController  = rememberNavController()
-
+                var landscape by rememberSaveable {
+                    mutableStateOf(false)
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
 
-                    // choose between the portrait or landscape screen depending on the device
-                    // orientation or screen size
-                    when (windowSize.widthSizeClass) {
-                        WindowWidthSizeClass.Compact -> {
-                            SerieTrackerApp(
-                                viewModel = viewmodel,
-                                navController = navHostController
-                            )
-                        }
-                        WindowWidthSizeClass.Expanded -> {
-                            SerieTrackerAppLandscape(
-                                viewModel = viewmodel,
-                                navController = navHostController
-                            )
-                        }
-                    }
+                    SerieTrackerApp(
+                        viewModel = viewmodel,
+                        navController = navHostController
+                    )
                 }
 
             }

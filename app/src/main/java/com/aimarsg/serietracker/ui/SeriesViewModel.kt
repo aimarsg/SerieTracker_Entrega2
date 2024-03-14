@@ -13,12 +13,14 @@ import com.aimarsg.serietracker.data.entities.SerieUsuario
 import com.aimarsg.serietracker.data.repositories.CatalogoRepository
 import com.aimarsg.serietracker.data.repositories.TrackerRepository
 import com.aimarsg.serietracker.utils.CambioDeIdioma
+import com.aimarsg.serietracker.utils.today
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 
 
@@ -54,6 +56,8 @@ class SeriesViewModel @Inject constructor(
     // variable to store the selected serie
     var serieSeleccionada by mutableStateOf(SerieCatalogo("", 0, ""))
 
+    // variable to store the selected date
+    var selectedDate by mutableStateOf(LocalDate.today.toString())
 
     /**
      * Update the selected theme on the preferences data store

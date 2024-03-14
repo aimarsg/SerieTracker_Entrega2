@@ -53,10 +53,13 @@ fun PendienteScreen(
     modifier: Modifier = Modifier,
     viewModel: SeriesViewModel,
 ){
-    val openNewDialog = rememberSaveable { mutableStateOf(false) }
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+
+        var dialogOpen by rememberSaveable {
+            mutableStateOf(false)
+        }
 
         // Display a list of the series
 
@@ -74,16 +77,18 @@ fun PendienteScreen(
         // Floating button to add a new serie
 
         ExtendedFloatingActionButton(
-            onClick = { openNewDialog.value = true },
+            onClick = {
+                        dialogOpen = true
+                      },
             icon = { Icon(Icons.Filled.Add, stringResource(R.string.Añadir)) },
             text = { Text(text = stringResource(R.string.Añadir)) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
         )
-        if (openNewDialog.value){
+        if (dialogOpen){
             NuevoPendiente(
-                onDismissRequest = { openNewDialog.value = false },
+                onDismissRequest = { dialogOpen = false },
                 onDoneButtonClicked = {} , // TODO onNextButtonClicked,
                 viewModel = viewModel
             )
@@ -104,6 +109,9 @@ fun ItemPendiente(
     viewModel: SeriesViewModel,
     serie: SerieUsuario
 ){
+    var datepickerOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
     Card(
         modifier = modifier
             .padding(vertical = 10.dp, horizontal = 15.dp),
@@ -130,9 +138,6 @@ fun ItemPendiente(
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier.padding(bottom = 10.dp)
                 )
-
-                var datePickerOpened by rememberSaveable { mutableStateOf(false) }
-                var selectedDate by rememberSaveable { mutableStateOf(LocalDate.today.toString()) }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
@@ -147,7 +152,7 @@ fun ItemPendiente(
 
                             Text(text = serie.recordatorio.toString())
                             IconButton(onClick = {
-                                datePickerOpened = true
+                                datepickerOpen = true
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.Edit,
@@ -155,12 +160,12 @@ fun ItemPendiente(
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
-                            if (datePickerOpened) {
+                            if (datepickerOpen) {
                                 DateDialog(
-                                    onDismissRequest = { datePickerOpened = false },
-                                    onDateEntered = { selectedDate = it.toString()
-                                        datePickerOpened = false
-                                        val serieAct = serie.copy(recordatorio = LocalDate.parse(selectedDate))
+                                    onDismissRequest = { datepickerOpen = false },
+                                    onDateEntered = { viewModel.selectedDate = it.toString()
+                                        datepickerOpen = false
+                                        val serieAct = serie.copy(recordatorio = LocalDate.parse(viewModel.selectedDate))
                                         viewModel.editarSerie(serieAct)
                                     },
                                 )
@@ -170,9 +175,10 @@ fun ItemPendiente(
                 }
             }
 
+            var deleteOpened by rememberSaveable {
+                mutableStateOf(false)
+            }
             // DELETE BUTTON AND CONFIRMATION DIALOG //
-
-            var dialogoBorrarAct by rememberSaveable { mutableStateOf(false) }
             Column {
                 IconButton(
                     onClick = {
@@ -187,7 +193,7 @@ fun ItemPendiente(
                 }
                 IconButton(
                     onClick = {
-                        dialogoBorrarAct = true
+                        deleteOpened = true
                     }
                 ) {
                     Icon(
@@ -196,12 +202,12 @@ fun ItemPendiente(
                     )
                 }
             }
-            if ( dialogoBorrarAct ){
+            if ( deleteOpened ){
                 DialogoBorrar(
-                    onDismiss = { dialogoBorrarAct = false },
+                    onDismiss = { deleteOpened = false },
                     onDelete = {
                         viewModel.eliminarSerie(serie)
-                        dialogoBorrarAct = false
+                        deleteOpened = false
                     })
             }
         }

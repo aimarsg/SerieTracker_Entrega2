@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.aimarsg.serietracker.R
+import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.TrackerScreen
 
 /**
@@ -45,7 +46,8 @@ fun SerieTrackerTopBar(
     modifier: Modifier = Modifier
 ) {
     val (isExpanded, setExpanded) = rememberSaveable { mutableStateOf(false) }
-    var helpExpanded by rememberSaveable { mutableStateOf(false) }
+    var helpDialogOpened by rememberSaveable{mutableStateOf(false)}
+
     TopAppBar(
         title = {  Text(text = stringResource(currentScreen.title), color = MaterialTheme.colorScheme.onPrimary) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -66,11 +68,11 @@ fun SerieTrackerTopBar(
         },
 
         actions = {
-            IconButton(onClick = { helpExpanded = true }) {
+            IconButton(onClick = { helpDialogOpened = true }) {
                 Icon(painter = painterResource(R.drawable.baseline_help_24), contentDescription = stringResource(R.string.ayuda), tint = (MaterialTheme.colorScheme.onPrimary))
             }
-            if (helpExpanded){
-                HelpDialog(onDismissRequest = {helpExpanded = false}, onConfirmation = {helpExpanded = false})
+            if (helpDialogOpened){
+                HelpDialog(onDismissRequest = {helpDialogOpened = false}, onConfirmation = {helpDialogOpened = false})
             }
             IconButton(onClick = { setExpanded(true) }) {
                 Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.Opciones), tint = (MaterialTheme.colorScheme.onPrimary))

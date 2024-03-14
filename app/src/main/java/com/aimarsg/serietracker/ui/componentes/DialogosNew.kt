@@ -2,12 +2,15 @@ package com.aimarsg.serietracker.ui.componentes
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -65,7 +68,8 @@ fun NuevoSiguiendo(
             modifier = Modifier
                 .width(550.dp)
                 //.height(400.dp)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             shape = RoundedCornerShape(16.dp),
         ) {
             Text(
@@ -162,7 +166,9 @@ fun NuevoPendiente(
     Dialog(onDismissRequest = { onDismissRequest() } )
     {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
             shape = RoundedCornerShape(16.dp),
         ) {
             Text(

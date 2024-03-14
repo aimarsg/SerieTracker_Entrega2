@@ -59,10 +59,13 @@ fun SiguiendoScreen(
     modifier: Modifier = Modifier,
     viewModel: SeriesViewModel,
 ) {
-    val openNewDialog = rememberSaveable { mutableStateOf(false) }
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+        var newDialogOpen by rememberSaveable {
+            mutableStateOf(false)
+        }
         val lista by viewModel.seriesSiguiendo.collectAsState(initial = emptyList())
         LazyColumn(
             modifier = modifier.padding(top = 20.dp)
@@ -78,16 +81,16 @@ fun SiguiendoScreen(
         // FLOATING BUTTON TO ADD A NEW SERIE //
 
         ExtendedFloatingActionButton(
-            onClick = { openNewDialog.value = true },
+            onClick = { newDialogOpen = true },
             icon = { Icon(Icons.Filled.Add, stringResource(R.string.Añadir)) },
             text = { Text(text = stringResource(R.string.Añadir)) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
         )
-        if (openNewDialog.value) {
+        if (newDialogOpen) {
             NuevoSiguiendo(
-                onDismissRequest = { openNewDialog.value = false },
+                onDismissRequest = { newDialogOpen = false },
                 onDoneButtonClicked = {}, // TODO onNextButtonClicked,
                 viewModel = viewModel
             )
@@ -111,6 +114,9 @@ fun ItemSerieSiguiendo(
     serie: SerieUsuario
 ) {
     val context = LocalContext.current
+    var deleteOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
     Card(
         modifier = modifier
             .padding(vertical = 10.dp, horizontal = 15.dp)
@@ -253,7 +259,7 @@ fun ItemSerieSiguiendo(
 
             // SHARE AND DELETE BUTTONS //
 
-            var dialogoBorrarAct by rememberSaveable { mutableStateOf(false) }
+
             val mensaje = stringResource(R.string.estoyViendo) + "'" + serie.titulo + "'" + stringResource(R.string.enTemporada) + serie.tempActual.toString() + stringResource(R.string.enEpisodio) + serie.epActual.toString()
             Column {
                 IconButton(
@@ -270,19 +276,19 @@ fun ItemSerieSiguiendo(
                     )
                 }
                 IconButton(
-                    onClick = { dialogoBorrarAct = true }
+                    onClick = { deleteOpen = true }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.Borrar)
                     )
                 }
-                if ( dialogoBorrarAct ){
+                if ( deleteOpen ){
                     DialogoBorrar(
-                        onDismiss = { dialogoBorrarAct = false },
+                        onDismiss = { deleteOpen = false },
                         onDelete = {
                             viewModel.eliminarSerie(serie)
-                            dialogoBorrarAct = false
+                            deleteOpen = false
                         })
                 }
             }

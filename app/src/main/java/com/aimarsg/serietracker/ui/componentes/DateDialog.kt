@@ -1,5 +1,7 @@
 package com.aimarsg.serietracker.ui.componentes
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -12,6 +14,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +43,7 @@ fun DateDialog(
         derivedStateOf { datePickerState.selectedDateMillis != null }
     }
     DatePickerDialog(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
         onDismissRequest = {
                            onDismissRequest()
             //openDialog.value = false
@@ -80,7 +84,8 @@ fun DateDialog(
         }
     ) {
         DatePicker(
-            state = datePickerState
+            state = datePickerState,
+            modifier = Modifier.verticalScroll(rememberScrollState())
         )
     }
 }
