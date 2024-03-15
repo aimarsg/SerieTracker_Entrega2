@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
@@ -126,7 +127,7 @@ fun <T> SearchableExpandedDropDownMenu(
         )
     }
 
-    val maxHeight = remember(itemHeights.toMap()) {
+    /*val maxHeight = remember(itemHeights.toMap()) {
         if (itemHeights.keys.toSet() != listOfItems.indices.toSet()) {
             // if we don't have all heights calculated yet, return default value
             return@remember baseHeight
@@ -143,7 +144,8 @@ fun <T> SearchableExpandedDropDownMenu(
         }
         // all items fit into base height
         baseHeight
-    }
+    }*/
+    val maxHeight = 300.dp
 
     Column(
         modifier = modifier,
@@ -194,7 +196,8 @@ fun <T> SearchableExpandedDropDownMenu(
         if (expanded) {
             DropdownMenu(
                 modifier = Modifier
-                    .fillMaxWidth(0.75f)
+                    .width(250.dp)
+                    //.fillMaxWidth(0.75f)
                     .requiredSizeIn(maxHeight = maxHeight),
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
