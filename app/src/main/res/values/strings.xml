@@ -37,4 +37,5 @@
     <string name="INSSiguiendo">Siguiendo: aquí puedes añadir las series que estás viendo, apuntar en qué capítulo vas actualmente y ver tu progreso. También puedes valorarlas y compartirlas si deseas!</string>
     <string name="INSPendiente">Pendiente: aquí puedes añadir las series que tienes pendientes de ver. Puedes añadir una fecha de recordatorio, y ese día te llegará una notificación para que te acuerdes de ver la serie. Dandole al play, la serie pasará a la ventana \'siguiendo\'.</string>
     <string name="ErrorAñadir">Esta serie ya está añadida, no se puede volver a añadir</string>
+    <string name="ningunaSeleccionada">No has seleccionado ninguna serie</string>
 </resources>

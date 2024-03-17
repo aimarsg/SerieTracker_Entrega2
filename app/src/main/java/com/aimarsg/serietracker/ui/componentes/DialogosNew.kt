@@ -129,12 +129,16 @@ fun NuevoSiguiendo(
                     )
                     viewModel.serieSeleccionada = SerieCatalogo("", 0, "")
                     if (esta(nuevaSerie, listaPendiente) || esta(nuevaSerie, listaSiguiendo)){
+                        onDismissRequest()
                         val toast = Toast.makeText(context, context.getString(R.string.ErrorAñadir), Toast.LENGTH_SHORT) // in Activity
                         toast.show()
-                    }else{
+                    }else if (nuevaSerie.titulo!=""){
                         viewModel.addSerie(nuevaSerie)
+                        onDismissRequest()
+                    }else{
+                        val toast = Toast.makeText(context, context.getString(R.string.ningunaSeleccionada), Toast.LENGTH_SHORT) // in Activity
+                        toast.show()
                     }
-                    onDismissRequest()
                 }) {
                     Text(text = "")
                     Icon(
@@ -254,12 +258,17 @@ fun NuevoPendiente(
                     )
                     viewModel.serieSeleccionada = SerieCatalogo("", 0, "")
                     if (esta(nuevaSerie, listaPendiente) || esta(nuevaSerie, listaSiguiendo)){
+                        onDismissRequest()
                         val toast = Toast.makeText(context, context.getString(R.string.ErrorAñadir), Toast.LENGTH_SHORT) // in Activity
                         toast.show()
-                    }else{
+                    }else if (nuevaSerie.titulo!=""){
                         viewModel.addSerie(nuevaSerie)
+                        onDismissRequest()
+                    }else{
+                        val toast = Toast.makeText(context, context.getString(R.string.ningunaSeleccionada), Toast.LENGTH_SHORT) // in Activity
+                        toast.show()
                     }
-                    onDismissRequest()
+
                 }) {
                     Text(text = "")
                     Icon(

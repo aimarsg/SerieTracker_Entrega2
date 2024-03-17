@@ -9,7 +9,9 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavHostController
@@ -74,7 +76,7 @@ fun SerieTrackerApp(
         }
     ) {
             innerPadding ->
-
+        var expanded by remember { mutableStateOf(false) }
         Row {
             if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
                 AppNavigationRail(navController = navController, siguiendo = siguiendo)
@@ -100,9 +102,20 @@ fun SerieTrackerApp(
                 }
 
                 composable(route = TrackerScreen.Ajustes.name) {
-                    AjustesLanscape(
-                        viewModel = viewModel
-                    )
+                    if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                        AjustesLanscape(
+                            viewModel = viewModel,
+                            expanded = expanded,
+                            changeExpanded = { expanded = !expanded }
+                        )
+                    }else{
+                        Ajustes(
+                            viewModel = viewModel,
+                            expanded = expanded,
+                            changeExpanded = { expanded = !expanded }
+                        )
+                    }
+
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.aimarsg.serietracker.ui.pantallas
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.provider.OpenableColumns
@@ -41,6 +42,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.aimarsg.serietracker.NotificationID
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.data.Idioma
+import com.aimarsg.serietracker.ui.MainActivity
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import java.io.FileNotFoundException
@@ -65,7 +67,9 @@ import java.io.IOException
 @Composable
 fun Ajustes(
     modifier: Modifier = Modifier,
-    viewModel: SeriesViewModel
+    viewModel: SeriesViewModel,
+    expanded: Boolean,
+    changeExpanded: () -> Unit
 ){
     val context = LocalContext.current
     Column(
@@ -117,22 +121,22 @@ fun Ajustes(
 
             Column (
             ){
-                var expanded by remember { mutableStateOf(false) }
+                //var expanded by remember { mutableStateOf(false) }
                 val idiomaSeleccionado by viewModel.idioma.collectAsState(initial = Idioma.Castellano)
 
                 Text(text = stringResource(R.string.SeleccionarIdioma), modifier = Modifier.padding(start = 10.dp))
-                TextButton(onClick = { expanded = true }) {
+                TextButton(onClick = { changeExpanded() }) {
                     Text(text = idiomaSeleccionado.name)
                 }
                 DropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false },
+                    onDismissRequest = { changeExpanded() },
                 ) {
                     Idioma.entries.forEach { idioma ->
                         DropdownMenuItem(
                             text = { Text(idioma.name) },
                             onClick = {
-                                expanded = false
+                                changeExpanded()
                                 viewModel.updateIdioma(idioma, context)
                             }
                         )
@@ -216,7 +220,9 @@ fun Ajustes(
 @Composable
 fun AjustesLanscape(
     modifier: Modifier = Modifier,
-    viewModel: SeriesViewModel
+    viewModel: SeriesViewModel,
+    expanded: Boolean,
+    changeExpanded: () -> Unit
 ){
     val context = LocalContext.current
     val contentResolver = LocalContext.current.contentResolver
@@ -270,21 +276,21 @@ fun AjustesLanscape(
 
                 Column (
                 ){
-                    var expanded by remember { mutableStateOf(false) }
+                    //var expanded by remember { mutableStateOf(false) }
                     val idiomaSeleccionado by viewModel.idioma.collectAsState(initial = Idioma.Castellano)
                     Text(text = stringResource(R.string.SeleccionarIdioma), modifier = Modifier.padding(start = 10.dp))
-                    TextButton(onClick = { expanded = true }) {
+                    TextButton(onClick = { changeExpanded() }) {
                         Text(text = idiomaSeleccionado.name)
                     }
                     DropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false },
+                        onDismissRequest = { changeExpanded() },
                     ) {
                         Idioma.entries.forEach { idioma ->
                             DropdownMenuItem(
                                 text = { Text(idioma.name) },
                                 onClick = {
-                                    expanded = false
+                                    changeExpanded()
                                     viewModel.updateIdioma(idioma, context)
                                 }
                             )
@@ -375,7 +381,12 @@ fun fileSaved(fileName: String, context: Context) {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+            return@with
         }
         notify(NotificationID.USER_CREATED.id, builder.build())
     }
