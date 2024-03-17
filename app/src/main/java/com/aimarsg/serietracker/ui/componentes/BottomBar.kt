@@ -10,12 +10,14 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.TrackerScreen
-
 
 /**
  * Bottombar of the app, to be shown on the portrait mode
@@ -35,6 +37,8 @@ public fun BottomBar(
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         //modifier = modifier.border(1.dp, Color.Gray)
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route ?: ""
         NavigationBarItem(
             icon = {
                 if (siguiendo){
@@ -51,11 +55,12 @@ public fun BottomBar(
             },
             selected = siguiendo,
             onClick = {
-                if (siguiendo){
+                navController.popBackStack(TrackerScreen.Siguiendo.name, inclusive = false)
+                /*if (siguiendo){
                     // do nothing
                 }else{
                     navController.navigateUp()
-                }
+                }*/
             }
         )
         NavigationBarItem(
@@ -67,11 +72,17 @@ public fun BottomBar(
             },
             selected = !siguiendo,
             onClick = {
+                if (!navController.popBackStack(TrackerScreen.Pendiente.name, inclusive = false) && currentRoute != TrackerScreen.Pendiente.name  ){
+                    navController.navigate(TrackerScreen.Pendiente.name)
+
+                }
+                /*
                 if (siguiendo){
                     navController.navigate(TrackerScreen.Pendiente.name)
                 }else{
                     // do nothing
-                }
+                }*/
+
             }
         )
     }

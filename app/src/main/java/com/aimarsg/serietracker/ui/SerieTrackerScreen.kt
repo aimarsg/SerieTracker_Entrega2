@@ -84,7 +84,7 @@ fun SerieTrackerApp(
             NavHost(
                 navController = navController,
                 startDestination = TrackerScreen.Siguiendo.name,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             ) {
 
                 composable(route = TrackerScreen.Siguiendo.name) {
