@@ -2,7 +2,6 @@ package com.aimarsg.serietracker.ui.componentes
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aimarsg.serietracker.R
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
-import com.aimarsg.serietracker.data.entities.SerieUsuario
+import com.aimarsg.serietracker.model.entities.SerieCatalogo
+import com.aimarsg.serietracker.model.entities.SerieUsuario
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import com.aimarsg.serietracker.utils.today

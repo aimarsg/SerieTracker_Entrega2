@@ -35,12 +35,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
-import com.aimarsg.serietracker.data.entities.SerieUsuario
+import com.aimarsg.serietracker.model.entities.SerieUsuario
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.DateDialog
 import com.aimarsg.serietracker.ui.componentes.DialogoBorrar
 import com.aimarsg.serietracker.ui.componentes.NuevoPendiente
-import com.aimarsg.serietracker.utils.today
 import kotlinx.datetime.LocalDate
 
 /**

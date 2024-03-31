@@ -1,17 +1,21 @@
 package com.aimarsg.serietracker.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aimarsg.serietracker.data.Idioma
-import com.aimarsg.serietracker.data.MyPreferencesDataStore
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
-import com.aimarsg.serietracker.data.entities.SerieUsuario
-import com.aimarsg.serietracker.data.repositories.CatalogoRepository
-import com.aimarsg.serietracker.data.repositories.TrackerRepository
+import com.aimarsg.serietracker.model.Idioma
+import com.aimarsg.serietracker.model.MyPreferencesDataStore
+import com.aimarsg.serietracker.model.entities.SerieCatalogo
+import com.aimarsg.serietracker.model.entities.SerieUsuario
+import com.aimarsg.serietracker.model.repositories.CatalogoRepository
+import com.aimarsg.serietracker.model.repositories.TrackerRepository
+import com.aimarsg.serietracker.model.webclient.APIClient
+import com.aimarsg.serietracker.model.webclient.AuthenticationException
+import com.aimarsg.serietracker.model.webclient.UserExistsException
 import com.aimarsg.serietracker.utils.CambioDeIdioma
 import com.aimarsg.serietracker.utils.today
 import com.google.gson.GsonBuilder
@@ -34,7 +38,8 @@ class SeriesViewModel @Inject constructor(
     private val myPreferencesDataStore: MyPreferencesDataStore,
     private val catalogoRepository: CatalogoRepository,
     private val trackerRepository: TrackerRepository,
-    private val cambioDeIdioma: CambioDeIdioma
+    private val cambioDeIdioma: CambioDeIdioma,
+    private val ApiClient: APIClient // Added the API client to the viewmodel for the authentication and data retrieve
 ): ViewModel() {
 
     // get the theme and language from the data store
@@ -58,6 +63,9 @@ class SeriesViewModel @Inject constructor(
 
     // variable to store the selected date
     var selectedDate by mutableStateOf(LocalDate.today.toString())
+
+    // variable to store the authenticated users token
+    var token by mutableStateOf("")
 
     /**
      * Update the selected theme on the preferences data store
@@ -123,6 +131,25 @@ class SeriesViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Function to authenticate user
+     * @param user: user name
+     * @param password: user password
+     * @return true if the user is authenticated, false else
+     */
+    @Throws(AuthenticationException::class, Exception::class)
+    suspend fun authenticate(user: String, password: String){
+        ApiClient.authenticate(user, password)
+    }
 
-
+    /**
+     * Function to register a new user
+     * @param user: user name
+     * @param password: user password
+     * @return true if the user is registered, false else
+     */
+    @Throws(UserExistsException::class, Exception::class)
+    suspend fun register(user: String, password: String) {
+        ApiClient.register(user, password)
+    }
 }

@@ -1,4 +1,4 @@
-package com.aimarsg.serietracker.data.entities
+package com.aimarsg.serietracker.model.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

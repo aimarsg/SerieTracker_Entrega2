@@ -1,13 +1,13 @@
-package com.aimarsg.serietracker.data
+package com.aimarsg.serietracker.model
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.aimarsg.serietracker.data.daos.SerieCatalogoDao
-import com.aimarsg.serietracker.data.daos.SerieUsuarioDao
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
-import com.aimarsg.serietracker.data.entities.SerieUsuario
+import com.aimarsg.serietracker.model.daos.SerieCatalogoDao
+import com.aimarsg.serietracker.model.daos.SerieUsuarioDao
+import com.aimarsg.serietracker.model.entities.SerieCatalogo
+import com.aimarsg.serietracker.model.entities.SerieUsuario
 import com.aimarsg.serietracker.utils.epochSecond
 import com.aimarsg.serietracker.utils.epochSeconds
 import com.aimarsg.serietracker.utils.fromEpochSeconds

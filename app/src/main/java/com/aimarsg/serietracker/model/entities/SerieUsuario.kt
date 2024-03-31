@@ -1,11 +1,9 @@
-package com.aimarsg.serietracker.data.entities
+package com.aimarsg.serietracker.model.entities
 
 import androidx.compose.runtime.Immutable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDate
-import java.time.DateTimeException
-import java.util.Date
 
 @Immutable
 @Entity(tableName = "SerieUsuario")

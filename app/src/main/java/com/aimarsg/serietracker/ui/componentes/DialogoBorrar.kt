@@ -17,14 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.aimarsg.serietracker.R
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
-import com.aimarsg.serietracker.data.entities.SerieUsuario
-import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
-import kotlinx.datetime.LocalDate
 
 /**
  * Dialog that is shown to confirm the deletion of the elements from the main screens

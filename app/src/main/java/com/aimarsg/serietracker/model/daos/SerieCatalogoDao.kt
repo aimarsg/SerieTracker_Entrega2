@@ -1,12 +1,11 @@
-package com.aimarsg.serietracker.data.daos
+package com.aimarsg.serietracker.model.daos
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
+import com.aimarsg.serietracker.model.entities.SerieCatalogo
 import kotlinx.coroutines.flow.Flow
 
 /**

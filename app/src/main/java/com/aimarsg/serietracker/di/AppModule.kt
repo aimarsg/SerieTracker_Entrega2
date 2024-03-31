@@ -2,7 +2,7 @@ package com.aimarsg.serietracker.di
 
 import android.content.Context
 import androidx.room.Room
-import com.aimarsg.serietracker.data.Database
+import com.aimarsg.serietracker.model.Database
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,4 +41,6 @@ object AppModule {
     @Singleton
     @Provides
     fun provideSerieUsuarioDao(db:Database) = db.serieUsuarioDao()
+
+
 }

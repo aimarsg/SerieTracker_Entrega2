@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("com.google.dagger.hilt.android")
+    id ("org.jetbrains.kotlin.plugin.serialization")
     //id("com.google.devtools.ksp") version "1.9.22-1.0.17" // Depends on your kotlin version
 }
 
@@ -108,4 +109,24 @@ dependencies {
     // splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+
+    //ktor para cliente http
+    val ktor_version="2.3.9"
+    implementation ("io.ktor:ktor-client-core:$ktor_version")
+    implementation ("io.ktor:ktor-client-android:$ktor_version")
+    implementation ("io.ktor:ktor-client-json:$ktor_version")
+    implementation ("io.ktor:ktor-client-serialization:$ktor_version")
+    implementation ("io.ktor:ktor-client-cio:$ktor_version")
+    implementation ("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation ("io.ktor:ktor-client-auth:$ktor_version")
+    implementation ("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    /*implementation ("io.ktor:ktor-client-android:$ktor_version")
+    implementation ("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation ("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation ("io.ktor:ktor-client-auth:$ktor_version")
+    implementation("io.ktor:ktor-server-core-jvm")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
+    implementation("io.ktor:ktor-server-netty-jvm")
+    implementation ("io.ktor:ktor-client-cio:$ktor_version")*/
 }

@@ -38,4 +38,17 @@
     <string name="INSPendiente">Pendiente: aquí puedes añadir las series que tienes pendientes de ver. Puedes añadir una fecha de recordatorio, y ese día te llegará una notificación para que te acuerdes de ver la serie. Dandole al play, la serie pasará a la ventana \'siguiendo\'.</string>
     <string name="ErrorAñadir">Esta serie ya está añadida, no se puede volver a añadir</string>
     <string name="ningunaSeleccionada">No has seleccionado ninguna serie</string>
+    <string name="Registro">Registro</string>
+    <string name="usuario">Nombre de usuario</string>
+    <string name="Contraseña">Contraseña</string>
+    <string name="confirmarcontraseña">Confirmar contraseña</string>
+    <string name="Registrarse">Registrarse</string>
+    <string name="contraseñasnocoinciden">Las contraseñas no coinciden</string>
+    <string name="IniciarSesion">Iniciar sesión</string>
+    <string name="erroriniciosesion">El nombre de usuario o la contraseña no son válidos</string>
+    <string name="notienescuenta">¿No tienes cuenta?</string>
+    <string name="yatienescuenta">¿Ya tienes cuenta?</string>
+    <string name="error_login" >No se ha podido iniciar sesión, comprueba las credenciales de acceso</string>
+    <string name="Registroexitoso" >Registro realizado correctamente</string>
+    <string name="usuarioyaexiste" >"El nombre de usuario ya existe, escoge otro "</string>
 </resources>

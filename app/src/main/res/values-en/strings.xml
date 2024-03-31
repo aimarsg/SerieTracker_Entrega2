@@ -39,4 +39,17 @@
     <string name="INSPendiente">Pending: Here you can add the series you have pending to see. You can add a reminder date and you will receive a notification that day reminding to see the serie. With the play button, you will start following the serie.</string>
     <string name="ErrorAñadir">This serie is already added, you cannot add it again</string>
     <string name="ningunaSeleccionada">You haven\'t choosen any title</string>
+    <string name="Registro">Sign up</string>
+    <string name="usuario">Username</string>
+    <string name="Contraseña">Password</string>
+    <string name="confirmarcontraseña">Repeat your password</string>
+    <string name="Registrarse">Register</string>
+    <string name="contraseñasnocoinciden">The passwords do not match</string>
+    <string name="IniciarSesion">"Sign in "</string>
+    <string name="erroriniciosesion">The username or the password are not correct</string>
+    <string name="notienescuenta">Do not have an account yet?</string>
+    <string name="yatienescuenta">Already have an account?</string>
+    <string name="error_login" >There has been an error in the login, please check your credentials</string>
+    <string name="Registroexitoso" >Signed up successfully</string>
+    <string name="usuarioyaexiste" >The username already exists, please choose other</string>
 </resources>

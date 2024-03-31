@@ -1,4 +1,4 @@
-package com.aimarsg.serietracker.data
+package com.aimarsg.serietracker.model
 
 import android.content.Context
 import androidx.datastore.core.DataStore

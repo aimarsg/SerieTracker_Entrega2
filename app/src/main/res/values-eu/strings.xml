@@ -39,4 +39,17 @@
     <string name="INSPendiente">Ikusteko: hemen etorkizunean ikusi nahi dituzun serieak gorde ditzakezu. Data sartuta, notifikazio bat helduko zaizu egun horretan seriea ikusi behar duzula gogoratzeko. Play botoia sakatuz, seriea jarraizen atalera pasako da.</string>
     <string name="ErrorAñadir">Serie hau jada gehituta dago, ezin da berriz gehitu</string>
     <string name="ningunaSeleccionada">Ez duzu aukeratu titulurik</string>
+    <string name="Registro">Erregistroa</string>
+    <string name="usuario">Erabiltzaile izena</string>
+    <string name="Contraseña">Pasahitza</string>
+    <string name="confirmarcontraseña">Berriro sartu pasahitza</string>
+    <string name="Registrarse">Erregistratu</string>
+    <string name="contraseñasnocoinciden">Pasahitzak ez dira berdinak</string>
+    <string name="IniciarSesion">Hasi saioa</string>
+    <string name="erroriniciosesion">Erabiltzaile izena edo pasahitza ez dira zuzenak</string>
+    <string name="notienescuenta">Ez duzu konturik?</string>
+    <string name="yatienescuenta">Kontua duzu?</string>
+    <string name="error_login" >"Ezin izan da saioa hasi, egiaztatu pasahitza "</string>
+    <string name="Registroexitoso" >Erregistroa ondo burutu da</string>
+    <string name="usuarioyaexiste" >Erabiltzaile izena dagoeneko existitzen da, aukeratu beste bat</string>
 </resources>

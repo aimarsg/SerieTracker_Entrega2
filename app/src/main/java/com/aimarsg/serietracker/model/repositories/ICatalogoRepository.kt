@@ -1,6 +1,6 @@
-package com.aimarsg.serietracker.data.repositories
+package com.aimarsg.serietracker.model.repositories
 
-import com.aimarsg.serietracker.data.entities.SerieCatalogo
+import com.aimarsg.serietracker.model.entities.SerieCatalogo
 import kotlinx.coroutines.flow.Flow
 
 interface ICatalogoRepository{

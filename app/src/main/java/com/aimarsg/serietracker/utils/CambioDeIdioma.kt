@@ -3,7 +3,7 @@ package com.aimarsg.serietracker.utils
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
-import com.aimarsg.serietracker.data.Idioma
+import com.aimarsg.serietracker.model.Idioma
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton

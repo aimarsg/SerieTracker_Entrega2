@@ -24,7 +24,9 @@ import com.aimarsg.serietracker.ui.componentes.BottomBar
 import com.aimarsg.serietracker.ui.componentes.SerieTrackerTopBar
 import com.aimarsg.serietracker.ui.pantallas.Ajustes
 import com.aimarsg.serietracker.ui.pantallas.AjustesLanscape
+import com.aimarsg.serietracker.ui.pantallas.LoginScreen
 import com.aimarsg.serietracker.ui.pantallas.PendienteScreen
+import com.aimarsg.serietracker.ui.pantallas.RegisterScreen
 import com.aimarsg.serietracker.ui.pantallas.SiguiendoScreen
 
 /**
@@ -34,7 +36,9 @@ import com.aimarsg.serietracker.ui.pantallas.SiguiendoScreen
 enum class TrackerScreen(@StringRes val title: Int){ // STRINGRESOURCE PARA AÑADIR EL TITULO DE CADA VENTANA
     Siguiendo(title = R.string.siguiendo),
     Pendiente(title = R.string.pendiente),
-    Ajustes(title = R.string.Ajustes)
+    Ajustes(title = R.string.Ajustes),
+    Login(title = R.string.IniciarSesion),
+    Registro(title = R.string.Registro)
 
 }
 
@@ -53,24 +57,27 @@ fun SerieTrackerApp(
     val (siguiendo, setSiguiendo) = rememberSaveable { mutableStateOf(true) }
     val config = LocalConfiguration.current
     val currentScreen = TrackerScreen.valueOf(
-        backStackEntry?.destination?.route ?: TrackerScreen.Siguiendo.name
+        backStackEntry?.destination?.route ?: TrackerScreen.Login.name //TrackerScreen.Siguiendo.name
     )
 
 
     Scaffold(
         topBar = {
-            SerieTrackerTopBar(
-                canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() },
-                navController = navController,
-                currentScreen = currentScreen,
-            )
+            if (currentScreen != TrackerScreen.Registro && currentScreen != TrackerScreen.Login){
+                SerieTrackerTopBar(
+                    canNavigateBack = navController.previousBackStackEntry != null,
+                    navigateUp = { navController.navigateUp() },
+                    navController = navController,
+                    currentScreen = currentScreen,
+                )
+            }
         },
         floatingActionButton = {
 
         },
         bottomBar = {
-            if (config.orientation != Configuration.ORIENTATION_LANDSCAPE){
+            if (config.orientation != Configuration.ORIENTATION_LANDSCAPE
+                && currentScreen != TrackerScreen.Registro && currentScreen != TrackerScreen.Login){
                 BottomBar(navController = navController,  siguiendo = siguiendo)
             }
         }
@@ -78,14 +85,43 @@ fun SerieTrackerApp(
             innerPadding ->
         var expanded by remember { mutableStateOf(false) }
         Row {
-            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE
+                && currentScreen != TrackerScreen.Registro && currentScreen != TrackerScreen.Login){
                 AppNavigationRail(navController = navController, siguiendo = siguiendo)
             }
             NavHost(
                 navController = navController,
-                startDestination = TrackerScreen.Siguiendo.name,
+                startDestination = TrackerScreen.Login.name,
                 modifier = Modifier.padding(innerPadding),
             ) {
+
+                composable(route = TrackerScreen.Login.name) {
+                    LoginScreen(
+                        onLogedIn = {
+                                    navController.popBackStack()
+                                    navController.navigate(TrackerScreen.Siguiendo.name)
+                                    },
+                        register = {
+                                    //navController.popBackStack()
+                                    navController.navigate(TrackerScreen.Registro.name)
+                        },
+                        viewModel = viewModel
+                    )
+                }
+
+                composable(route = TrackerScreen.Registro.name) {
+                    RegisterScreen(
+                        onRegistered = {
+                                    navController.popBackStack() /*TODO*/
+                                    //navController.navigate(TrackerScreen.Login.name)
+                                       },
+                        inicioSesion = {
+                                    navController.popBackStack()
+                                    //navController.navigate(TrackerScreen.Login.name)
+                        },
+                        viewModel = viewModel
+                    )
+                }
 
                 composable(route = TrackerScreen.Siguiendo.name) {
                     SiguiendoScreen(
@@ -121,66 +157,4 @@ fun SerieTrackerApp(
         }
     }
 }
-/*
-/**
- * App's landscape mode main screen. This hosts composable hosts the scaffold which
- * contains the different screens of the app as well as the navigation behaviour
- * @param viewModel: apps viewmodel
- * @param navController: navigation controller which is common to both landscape and portrait modes
- */
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@Composable
-fun SerieTrackerAppLandscape(
-    viewModel: SeriesViewModel,
-    navController: NavHostController
-) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val (siguiendo, setSiguiendo) = rememberSaveable { mutableStateOf(true) }
 
-    val currentScreen = TrackerScreen.valueOf(
-        backStackEntry?.destination?.route ?: TrackerScreen.Siguiendo.name
-    )
-
-    Scaffold(
-        topBar = {
-            SerieTrackerTopBar(
-                canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() },
-                navController = navController,
-                currentScreen = currentScreen,
-                viewModel = viewModel
-            )
-        }
-    ) {
-        innerPadding ->
-        Row {
-            AppNavigationRail(navController = navController, siguiendo = siguiendo)
-            NavHost(
-                navController = navController,
-                startDestination = TrackerScreen.Siguiendo.name,
-                modifier = Modifier.padding(innerPadding)
-            ) {
-
-                composable(route = TrackerScreen.Siguiendo.name) {
-                    SiguiendoScreen(
-                        viewModel = viewModel
-                    )
-                    setSiguiendo(true)
-                }
-
-                composable(route = TrackerScreen.Pendiente.name) {
-                    PendienteScreen(
-                        viewModel = viewModel
-                    )
-                    setSiguiendo(false)
-                }
-
-                composable(route = TrackerScreen.Ajustes.name) {
-                    AjustesLanscape(
-                        viewModel = viewModel
-                    )
-                }
-            }
-        }
-    }
-}*/
