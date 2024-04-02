@@ -48,6 +48,9 @@ import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.Idioma
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.ProfilePicture
+import com.aimarsg.serietracker.ui.componentes.createImageFileFromBitMap
+import com.aimarsg.serietracker.ui.componentes.getBipMapFromUri
+import com.aimarsg.serietracker.ui.componentes.getFileFromUri
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import java.io.File
 import java.io.FileNotFoundException
@@ -129,13 +132,19 @@ fun Ajustes(
             )
             {
                 // Profile picture
-                val uri = remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                var uri = remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                viewModel.getProfilePicture{bitmap ->
+                    if (bitmap != null){
+                        uri.value = context.createImageFileFromBitMap(bitmap)
+                    }
+                }
                 //image to show bottom sheet
                 ProfilePicture(
                     directory = File("images"),
                     uri = uri.value,
                     onSetUri = {
                         uri.value = it
+                        context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
                     }
                 )
             }

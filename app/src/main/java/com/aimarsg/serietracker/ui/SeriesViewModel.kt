@@ -1,6 +1,7 @@
 package com.aimarsg.serietracker.ui
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,11 +21,13 @@ import com.aimarsg.serietracker.utils.CambioDeIdioma
 import com.aimarsg.serietracker.utils.today
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
+import java.io.File
 import javax.inject.Inject
 
 
@@ -152,4 +155,19 @@ class SeriesViewModel @Inject constructor(
     suspend fun register(user: String, password: String) {
         ApiClient.register(user, password)
     }
+
+    // Methos to manage profile picture
+    fun getProfilePicture(callback: (Bitmap?) -> Unit) {
+        viewModelScope.launch {
+            val bitmap = ApiClient.getFotoDePerfil()
+            callback(bitmap)
+        }
+    }
+
+    fun subirFotoDePerfil(image: File){
+        viewModelScope.launch {
+            ApiClient.subirFotoDePerfil(image)
+        }
+    }
+
 }

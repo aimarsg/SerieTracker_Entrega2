@@ -3,6 +3,8 @@ package com.aimarsg.serietracker.ui.componentes
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -47,10 +49,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.aimarsg.serietracker.R
 import com.wdullaer.materialdatetimepicker.BuildConfig
 import java.io.File
+import java.io.FileOutputStream
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Objects
@@ -327,6 +332,50 @@ fun Context.createImageFile(): File {
         externalCacheDir      /* directory */
     )
     return image
+}
+
+fun Context.createImageFileFromBitMap(bitmap: Bitmap): Uri {
+    // Create an image file name
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val imageFileName = "JPEG_" + timeStamp + "_"
+    val imageFile = File(externalCacheDir, "${imageFileName}.jpg")
+
+    // Write the bitmap to the file
+    FileOutputStream(imageFile).use { out ->
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+        out.flush()
+    }
+
+    return imageFile.toUri()
+}
+
+fun Context.getBipMapFromUri(uri: Uri): Bitmap {
+    return uri.let {
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(it, "r", null)
+        val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+        parcelFileDescriptor?.close()
+        image
+    }
+}
+
+fun Context.getFileFromUri(uri: Uri): File? {
+    return uri.let { uri ->
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "r", null)
+        val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+        val outputFile = File.createTempFile("temp", null, cacheDir)
+
+        val inputStream = contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(outputFile)
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        parcelFileDescriptor?.close()
+        outputFile
+    }
 }
 
 // preview image area

@@ -1,5 +1,7 @@
 package com.aimarsg.serietracker.model.webclient
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -9,10 +11,16 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
@@ -20,6 +28,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.io.ByteArrayOutputStream
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -82,7 +92,7 @@ class APIClient @Inject constructor() {
                 loadTokens { bearerTokenStorage.last() }
 
                 // Send always the token, do not  wait for a 401 before adding the token to the header
-                sendWithoutRequest { request -> request.url.host == "35.246.246.159" }
+                sendWithoutRequest { request -> request.url.host == "http://35.246.246.159:8000/" }
 
             }
         }
@@ -135,6 +145,50 @@ class APIClient @Inject constructor() {
     }
 
     // Methods to access the data
+
+    // Methods to manage user profile picture
+
+    /**
+     * Method to get the user's profile picture
+     * @return the user's profile picture as a Bitmap
+     */
+    suspend fun getFotoDePerfil(): Bitmap {
+        val response = httpClient.get("http://35.246.246.159:8000/users/obtenerFoto/")
+        val image: ByteArray = response.body()
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
+    }
+
+
+    /**
+     * Method to upload the user's profile picture
+     * @param foto: the user's profile picture as a Bitmap
+     */
+    suspend fun subirFotoDePerfil(foto: File) {
+        httpClient.post("http://35.246.246.159:8000/users/subirFoto/") {
+            setBody(
+                MultiPartFormDataContent(
+                formData {
+                    append("profile_pic", foto.readBytes(), Headers.build {
+                        append(HttpHeaders.ContentType, "image/png")
+                        append(HttpHeaders.ContentDisposition, "filename=\"ktor_logo.png\"")
+                    })
+                }
+            )
+            )
+        }
+        /*val stream = ByteArrayOutputStream()
+        foto.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val byteArray = stream.toByteArray()*/
+
+        /*httpClient.submitFormWithBinaryData(
+            url = "http://35.246.246.159:8000/users/subirFoto/",
+            formData = formData {
+                appendInput("profile_pic"){
+                    foto.
+                }
+            }
+        ){method = io.ktor.http.HttpMethod.Post}*/
+    }
 
     // Firebase
 
