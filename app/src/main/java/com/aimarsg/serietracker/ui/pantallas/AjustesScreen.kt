@@ -5,16 +5,21 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
+import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -26,6 +31,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -40,10 +47,13 @@ import com.aimarsg.serietracker.NotificationID
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.Idioma
 import com.aimarsg.serietracker.ui.SeriesViewModel
+import com.aimarsg.serietracker.ui.componentes.ProfilePicture
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+
 
 
 /*************************************************************************************************
@@ -107,7 +117,42 @@ fun Ajustes(
                 e.printStackTrace()
             }
         }
+        Row(
+            modifier = Modifier
+                .padding(0.dp)
+                .height(120.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(0.dp)
+                    .width(120.dp)
+            )
+            {
+                // Profile picture
+                val uri = remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                //image to show bottom sheet
+                ProfilePicture(
+                    directory = File("images"),
+                    uri = uri.value,
+                    onSetUri = {
+                        uri.value = it
+                    }
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .padding(0.dp)
+                    .align(Alignment.CenterVertically)
+            ) {
+                Text(
+                    text = ("NOMBRE"),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 30.dp)
+                )
 
+            }
+        }
+        Spacer(modifier = Modifier.padding(50.dp))
         Row()
         // LANGUAGE SELECTOR
         {
@@ -140,13 +185,13 @@ fun Ajustes(
                 }
             }
         }
-        Spacer(modifier = Modifier.padding(20.dp))
+        Spacer(modifier = Modifier.padding(10.dp))
         Divider(
             modifier = Modifier,
             thickness = 0.75.dp,
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.padding(20.dp))
+        Spacer(modifier = Modifier.padding(10.dp))
 
         // THEME SELECTOR
         Row {
@@ -184,13 +229,13 @@ fun Ajustes(
                 }
             }
         }
-        Spacer(modifier = Modifier.padding(20.dp))
+        Spacer(modifier = Modifier.padding(10.dp))
         Divider(
             modifier = Modifier,
             thickness = 0.75.dp,
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.padding(20.dp))
+        Spacer(modifier = Modifier.padding(10.dp))
 
         // DOWNLOAD FILE
         Row {
@@ -253,98 +298,135 @@ fun AjustesLanscape(
         }
     }
 
-
-    Row(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
             .padding(start = 10.dp, end = 10.dp),
-        horizontalArrangement = Arrangement.spacedBy(30.dp)
+        verticalArrangement = Arrangement.Center
 
     ) {
-        Column {
-
-            // LANGUAGE SELECTOR
-            Row{
-                Column {
-                    Icon(painter = painterResource(R.drawable.baseline_translate_24), contentDescription = stringResource(R.string.SeleccionarIdioma))
-                }
-
-                Column (
-                ){
-                    //var expanded by remember { mutableStateOf(false) }
-                    val idiomaSeleccionado by viewModel.idioma.collectAsState(initial = Idioma.Castellano)
-                    Text(text = stringResource(R.string.SeleccionarIdioma), modifier = Modifier.padding(start = 10.dp))
-                    TextButton(onClick = { changeExpanded() }) {
-                        Text(text = idiomaSeleccionado.name)
+        Row(
+            modifier = Modifier.padding(0.dp).height(90.dp).fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(0.dp).width(90.dp).height(90.dp)
+            )
+            {
+                // Profile picture
+                val uri = remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                //image to show bottom sheet
+                ProfilePicture(
+                    directory = File("images"),
+                    uri = uri.value,
+                    onSetUri = {
+                        uri.value = it
                     }
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { changeExpanded() },
-                    ) {
-                        Idioma.entries.forEach { idioma ->
-                            DropdownMenuItem(
-                                text = { Text(idioma.name) },
-                                onClick = {
-                                    changeExpanded()
-                                    viewModel.updateIdioma(idioma, context)
-                                }
-                            )
-                        }
-                    }
-                }
+                )
+            }
+            Column(
+                modifier = Modifier.padding(0.dp).align(Alignment.CenterVertically)
+            ) {
+                Text(
+                    text = ("NOMBRE"),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 30.dp)
+                )
+
             }
         }
 
-        // THEME SELECTOR
-        Column {
-            Row {
-                Column {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_color_lens_24),
-                        contentDescription = stringResource(R.string.SeleccionaModo)
-                    )
-                }
+        Spacer(modifier = Modifier.padding(20.dp))
 
-                Column(
-                ) {
-                    val booleanState by viewModel.tema.collectAsState(initial = true)
-                    Text(
-                        text = stringResource(R.string.SeleccionaModo),
-                        modifier = Modifier.padding(start = 10.dp)
-                    )
-                    TextButton(
-                        onClick = {
-                            //expanded = true
-                            if (booleanState){
-                                viewModel.updateTheme(false)
-                            }else{
-                                viewModel.updateTheme(true)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(30.dp)
+        ) {
+            Column {
+
+                // LANGUAGE SELECTOR
+                Row{
+                    Column {
+                        Icon(painter = painterResource(R.drawable.baseline_translate_24), contentDescription = stringResource(R.string.SeleccionarIdioma))
+                    }
+
+                    Column (
+                    ){
+                        //var expanded by remember { mutableStateOf(false) }
+                        val idiomaSeleccionado by viewModel.idioma.collectAsState(initial = Idioma.Castellano)
+                        Text(text = stringResource(R.string.SeleccionarIdioma), modifier = Modifier.padding(start = 10.dp))
+                        TextButton(onClick = { changeExpanded() }) {
+                            Text(text = idiomaSeleccionado.name)
+                        }
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { changeExpanded() },
+                        ) {
+                            Idioma.entries.forEach { idioma ->
+                                DropdownMenuItem(
+                                    text = { Text(idioma.name) },
+                                    onClick = {
+                                        changeExpanded()
+                                        viewModel.updateIdioma(idioma, context)
+                                    }
+                                )
                             }
                         }
+                    }
+                }
+            }
+
+            // THEME SELECTOR
+            Column {
+                Row {
+                    Column {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_color_lens_24),
+                            contentDescription = stringResource(R.string.SeleccionaModo)
+                        )
+                    }
+
+                    Column(
                     ) {
-                        if (!booleanState){
-                            Text(text = stringResource(R.string.ModoClaro))
-                        }
-                        else{
-                            Text(text = stringResource(R.string.ModoOscuro))
+                        val booleanState by viewModel.tema.collectAsState(initial = true)
+                        Text(
+                            text = stringResource(R.string.SeleccionaModo),
+                            modifier = Modifier.padding(start = 10.dp)
+                        )
+                        TextButton(
+                            onClick = {
+                                //expanded = true
+                                if (booleanState){
+                                    viewModel.updateTheme(false)
+                                }else{
+                                    viewModel.updateTheme(true)
+                                }
+                            }
+                        ) {
+                            if (!booleanState){
+                                Text(text = stringResource(R.string.ModoClaro))
+                            }
+                            else{
+                                Text(text = stringResource(R.string.ModoOscuro))
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // DOWNLOAD FILE
-        Column {
-            Row {
-                Icon(painter = painterResource(R.drawable.baseline_download_24), contentDescription = "" )
-                Text(text = stringResource(R.string.exportardatos), modifier = Modifier
-                    .padding(start = 10.dp)
-                    .clickable(onClick = {
-                        saverLauncher.launch(filename)
-                    }))
+            // DOWNLOAD FILE
+            Column {
+                Row {
+                    Icon(painter = painterResource(R.drawable.baseline_download_24), contentDescription = "" )
+                    Text(text = stringResource(R.string.exportardatos), modifier = Modifier
+                        .padding(start = 10.dp)
+                        .clickable(onClick = {
+                            saverLauncher.launch(filename)
+                        }))
+                }
             }
         }
+
     }
 }
 
@@ -388,10 +470,11 @@ fun fileSaved(fileName: String, context: Context) {
     }
 }
 
-@Preview(widthDp = 640, heightDp = 360, showBackground = true)
+//@Preview(widthDp = 640, heightDp = 360, showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun PreviewAjustes (){
-    SerieTrackerTheme(content = {
-        //AjustesLanscape(modifier = Modifier)
-    })
+    SerieTrackerTheme {
+        //Ajustes(expanded = false, changeExpanded = {})
+    }
 }

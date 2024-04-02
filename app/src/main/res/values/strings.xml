@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">SerieTracker</string>
+    <string name="fileprovider" translatable="false">com.aimarsg.serietracker.fileprovider</string>
     <string name="siguiendo">Siguiendo</string>
     <string name="pendiente">Pendiente</string>
     <string name="Temporada">Temporada</string>
