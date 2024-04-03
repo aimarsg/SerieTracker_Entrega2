@@ -56,6 +56,9 @@ class SeriesViewModel @Inject constructor(
     // selected language
     val idiomaActual by cambioDeIdioma::idiomaActual
 
+    // variable to store the current user name
+    var usuario by mutableStateOf("")
+
     // series lists
     val seriesCatalogo = catalogoRepository.getAllSeries()
     val seriesSiguiendo = trackerRepository.getSeriesSiguiendo()

@@ -33,6 +33,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -132,18 +133,18 @@ fun Ajustes(
             )
             {
                 // Profile picture
-                var uri = remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                var uri by remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
                 viewModel.getProfilePicture{bitmap ->
                     if (bitmap != null){
-                        uri.value = context.createImageFileFromBitMap(bitmap)
+                        uri = context.createImageFileFromBitMap(bitmap)
                     }
                 }
                 //image to show bottom sheet
                 ProfilePicture(
                     directory = File("images"),
-                    uri = uri.value,
+                    uri = uri,
                     onSetUri = {
-                        uri.value = it
+                        uri = it
                         context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
                     }
                 )
@@ -154,7 +155,7 @@ fun Ajustes(
                     .align(Alignment.CenterVertically)
             ) {
                 Text(
-                    text = ("NOMBRE"),
+                    text = viewModel.usuario,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(start = 30.dp)
                 )
@@ -323,13 +324,19 @@ fun AjustesLanscape(
             )
             {
                 // Profile picture
-                val uri = remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                var uri by remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                viewModel.getProfilePicture{bitmap ->
+                    if (bitmap != null){
+                        uri = context.createImageFileFromBitMap(bitmap)
+                    }
+                }
                 //image to show bottom sheet
                 ProfilePicture(
                     directory = File("images"),
-                    uri = uri.value,
+                    uri = uri,
                     onSetUri = {
-                        uri.value = it
+                        uri = it
+                        context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
                     }
                 )
             }
@@ -337,7 +344,7 @@ fun AjustesLanscape(
                 modifier = Modifier.padding(0.dp).align(Alignment.CenterVertically)
             ) {
                 Text(
-                    text = ("NOMBRE"),
+                    text = viewModel.usuario,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(start = 30.dp)
                 )

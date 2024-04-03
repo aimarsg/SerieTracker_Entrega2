@@ -52,4 +52,7 @@
     <string name="error_login" >No se ha podido iniciar sesión, comprueba las credenciales de acceso</string>
     <string name="Registroexitoso" >Registro realizado correctamente</string>
     <string name="usuarioyaexiste" >El nombre de usuario ya existe, escoge otro</string>
+    <string name="elige_opcion">Elige una opción</string>
+    <string name="tomarFoto">Tomar una foto</string>
+    <string name="select_photo">Seleccionar una foto</string>
 </resources>

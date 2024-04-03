@@ -239,14 +239,14 @@ fun MyModalBottomSheet(
         },
         items = listOf(
             BottomSheetItem(
-                title = "Take Photo",
+                title = stringResource(R.string.tomarFoto),
                 icon = ImageVector.vectorResource(R.drawable.baseline_photo_camera_24),
                 onClick = {
                     onTakePhotoClick.invoke()
                 }
             ),
             BottomSheetItem(
-                title = "select image",
+                title = stringResource(R.string.select_photo),
                 icon = ImageVector.vectorResource(R.drawable.baseline_image_24),
                 onClick = {
                     onPhotoGalleryClick.invoke()
@@ -262,7 +262,7 @@ fun MyModalBottomSheet(
 fun MyModalBottomSheetContent(
     onDismiss: () -> Unit,
     //header
-    header: String = "Choose Option",
+    header: String = stringResource(R.string.elige_opcion),
 
     items: List<BottomSheetItem> = listOf(),
 ) {

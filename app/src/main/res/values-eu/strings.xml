@@ -52,4 +52,7 @@
     <string name="error_login" >"Ezin izan da saioa hasi, egiaztatu pasahitza "</string>
     <string name="Registroexitoso" >Erregistroa ondo burutu da</string>
     <string name="usuarioyaexiste" >Erabiltzaile izena dagoeneko existitzen da, aukeratu beste bat</string>
+    <string name="elige_opcion">Aukeratu bat</string>
+    <string name="tomarFoto">Argazki bat atera</string>
+    <string name="select_photo">Aukeratu argazki bat</string>
 </resources>

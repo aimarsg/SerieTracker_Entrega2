@@ -52,4 +52,7 @@
     <string name="error_login" >There has been an error in the login, please check your credentials</string>
     <string name="Registroexitoso" >Signed up successfully</string>
     <string name="usuarioyaexiste" >The username already exists, please choose other</string>
+    <string name="elige_opcion">Choose option</string>
+    <string name="tomarFoto">Take a photo</string>
+    <string name="select_photo">Choose a photo</string>
 </resources>
