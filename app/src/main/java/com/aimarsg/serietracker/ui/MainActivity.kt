@@ -1,6 +1,7 @@
 package com.aimarsg.serietracker.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +11,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -20,6 +23,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 /**
  * App's main activity
@@ -42,7 +48,14 @@ class MainActivity : AppCompatActivity() {
                 // Select the app theme based on the theme salected by the user (dark/light)
                 useDarkTheme = viewmodel.tema.collectAsState(initial = true).value
             ){
-
+                var logedIn by rememberSaveable {
+                    mutableStateOf(false)
+                }
+                logedIn = viewmodel.obtenerUsuarioLogeado() != ""
+                if (logedIn) {
+                    Log.d("login", "Usuario logeado1: $logedIn")
+                    viewmodel.loginUsuarioGuardado()
+                }
                 // Update the app language, to restore the previous app language in case a different
                 // language has been stablished before closing the app
                 viewmodel.reloadLang(viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value, this)
@@ -52,13 +65,16 @@ class MainActivity : AppCompatActivity() {
                 var landscape by rememberSaveable {
                     mutableStateOf(false)
                 }
+
+                Log.d("login", "Usuario logeado2: $logedIn")
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-
                     SerieTrackerApp(
                         viewModel = viewmodel,
-                        navController = navHostController
+                        navController = navHostController,
+                        logedIn = logedIn
                     )
                 }
 

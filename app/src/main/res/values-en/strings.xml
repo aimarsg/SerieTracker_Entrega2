@@ -55,4 +55,6 @@
     <string name="elige_opcion">Choose option</string>
     <string name="tomarFoto">Take a photo</string>
     <string name="select_photo">Choose a photo</string>
+    <string name="confirmarLogout" >Do you want to log out?</string>
+    <string name="Logout" >Log out</string>
 </resources>

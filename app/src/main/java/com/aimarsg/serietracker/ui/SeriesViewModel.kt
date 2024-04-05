@@ -3,6 +3,7 @@ package com.aimarsg.serietracker.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -52,6 +53,47 @@ class SeriesViewModel @Inject constructor(
     val idioma = myPreferencesDataStore.preferencesStatusFlow.map {
         it.idioma
     }
+
+    // get and set the user and password on the datastore
+    fun obtenerUsuarioLogeado(): String {
+        Log.d("login", "obteniendo usuario logeado")
+        var usuario = ""
+        runBlocking{
+            usuario = myPreferencesDataStore.getUsuarioLogeado().first()
+            Log.d("login", "usuario logeado $usuario")
+        }
+        Log.d("login", "usuario logeado que se returnea $usuario")
+        return usuario
+    }
+
+    fun setUsuarioLogueado(usuario: String, contrasena: String) = viewModelScope.launch { myPreferencesDataStore.setUsuarioContraLogeado(usuario, contrasena) }
+
+    /**
+     * function to automatically get the token with the saved user credentials
+     * if the user has saved credentials, the app will try to authenticate the user
+     */
+    fun loginUsuarioGuardado(){
+        viewModelScope.launch {
+            val usuario: String = myPreferencesDataStore.getUsuarioLogeado().first()
+            val contrasena: String = myPreferencesDataStore.getContrasenaUsuarioLogeado().first()
+            Log.d("SeriesViewModel", "Usuario: $usuario, Contrasena: $contrasena")
+            if (usuario != "" && contrasena != ""){
+                try {
+                    authenticate(usuario, contrasena)
+                    Log.d("SeriesViewModel", "Usuario guardado autenticado")
+                } catch (e: AuthenticationException){
+                    Log.e("SeriesViewModel", "Error al autenticar usuario guardado")
+                }
+            }
+        }
+    }
+
+    fun logout(){
+        viewModelScope.launch {
+            myPreferencesDataStore.setUsuarioContraLogeado("", "")
+        }
+    }
+
 
     // selected language
     val idiomaActual by cambioDeIdioma::idiomaActual
@@ -160,13 +202,20 @@ class SeriesViewModel @Inject constructor(
     }
 
     // Methos to manage profile picture
+    /**
+     * Function to get the user's profile picture
+     * @param callback: callback to return the user's profile picture
+     */
     fun getProfilePicture(callback: (Bitmap?) -> Unit) {
         viewModelScope.launch {
             val bitmap = ApiClient.getFotoDePerfil()
             callback(bitmap)
         }
     }
-
+    /**
+     * Function to upload the user's profile picture
+     * @param image: file with the image to upload
+     */
     fun subirFotoDePerfil(image: File){
         viewModelScope.launch {
             ApiClient.subirFotoDePerfil(image)

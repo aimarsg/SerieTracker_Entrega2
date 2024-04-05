@@ -55,4 +55,6 @@
     <string name="elige_opcion">Elige una opción</string>
     <string name="tomarFoto">Tomar una foto</string>
     <string name="select_photo">Seleccionar una foto</string>
+    <string name="confirmarLogout" >¿Quieres cerrar sesión?</string>
+    <string name="Logout" >Cerrar sesión</string>
 </resources>

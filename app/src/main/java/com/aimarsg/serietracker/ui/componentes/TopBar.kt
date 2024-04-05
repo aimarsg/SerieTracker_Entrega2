@@ -43,10 +43,12 @@ fun SerieTrackerTopBar(
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SeriesViewModel
 ) {
     val (isExpanded, setExpanded) = rememberSaveable { mutableStateOf(false) }
     var helpDialogOpened by rememberSaveable{mutableStateOf(false)}
+    var logoutDialogOpened by rememberSaveable{mutableStateOf(false)}
 
     TopAppBar(
         title = {  Text(text = stringResource(currentScreen.title), color = MaterialTheme.colorScheme.onPrimary) },
@@ -71,8 +73,21 @@ fun SerieTrackerTopBar(
             IconButton(onClick = { helpDialogOpened = true }) {
                 Icon(painter = painterResource(R.drawable.baseline_help_24), contentDescription = stringResource(R.string.ayuda), tint = (MaterialTheme.colorScheme.onPrimary))
             }
+            IconButton(onClick = { logoutDialogOpened = true }) {
+                Icon(painter = painterResource(R.drawable.baseline_logout_24), contentDescription = stringResource(R.string.Logout), tint = (MaterialTheme.colorScheme.onPrimary))
+            }
             if (helpDialogOpened){
                 HelpDialog(onDismissRequest = {helpDialogOpened = false}, onConfirmation = {helpDialogOpened = false})
+            }
+            if (logoutDialogOpened){
+                DialogoLogout(
+                    onDismiss = {logoutDialogOpened = false},
+                    onDelete = {
+                        logoutDialogOpened = false
+                        viewModel.logout()
+                        navController.navigate(TrackerScreen.Login.name)
+                    }
+                )
             }
             IconButton(onClick = { setExpanded(true) }) {
                 Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.Opciones), tint = (MaterialTheme.colorScheme.onPrimary))

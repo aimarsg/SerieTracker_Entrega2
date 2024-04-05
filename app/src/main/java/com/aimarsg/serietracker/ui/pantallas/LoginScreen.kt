@@ -72,6 +72,7 @@ fun LoginScreen(
                 viewModel.authenticate(username, password)
                 sesionIniciada = true
                 viewModel.usuario = username // guardar el nombre de usuario en el viewmodel
+                viewModel.setUsuarioLogueado(username, password) // guardar el nombre de usuario y contraseña en el datastore
                 mostrarError = false
             } catch (e: AuthenticationException) {
                 mostrarError = true

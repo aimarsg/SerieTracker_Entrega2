@@ -1,12 +1,15 @@
 package com.aimarsg.serietracker.ui
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeNodeLifecycleCallback
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +31,8 @@ import com.aimarsg.serietracker.ui.pantallas.LoginScreen
 import com.aimarsg.serietracker.ui.pantallas.PendienteScreen
 import com.aimarsg.serietracker.ui.pantallas.RegisterScreen
 import com.aimarsg.serietracker.ui.pantallas.SiguiendoScreen
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 
 /**
  * Definition of the different app screens
@@ -51,15 +56,17 @@ enum class TrackerScreen(@StringRes val title: Int){ // STRINGRESOURCE PARA AÑA
 @Composable
 fun SerieTrackerApp(
     viewModel: SeriesViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    logedIn: Boolean
 ) {
+
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val (siguiendo, setSiguiendo) = rememberSaveable { mutableStateOf(true) }
     val config = LocalConfiguration.current
     val currentScreen = TrackerScreen.valueOf(
-        backStackEntry?.destination?.route ?: TrackerScreen.Login.name //TrackerScreen.Siguiendo.name
+        backStackEntry?.destination?.route ?: (if (!logedIn) TrackerScreen.Login.name else TrackerScreen.Siguiendo.name)
     )
-
 
     Scaffold(
         topBar = {
@@ -69,6 +76,7 @@ fun SerieTrackerApp(
                     navigateUp = { navController.navigateUp() },
                     navController = navController,
                     currentScreen = currentScreen,
+                    viewModel = viewModel
                 )
             }
         },
@@ -91,7 +99,7 @@ fun SerieTrackerApp(
             }
             NavHost(
                 navController = navController,
-                startDestination = TrackerScreen.Login.name,
+                startDestination = if (!logedIn) TrackerScreen.Login.name else TrackerScreen.Siguiendo.name,
                 modifier = Modifier.padding(innerPadding),
             ) {
 
@@ -157,4 +165,3 @@ fun SerieTrackerApp(
         }
     }
 }
-
