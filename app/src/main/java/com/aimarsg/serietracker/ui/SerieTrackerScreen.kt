@@ -28,6 +28,7 @@ import com.aimarsg.serietracker.ui.componentes.SerieTrackerTopBar
 import com.aimarsg.serietracker.ui.pantallas.Ajustes
 import com.aimarsg.serietracker.ui.pantallas.AjustesLanscape
 import com.aimarsg.serietracker.ui.pantallas.LoginScreen
+import com.aimarsg.serietracker.ui.pantallas.MapaScreen
 import com.aimarsg.serietracker.ui.pantallas.PendienteScreen
 import com.aimarsg.serietracker.ui.pantallas.RegisterScreen
 import com.aimarsg.serietracker.ui.pantallas.SiguiendoScreen
@@ -43,7 +44,8 @@ enum class TrackerScreen(@StringRes val title: Int){ // STRINGRESOURCE PARA AÑA
     Pendiente(title = R.string.pendiente),
     Ajustes(title = R.string.Ajustes),
     Login(title = R.string.IniciarSesion),
-    Registro(title = R.string.Registro)
+    Registro(title = R.string.Registro),
+    Mapa(title = R.string.Mapa)
 
 }
 
@@ -160,6 +162,11 @@ fun SerieTrackerApp(
                         )
                     }
 
+                }
+                composable(route = TrackerScreen.Mapa.name) {
+                    MapaScreen(
+                        viewModel = viewModel
+                    )
                 }
             }
         }

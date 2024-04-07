@@ -99,6 +99,22 @@ fun SerieTrackerTopBar(
                     DropdownMenuItem(
                         onClick = {
                             //navController.navigate(TrackerScreen.Ajustes.name)
+                            if (navController.currentBackStackEntry?.destination?.route != TrackerScreen.Mapa.name){
+                                navController.navigate(TrackerScreen.Mapa.name)
+                            }
+                            setExpanded(false)
+                        },
+                        text = { Text(text = stringResource(R.string.Mapa)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_map_24),
+                                contentDescription = stringResource(R.string.Mapa)
+                            )
+                        }
+                    )
+                    DropdownMenuItem(
+                        onClick = {
+                            //navController.navigate(TrackerScreen.Ajustes.name)
                             if (navController.currentBackStackEntry?.destination?.route != TrackerScreen.Ajustes.name){
                                 navController.navigate(TrackerScreen.Ajustes.name)
                             }

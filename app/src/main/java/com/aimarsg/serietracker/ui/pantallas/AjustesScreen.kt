@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import com.aimarsg.serietracker.NotificationID
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.Idioma
@@ -133,12 +134,16 @@ fun Ajustes(
             )
             {
                 // Profile picture
-                var uri by remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
-                viewModel.getProfilePicture{bitmap ->
-                    if (bitmap != null){
-                        uri = context.createImageFileFromBitMap(bitmap)
+                var uri by remember { mutableStateOf<Uri?>(Uri.parse("")) }
+                if (uri == Uri.parse("")){
+                    viewModel.getProfilePicture{bitmap ->
+                        if (bitmap != null){
+                            uri = context.createImageFileFromBitMap(bitmap)
+                        }
                     }
+                    uri = "android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24".toUri()
                 }
+
                 //image to show bottom sheet
                 ProfilePicture(
                     directory = File("images"),
@@ -324,7 +329,15 @@ fun AjustesLanscape(
             )
             {
                 // Profile picture
-                var uri by remember { mutableStateOf<Uri?>(Uri.parse("android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24")) }
+                var uri by remember { mutableStateOf<Uri?>(Uri.parse("")) }
+                if (uri == Uri.parse("")){
+                    viewModel.getProfilePicture{bitmap ->
+                        if (bitmap != null){
+                            uri = context.createImageFileFromBitMap(bitmap)
+                        }
+                    }
+                    uri = "android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24".toUri()
+                }
                 viewModel.getProfilePicture{bitmap ->
                     if (bitmap != null){
                         uri = context.createImageFileFromBitMap(bitmap)

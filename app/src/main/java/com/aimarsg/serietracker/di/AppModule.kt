@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.aimarsg.serietracker.model.Database
 import com.aimarsg.serietracker.utils.AESCipher
 import com.aimarsg.serietracker.utils.CipherUtil
+import com.aimarsg.serietracker.utils.locationUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

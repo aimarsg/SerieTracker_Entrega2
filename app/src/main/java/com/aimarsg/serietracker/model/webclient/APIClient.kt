@@ -55,6 +55,13 @@ internal data class TokenInfo(
     @SerialName("token_type") val tokenType: String,
 )
 
+@Serializable
+data class Marcador(
+    @SerialName("nombre") val nombre: String,
+    @SerialName("latitud") val latitud: Double,
+    @SerialName("longitud") val longitud: Double,
+)
+
 internal val bearerTokenStorage = mutableListOf<BearerTokens>(BearerTokens("", ""))
 
 // Singleton class to create the API client
@@ -124,20 +131,6 @@ class APIClient @Inject constructor() {
      */
     @Throws(UserExistsException::class, Exception::class)
     suspend fun register(user: String, password: String) {
-        /*httpClient.submitForm(
-            url = "http://35.246.246.159:8000/users/",
-            formParameters = Parameters.build {
-                append("username", user)
-                append("hashed_password", password)
-            }
-            /*,
-            block = {
-                headers {
-                    append("Content-Type", "application/json") // Specify content type
-                }
-            }*/
-        )*/
-
         httpClient.post("http://35.246.246.159:8000/users/") {
             contentType(ContentType.Application.Json)
             setBody(User(user, password))
@@ -145,6 +138,14 @@ class APIClient @Inject constructor() {
     }
 
     // Methods to access the data
+    /** Method to get the locations from the API
+     * @return a list of locations
+     */
+    suspend fun getMarcadores(): List<Marcador> {
+        val response: List<Marcador> =
+            httpClient.get("http://35.246.246.159:8000/marcadores/").body()
+        return response
+    }
 
     // Methods to manage user profile picture
 
@@ -164,30 +165,19 @@ class APIClient @Inject constructor() {
      * @param foto: the user's profile picture as a Bitmap
      */
     suspend fun subirFotoDePerfil(foto: File) {
+
         httpClient.post("http://35.246.246.159:8000/users/subirFoto/") {
             setBody(
                 MultiPartFormDataContent(
                 formData {
                     append("profile_pic", foto.readBytes(), Headers.build {
                         append(HttpHeaders.ContentType, "image/png")
-                        append(HttpHeaders.ContentDisposition, "filename=\"ktor_logo.png\"")
+                        append(HttpHeaders.ContentDisposition, "filename=\"profilepic.png\"")
                     })
                 }
             )
             )
         }
-        /*val stream = ByteArrayOutputStream()
-        foto.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        val byteArray = stream.toByteArray()*/
-
-        /*httpClient.submitFormWithBinaryData(
-            url = "http://35.246.246.159:8000/users/subirFoto/",
-            formData = formData {
-                appendInput("profile_pic"){
-                    foto.
-                }
-            }
-        ){method = io.ktor.http.HttpMethod.Post}*/
     }
 
     // Firebase

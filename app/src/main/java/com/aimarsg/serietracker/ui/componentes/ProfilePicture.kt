@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,8 +54,11 @@ import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.aimarsg.serietracker.R
 import com.wdullaer.materialdatetimepicker.BuildConfig
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -187,7 +191,6 @@ fun ProfilePicture(
             }
         }*/
 
-        //preview selfie
         uri?.let {
             Box(
                 modifier = Modifier.size(120.dp),
@@ -361,19 +364,21 @@ fun Context.getBipMapFromUri(uri: Uri): Bitmap {
 
 fun Context.getFileFromUri(uri: Uri): File? {
     return uri.let { uri ->
-        val parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "r", null)
-        val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+        val inputStream = contentResolver.openInputStream(uri)
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
+
         val outputFile = File.createTempFile("temp", null, cacheDir)
 
-        val inputStream = contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(outputFile)
-        inputStream?.use { input ->
-            outputStream.use { output ->
-                input.copyTo(output)
-            }
+        try {
+            val fileOutputStream = FileOutputStream(outputFile)
+            fileOutputStream.write(outputStream.toByteArray())
+            fileOutputStream.close()
+        } catch (e: IOException) {
+            Log.e("CompressImage", "Error al escribir el archivo comprimido: ${e.message}")
+            return null
         }
-
-        parcelFileDescriptor?.close()
         outputFile
     }
 }

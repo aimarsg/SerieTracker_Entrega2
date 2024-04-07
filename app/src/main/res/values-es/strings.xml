@@ -57,4 +57,5 @@
     <string name="select_photo">Seleccionar una foto</string>
     <string name="confirmarLogout" >¿Quieres cerrar sesión?</string>
     <string name="Logout" >Cerrar sesión</string>
+    <string name="Mapa">Ubicaciones de las series</string>
 </resources>

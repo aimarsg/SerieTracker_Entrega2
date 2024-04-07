@@ -57,4 +57,5 @@
     <string name="select_photo">Aukeratu argazki bat</string>
     <string name="confirmarLogout" >Saioa itxi nahi duzu?</string>
     <string name="Logout" >saioa itxi</string>
+    <string name="Mapa">Ubicaciones de las series</string>
 </resources>

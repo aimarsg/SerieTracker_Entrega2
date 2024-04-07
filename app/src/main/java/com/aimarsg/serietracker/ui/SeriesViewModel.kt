@@ -17,8 +17,10 @@ import com.aimarsg.serietracker.model.repositories.CatalogoRepository
 import com.aimarsg.serietracker.model.repositories.TrackerRepository
 import com.aimarsg.serietracker.model.webclient.APIClient
 import com.aimarsg.serietracker.model.webclient.AuthenticationException
+import com.aimarsg.serietracker.model.webclient.Marcador
 import com.aimarsg.serietracker.model.webclient.UserExistsException
 import com.aimarsg.serietracker.utils.CambioDeIdioma
+import com.aimarsg.serietracker.utils.locationUtils
 import com.aimarsg.serietracker.utils.today
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -201,7 +203,7 @@ class SeriesViewModel @Inject constructor(
         ApiClient.register(user, password)
     }
 
-    // Methos to manage profile picture
+    // Methods to manage profile picture
     /**
      * Function to get the user's profile picture
      * @param callback: callback to return the user's profile picture
@@ -219,6 +221,17 @@ class SeriesViewModel @Inject constructor(
     fun subirFotoDePerfil(image: File){
         viewModelScope.launch {
             ApiClient.subirFotoDePerfil(image)
+        }
+    }
+
+    /**
+     * Function to get the locations from the API
+     * @param callback: callback to return the list of locations
+     */
+    fun getMarcadores(callback: (List<Marcador>?) -> Unit){
+        viewModelScope.launch {
+            val marcadores = ApiClient.getMarcadores()
+            callback(marcadores)
         }
     }
 

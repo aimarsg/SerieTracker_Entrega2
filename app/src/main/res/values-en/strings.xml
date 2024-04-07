@@ -57,4 +57,5 @@
     <string name="select_photo">Choose a photo</string>
     <string name="confirmarLogout" >Do you want to log out?</string>
     <string name="Logout" >Log out</string>
+    <string name="Mapa">Ubicaciones de las series</string>
 </resources>

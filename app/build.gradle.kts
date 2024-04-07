@@ -123,4 +123,11 @@ dependencies {
 
     // coil
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // maps
+    implementation ("com.google.maps.android:maps-compose:2.11.4")
+    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+
+    // geolocalizaccion
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 }
