@@ -44,6 +44,7 @@ import com.aimarsg.serietracker.model.entities.SerieCatalogo
 import com.aimarsg.serietracker.model.entities.SerieUsuario
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
+import com.aimarsg.serietracker.utils.addEventToCalendar
 import com.aimarsg.serietracker.utils.today
 import kotlinx.datetime.LocalDate
 
@@ -166,6 +167,7 @@ fun NuevoPendiente(
     onDoneButtonClicked: (Int) -> Unit,
     viewModel: SeriesViewModel
 ) {
+    var context2 = LocalContext.current
     Dialog(onDismissRequest = { onDismissRequest() } )
     {
         Card(
@@ -245,6 +247,7 @@ fun NuevoPendiente(
                         contentDescription = stringResource(R.string.Guardar)
                     )
                 }
+                var desc = stringResource(R.string.description)
                 Button(onClick = {
                     var nuevaSerie = SerieUsuario(
                         titulo = viewModel.serieSeleccionada.titulo,
@@ -262,6 +265,8 @@ fun NuevoPendiente(
                         toast.show()
                     }else if (nuevaSerie.titulo!=""){
                         viewModel.addSerie(nuevaSerie)
+
+                        addEventToCalendar(context = context2,nuevaSerie.titulo, description = desc,nuevaSerie.recordatorio)
                         onDismissRequest()
                     }else{
                         val toast = Toast.makeText(context, context.getString(R.string.ningunaSeleccionada), Toast.LENGTH_SHORT) // in Activity

@@ -57,5 +57,7 @@
     <string name="select_photo">Choose a photo</string>
     <string name="confirmarLogout" >Do you want to log out?</string>
     <string name="Logout" >Log out</string>
-    <string name="Mapa">Ubicaciones de las series</string>
+    <string name="Mapa">Tv shows locations</string>
+    <string name="description">Reminder added by SerieTracker</string>
+    <string name="permisos_no_concedidos">The required permissions have not been granted, please allow this permissions.</string>
 </resources>

@@ -58,4 +58,6 @@
     <string name="confirmarLogout" >¿Quieres cerrar sesión?</string>
     <string name="Logout" >Cerrar sesión</string>
     <string name="Mapa">Ubicaciones de las series</string>
+    <string name="description">Recordatorio añadido desde la aplicación SerieTracker</string>
+    <string name="permisos_no_concedidos">No se han podido obtener los permisos necesarios. Por favor, concede los permisos desde ajustes.</string>
 </resources>

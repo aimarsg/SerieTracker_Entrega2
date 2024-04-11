@@ -31,30 +31,34 @@ import kotlin.math.*
 @Composable
 fun mapa(
     //viewModel: SeriesViewModel
-    marcadores : List<Marcador>
+    marcadores: List<Marcador>,
+    permisoUbicacion: Boolean
 ){
     val context = LocalContext.current
-    val location = locationUtils()
-    val coroutineScope = rememberCoroutineScope()
+    var ubicacion: Location? by rememberSaveable { mutableStateOf(null) }
     var marcadoresOrdenados by rememberSaveable { mutableStateOf(listOf<Marcador>()) }
 
-    var ubicacion: Location? by rememberSaveable { mutableStateOf(null) }
-    LaunchedEffect(Unit) {
-        coroutineScope.launch(Dispatchers.IO){
-            ubicacion = location.getLocation(context)
-            if (ubicacion != null) {
-                Log.d("mapa", "Ubicación: ${ubicacion!!.latitude}, ${ubicacion!!.longitude}")
-                marcadoresOrdenados = ordenarMarcadoresPorDistancia(marcadores, ubicacion!!)
-                Log.d("mapa", "Marcadores ordenados: $marcadoresOrdenados")
+    if (permisoUbicacion) {
+        val location = locationUtils()
+        val coroutineScope = rememberCoroutineScope()
+        LaunchedEffect(Unit) {
+            coroutineScope.launch(Dispatchers.IO) {
+                ubicacion = location.getLocation(context)
+                if (ubicacion != null) {
+                    Log.d("mapa", "Ubicación: ${ubicacion!!.latitude}, ${ubicacion!!.longitude}")
+                    marcadoresOrdenados = ordenarMarcadoresPorDistancia(marcadores, ubicacion!!)
+                    Log.d("mapa", "Marcadores ordenados: $marcadoresOrdenados")
+                }
             }
-        }
 
+        }
     }
+
     var colorLinea = Color.Black
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         properties = MapProperties(
-            isMyLocationEnabled = true,
+            isMyLocationEnabled = permisoUbicacion,
             mapType = MapType.HYBRID
         )
 
@@ -64,17 +68,22 @@ fun mapa(
             val marker = LatLng(marcador.latitud, marcador.longitud)
             Marker(MarkerState(position = marker), title = marcador.nombre)
         }
-        if (ubicacion != null){
-            Log.d("mapa", "Dibujando líneas")
-            Log.d("mapa", "Marcadores ordenados: $marcadoresOrdenados")
-            for ((index, marcador) in marcadoresOrdenados.withIndex()) {
-                val colorLinea = if (index == 0) Color.Red else Color.Black
-                val marker = LatLng(marcador.latitud, marcador.longitud)
+        if (permisoUbicacion) {
+            if (ubicacion != null) {
+                Log.d("mapa", "Dibujando líneas")
+                Log.d("mapa", "Marcadores ordenados: $marcadoresOrdenados")
+                for ((index, marcador) in marcadoresOrdenados.withIndex()) {
+                    val colorLinea = if (index == 0) Color.Red else Color.Black
+                    val marker = LatLng(marcador.latitud, marcador.longitud)
 
-                Polyline(
-                    points = listOf(marker, LatLng(ubicacion!!.latitude, ubicacion!!.longitude)),
-                    color = colorLinea
-                )
+                    Polyline(
+                        points = listOf(
+                            marker,
+                            LatLng(ubicacion!!.latitude, ubicacion!!.longitude)
+                        ),
+                        color = colorLinea
+                    )
+                }
             }
         }
 

@@ -57,5 +57,7 @@
     <string name="select_photo">Aukeratu argazki bat</string>
     <string name="confirmarLogout" >Saioa itxi nahi duzu?</string>
     <string name="Logout" >saioa itxi</string>
-    <string name="Mapa">Ubicaciones de las series</string>
+    <string name="Mapa">Serieen kokalekuak</string>
+    <string name="description">SerieTraker-ek gehitutako oharra</string>
+    <string name="permisos_no_concedidos">Ezin izan dira behar diren baimenak lortu, mesedez eman baimenak.</string>
 </resources>

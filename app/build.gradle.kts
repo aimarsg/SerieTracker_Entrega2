@@ -4,6 +4,7 @@ plugins {
     id ("kotlin-kapt")
     id ("com.google.dagger.hilt.android")
     id ("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.gms.google-services")
     //id("com.google.devtools.ksp") version "1.9.22-1.0.17" // Depends on your kotlin version
 }
 
@@ -130,4 +131,16 @@ dependencies {
 
     // geolocalizaccion
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
 }

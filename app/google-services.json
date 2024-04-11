@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "653234507814",
+    "project_id": "serietracker-405b6",
+    "storage_bucket": "serietracker-405b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653234507814:android:8e930fb10c2bdb70b856e7",
+        "android_client_info": {
+          "package_name": "com.aimarsg.serietracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXZCuTboK98Yq3L1iZHnGqXif6QvuMtVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

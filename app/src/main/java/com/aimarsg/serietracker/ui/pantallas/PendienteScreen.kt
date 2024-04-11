@@ -32,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
@@ -40,6 +41,8 @@ import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.DateDialog
 import com.aimarsg.serietracker.ui.componentes.DialogoBorrar
 import com.aimarsg.serietracker.ui.componentes.NuevoPendiente
+import com.aimarsg.serietracker.utils.addEventToCalendar
+import com.aimarsg.serietracker.utils.deleteEventFromCalendar
 import kotlinx.datetime.LocalDate
 
 /**
@@ -111,6 +114,7 @@ fun ItemPendiente(
     var datepickerOpen by rememberSaveable {
         mutableStateOf(false)
     }
+    var context = LocalContext.current
     Card(
         modifier = modifier
             .padding(vertical = 10.dp, horizontal = 15.dp),
@@ -160,12 +164,14 @@ fun ItemPendiente(
                                 )
                             }
                             if (datepickerOpen) {
+                                val desc = stringResource(R.string.description)
                                 DateDialog(
                                     onDismissRequest = { datepickerOpen = false },
                                     onDateEntered = { viewModel.selectedDate = it.toString()
                                         datepickerOpen = false
                                         val serieAct = serie.copy(recordatorio = LocalDate.parse(viewModel.selectedDate))
                                         viewModel.editarSerie(serieAct)
+                                        addEventToCalendar(context = context,serieAct.titulo, description = desc,serieAct.recordatorio)
                                     },
                                 )
                             }
@@ -183,6 +189,7 @@ fun ItemPendiente(
                     onClick = {
                         val serieAct = serie.copy(siguiendo = true)
                         viewModel.editarSerie(serieAct)
+                        deleteEventFromCalendar(context, serieAct.titulo)
                     }
                 ) {
                     Icon(
