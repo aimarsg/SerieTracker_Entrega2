@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.*
 
@@ -26,14 +27,20 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationManager.notify(1, builder.build())
         }
 
-        /* TODO
-          * hacer que al recibir la alarma se llame al metodo de
-          * actualizar los datos con la api
-          */
-
-        /* TODO
-          * hacer que al reiniciar el dispositivo se restauren las alarmas
-         */
+        // llamar al servicio que realiza la sincronizacion de datos
+        if (context!=null) {
+            if (ContextCompat.checkSelfPermission(
+                    context!!,
+                    android.Manifest.permission.FOREGROUND_SERVICE
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.d("AlarmReceiver", "Lanzando servicio")
+                val serviceIntent = Intent(context, UpdateService::class.java)
+                context.startForegroundService(serviceIntent)
+            } else {
+                Log.d("AlarmReceiver", "No hay permisos")
+            }
+        }
 
     }
 }
