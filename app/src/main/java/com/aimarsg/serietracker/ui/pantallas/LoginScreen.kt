@@ -42,6 +42,7 @@ import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.ConnectException
 
 /**
  * Screen to login
@@ -65,6 +66,7 @@ fun LoginScreen(
     val coroutineScope = rememberCoroutineScope()
     var sesionIniciada by remember { mutableStateOf(false) }
     var mostrarError by remember { mutableStateOf(false) }
+    var mostrarErrorConexion by remember { mutableStateOf(false) }
 
     val onLogin: () -> Unit = {
         coroutineScope.launch(Dispatchers.IO){
@@ -77,6 +79,10 @@ fun LoginScreen(
             } catch (e: AuthenticationException) {
                 mostrarError = true
                 sesionIniciada = false
+            } catch (e: ConnectException) {
+                mostrarError = true
+                sesionIniciada = false
+                mostrarErrorConexion = true
             }
         }
     }
@@ -90,7 +96,14 @@ fun LoginScreen(
             Toast.LENGTH_SHORT
         ).show()
     }
-
+    if (mostrarErrorConexion){
+        Toast.makeText(
+            context,
+            R.string.no_internet,
+            Toast.LENGTH_SHORT
+        ).show()
+        mostrarErrorConexion = false
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),

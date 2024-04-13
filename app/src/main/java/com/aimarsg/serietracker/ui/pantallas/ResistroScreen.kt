@@ -38,6 +38,7 @@ import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.ConnectException
 
 
 /**
@@ -65,6 +66,7 @@ fun RegisterScreen(
     var registrado by remember { mutableStateOf(false) }
     var mostrarError by remember { mutableStateOf(false) }
     var contrasenasNoCoinciden by remember { mutableStateOf(false) }
+    var mostrarErrorConexion by remember { mutableStateOf(false) }
 
     val onRegister: () -> Unit = {
         coroutineScope.launch(Dispatchers.IO){
@@ -77,6 +79,10 @@ fun RegisterScreen(
                 mostrarError = true
                 registrado = false
                 contrasenasNoCoinciden = false
+            }catch (e: ConnectException) {
+                mostrarError = true
+                registrado = false
+                mostrarErrorConexion = true
             }
         }
     }
@@ -97,6 +103,14 @@ fun RegisterScreen(
             R.string.usuarioyaexiste,
             Toast.LENGTH_SHORT
         ).show()
+    }
+    if (mostrarErrorConexion){
+        Toast.makeText(
+            context,
+            R.string.no_internet,
+            Toast.LENGTH_SHORT
+        ).show()
+        mostrarErrorConexion = false
     }
 
     Column(

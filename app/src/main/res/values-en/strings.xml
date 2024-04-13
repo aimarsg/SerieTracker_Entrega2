@@ -60,4 +60,6 @@
     <string name="Mapa">Tv shows locations</string>
     <string name="description">Reminder added by SerieTracker</string>
     <string name="permisos_no_concedidos">The required permissions have not been granted, please allow this permissions.</string>
+    <string name="no_internet">There is no internet connection, please try again later</string>
+    <string name="no_internet_pic">There is no conection, so the profile won\'t update. Please, check your conection and try again later.</string>
 </resources>

@@ -1,7 +1,12 @@
 package com.aimarsg.serietracker.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -51,10 +58,18 @@ class MainActivity : AppCompatActivity() {
                 var logedIn by rememberSaveable {
                     mutableStateOf(false)
                 }
-                logedIn = viewmodel.obtenerUsuarioLogeado() != ""
-                if (logedIn) {
-                    Log.d("login", "Usuario logeado1: $logedIn")
-                    viewmodel.loginUsuarioGuardado()
+
+                // check if there is internet conection
+                if (!isNetworkAvailable(this)) {
+                    // show a toast
+                    val mensaje = stringResource(R.string.no_internet)
+                    Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+                }else {
+                    logedIn = viewmodel.obtenerUsuarioLogeado() != ""
+                    if (logedIn) {
+                        Log.d("login", "Usuario logeado1: $logedIn")
+                        viewmodel.loginUsuarioGuardado()
+                    }
                 }
                 // Update the app language, to restore the previous app language in case a different
                 // language has been stablished before closing the app
@@ -80,5 +95,24 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+}
+
+fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+    } else {
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo?.isConnected ?: false
     }
 }

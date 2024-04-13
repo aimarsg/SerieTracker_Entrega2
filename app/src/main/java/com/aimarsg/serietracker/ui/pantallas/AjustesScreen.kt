@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.activity.viewModels
@@ -53,6 +54,7 @@ import com.aimarsg.serietracker.ui.componentes.ProfilePicture
 import com.aimarsg.serietracker.ui.componentes.createImageFileFromBitMap
 import com.aimarsg.serietracker.ui.componentes.getBipMapFromUri
 import com.aimarsg.serietracker.ui.componentes.getFileFromUri
+import com.aimarsg.serietracker.ui.isNetworkAvailable
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import java.io.File
 import java.io.FileNotFoundException
@@ -136,10 +138,18 @@ fun Ajustes(
                 // Profile picture
                 var uri by remember { mutableStateOf<Uri?>(Uri.parse("")) }
                 if (uri == Uri.parse("")){
-                    viewModel.getProfilePicture{bitmap ->
-                        if (bitmap != null){
-                            uri = context.createImageFileFromBitMap(bitmap)
+                    if (isNetworkAvailable(context)) {
+                        viewModel.getProfilePicture { bitmap ->
+                            if (bitmap != null) {
+                                uri = context.createImageFileFromBitMap(bitmap)
+                            }
                         }
+                    }else{
+                        Toast.makeText(
+                            context,
+                            R.string.no_internet_pic,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     uri = "android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24".toUri()
                 }
@@ -150,7 +160,8 @@ fun Ajustes(
                     uri = uri,
                     onSetUri = {
                         uri = it
-                        context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
+                        if (isNetworkAvailable(context)) context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
+                        else Toast.makeText(context, R.string.no_internet_pic, Toast.LENGTH_SHORT).show()
                     }
                 )
             }
@@ -331,25 +342,30 @@ fun AjustesLanscape(
                 // Profile picture
                 var uri by remember { mutableStateOf<Uri?>(Uri.parse("")) }
                 if (uri == Uri.parse("")){
-                    viewModel.getProfilePicture{bitmap ->
-                        if (bitmap != null){
-                            uri = context.createImageFileFromBitMap(bitmap)
+                    if (isNetworkAvailable(context)) {
+                        viewModel.getProfilePicture { bitmap ->
+                            if (bitmap != null) {
+                                uri = context.createImageFileFromBitMap(bitmap)
+                            }
                         }
+                    }else{
+                        Toast.makeText(
+                            context,
+                            R.string.no_internet_pic,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     uri = "android.resource://com.aimarsg.serietracker/drawable/baseline_adb_24".toUri()
                 }
-                viewModel.getProfilePicture{bitmap ->
-                    if (bitmap != null){
-                        uri = context.createImageFileFromBitMap(bitmap)
-                    }
-                }
+
                 //image to show bottom sheet
                 ProfilePicture(
                     directory = File("images"),
                     uri = uri,
                     onSetUri = {
                         uri = it
-                        context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
+                        if (isNetworkAvailable(context)) context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
+                        else Toast.makeText(context, R.string.no_internet_pic, Toast.LENGTH_SHORT).show()
                     }
                 )
             }

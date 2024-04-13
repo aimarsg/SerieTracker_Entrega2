@@ -60,4 +60,6 @@
     <string name="Mapa">Serieen kokalekuak</string>
     <string name="description">SerieTraker-ek gehitutako oharra</string>
     <string name="permisos_no_concedidos">Ezin izan dira behar diren baimenak lortu, mesedez eman baimenak.</string>
+    <string name="no_internet">Ez dago internetera konexiorik, mesedez saiatu berriro berandago</string>
+    <string name="no_internet_pic">Ez dago konexiorik, beraz ezin izango da irudia eguneratu. Mesedez, egiaztatu zure konexioa eta saiatu berriro beranduago.</string>
 </resources>
