@@ -2,6 +2,8 @@ package com.aimarsg.serietracker.model.repositories
 
 import com.aimarsg.serietracker.model.daos.SerieUsuarioDao
 import com.aimarsg.serietracker.model.entities.SerieUsuario
+import com.aimarsg.serietracker.model.webclient.APIClient
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +15,8 @@ import javax.inject.Singleton
 
 @Singleton
 class TrackerRepository @Inject constructor(
-    private val serieUsuarioDao: SerieUsuarioDao
+    private val serieUsuarioDao: SerieUsuarioDao,
+    private val apiClient: APIClient
 ): ITrackerRepository{
     override suspend fun addSerie(serieUsuario: SerieUsuario) = serieUsuarioDao.insert(serieUsuario)
 
@@ -24,4 +27,15 @@ class TrackerRepository @Inject constructor(
     override fun getSeriesPendiente(): Flow<List<SerieUsuario>> = serieUsuarioDao.getSeriesUsuarioPendiente()
 
     override fun getSeriesSiguiendo(): Flow<List<SerieUsuario>> = serieUsuarioDao.getSeriesUsuarioSiguiendo()
+
+    override suspend fun updateSeriesUsuario() {
+        // Delete all the series and download the new ones
+        serieUsuarioDao.deleteAll()
+        val series = apiClient.downloadUserData()
+        for (serie in series){
+            serieUsuarioDao.insert(serie)
+        }
+    }
+
+    override suspend fun getAllSeries(): List<SerieUsuario> = serieUsuarioDao.getAll()
 }

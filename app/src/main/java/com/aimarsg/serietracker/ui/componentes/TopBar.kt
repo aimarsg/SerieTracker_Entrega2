@@ -1,5 +1,6 @@
 package com.aimarsg.serietracker.ui.componentes
 
+import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -19,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
@@ -27,6 +29,7 @@ import androidx.navigation.NavHostController
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.TrackerScreen
+import com.aimarsg.serietracker.ui.isNetworkAvailable
 
 /**
  * Top bar of the app. It shows the screen's name. When not in main screen, 'back' button is shown.
@@ -49,6 +52,8 @@ fun SerieTrackerTopBar(
     val (isExpanded, setExpanded) = rememberSaveable { mutableStateOf(false) }
     var helpDialogOpened by rememberSaveable{mutableStateOf(false)}
     var logoutDialogOpened by rememberSaveable{mutableStateOf(false)}
+    var context = LocalContext.current
+    var noConnection by rememberSaveable{mutableStateOf(false)}
 
     TopAppBar(
         title = {  Text(text = stringResource(currentScreen.title), color = MaterialTheme.colorScheme.onPrimary) },
@@ -98,6 +103,57 @@ fun SerieTrackerTopBar(
                 ) {
                     DropdownMenuItem(
                         onClick = {
+                            if (!isNetworkAvailable(context = context)){
+                                noConnection = true
+                            }else{
+                                viewModel.uploadUserData()
+                            }
+                            setExpanded(false)
+                        },
+                        text = { Text(text = stringResource(R.string.subir)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_cloud_upload_24),
+                                contentDescription = stringResource(R.string.subir)
+                            )
+                        }
+                    )
+                    DropdownMenuItem(
+                        onClick = {
+                            if (!isNetworkAvailable(context = context)){
+                                noConnection = true
+                            }else{
+                                viewModel.downloadUserData()
+                            }
+                            setExpanded(false)
+                        },
+                        text = { Text(text = stringResource(R.string.descargar)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_cloud_download_24),
+                                contentDescription = stringResource(R.string.descargar)
+                            )
+                        }
+                    )
+                    DropdownMenuItem(
+                        onClick = {
+                            if (!isNetworkAvailable(context = context)){
+                                noConnection = true
+                            }else{
+                                viewModel.updateCatalogue()
+                            }
+                            setExpanded(false)
+                        },
+                        text = { Text(text = stringResource(R.string.actualizar_catalogo)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_library_books_24),
+                                contentDescription = stringResource(R.string.actualizar_catalogo)
+                            )
+                        }
+                    )
+                    DropdownMenuItem(
+                        onClick = {
                             //navController.navigate(TrackerScreen.Ajustes.name)
                             if (navController.currentBackStackEntry?.destination?.route != TrackerScreen.Mapa.name){
                                 navController.navigate(TrackerScreen.Mapa.name)
@@ -129,6 +185,10 @@ fun SerieTrackerTopBar(
                         }
                     )
                 }
+            }
+            if (noConnection){
+                val mensaje = stringResource(R.string.no_internet)
+                Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
             }
         }
     )

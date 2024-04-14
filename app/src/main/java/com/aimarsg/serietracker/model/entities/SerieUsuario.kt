@@ -4,8 +4,10 @@ import androidx.compose.runtime.Immutable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 
 @Immutable
+@Serializable
 @Entity(tableName = "SerieUsuario")
 data class SerieUsuario(
     //@PrimaryKey

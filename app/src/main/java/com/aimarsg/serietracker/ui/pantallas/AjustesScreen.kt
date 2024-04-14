@@ -10,7 +10,6 @@ import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
-import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,7 +51,6 @@ import com.aimarsg.serietracker.model.Idioma
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.ProfilePicture
 import com.aimarsg.serietracker.ui.componentes.createImageFileFromBitMap
-import com.aimarsg.serietracker.ui.componentes.getBipMapFromUri
 import com.aimarsg.serietracker.ui.componentes.getFileFromUri
 import com.aimarsg.serietracker.ui.isNetworkAvailable
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
@@ -60,7 +58,6 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-
 
 
 /*************************************************************************************************

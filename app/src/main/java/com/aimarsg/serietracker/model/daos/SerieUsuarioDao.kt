@@ -30,4 +30,10 @@ interface SerieUsuarioDao{
 
     @Query("SELECT * from SerieUsuario WHERE not siguiendo ORDER BY titulo ASC")
     fun getSeriesUsuarioPendiente(): Flow<List<SerieUsuario>>
+
+    @Query("DELETE FROM SerieUsuario")
+    suspend fun deleteAll()
+
+    @Query("SELECT * from SerieUsuario")
+    fun getAll(): List<SerieUsuario>
 }

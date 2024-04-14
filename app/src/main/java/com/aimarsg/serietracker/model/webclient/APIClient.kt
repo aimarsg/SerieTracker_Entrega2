@@ -2,6 +2,8 @@ package com.aimarsg.serietracker.model.webclient
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.aimarsg.serietracker.model.entities.SerieCatalogo
+import com.aimarsg.serietracker.model.entities.SerieUsuario
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -181,6 +183,40 @@ class APIClient @Inject constructor() {
     }
 
     // Firebase
+    /**
+     * Method to subscribe a user to the FCM service
+     * @param token: the user's FCM token (string)
+     */
+    suspend fun suscribeUser(token: String) {
+        httpClient.post("http://35.246.246.159:8000/suscribir_dispositivo/") {
+            contentType(ContentType.Application.Json)
+            setBody(mapOf("fcm_client_token" to token))
+        }
+    }
+
+    // Methods to manage users data and synchronize with the API
+    /**
+     * Method to upload user's local data to the API
+     * @param series: list of series to upload
+     */
+    suspend fun uploadUserData(series: List<SerieUsuario>){
+        httpClient.post("http://35.246.246.159:8000/users/misSeries/sincronizar/"){
+            contentType(ContentType.Application.Json)
+            setBody(mapOf("seriesUsuario" to series))
+        }
+    }
+
+    /**
+     * Method to download user's data from the API
+     * @return a list of SeriesUsuario
+     */
+    suspend fun downloadUserData(): List<SerieUsuario> = httpClient.get("http://35.246.246.159:8000/users/misSeries/").body()
+
+    /**
+     * Method to download the catalogue from the API
+     * @return a list of SeriesCatalogo
+     */
+    suspend fun downloadCatalogue(): List<SerieCatalogo> = httpClient.get("http://35.246.246.159:8000/series_catalogo/").body()
 
 }
 

@@ -60,6 +60,9 @@
     <string name="Mapa">Ubicaciones de las series</string>
     <string name="description">Recordatorio añadido desde la aplicación SerieTracker</string>
     <string name="permisos_no_concedidos">No se han podido obtener los permisos necesarios. Por favor, concede los permisos desde ajustes.</string>
-    <string name="no_internet">No hay conexión a internet, por favor inténtalo de nuevo más tarde</string>
-    <string name="no_internet_pic">No hay conexión a internet, por lo que la foto no se sincronizará en el servidor. Por favor revisa tu conexión e inténtalo más tarde.</string>
+    <string name="no_internet">No hay conexión al servidor, por favor inténtalo de nuevo más tarde</string>
+    <string name="no_internet_pic">No hay conexión al servidor, por lo que la foto no se sincronizará en el servidor. Por favor revisa tu conexión e inténtalo más tarde.</string>
+    <string name="subir">Subir los cambios a la nube</string>
+    <string name="descargar">Descargar cambios de la nube</string>
+    <string name="actualizar_catalogo">Actualizar catálogo de series</string>
 </resources>

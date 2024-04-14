@@ -3,7 +3,6 @@ package com.aimarsg.serietracker.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,7 +19,6 @@ import com.aimarsg.serietracker.model.webclient.AuthenticationException
 import com.aimarsg.serietracker.model.webclient.Marcador
 import com.aimarsg.serietracker.model.webclient.UserExistsException
 import com.aimarsg.serietracker.utils.CambioDeIdioma
-import com.aimarsg.serietracker.utils.locationUtils
 import com.aimarsg.serietracker.utils.today
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -235,4 +233,31 @@ class SeriesViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Funtion to upload local user data to the API
+     */
+    fun uploadUserData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val seriesUsuario = trackerRepository.getAllSeries()
+            ApiClient.uploadUserData(seriesUsuario)
+        }
+    }
+
+    /**
+     * Function to download user data from the API
+     */
+    fun downloadUserData() {
+        viewModelScope.launch(Dispatchers.IO)  {
+            trackerRepository.updateSeriesUsuario()
+        }
+    }
+
+    /**
+     * Function to update the catalogue
+     */
+    fun updateCatalogue() {
+        viewModelScope.launch(Dispatchers.IO)  {
+            catalogoRepository.updateCatalogo()
+        }
+    }
 }

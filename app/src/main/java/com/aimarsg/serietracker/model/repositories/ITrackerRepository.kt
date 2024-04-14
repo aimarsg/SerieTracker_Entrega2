@@ -9,4 +9,6 @@ interface ITrackerRepository{
     suspend fun updateSerie(serieUsuario: SerieUsuario)
     fun getSeriesSiguiendo(): Flow<List<SerieUsuario>>
     fun getSeriesPendiente(): Flow<List<SerieUsuario>>
+    suspend fun updateSeriesUsuario()
+    suspend fun getAllSeries(): List<SerieUsuario>
 }

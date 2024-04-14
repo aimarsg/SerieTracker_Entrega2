@@ -7,4 +7,5 @@ interface ICatalogoRepository{
     fun getAllSeries(): Flow<List<SerieCatalogo>>
     suspend fun addSerie(serieCatalogo: SerieCatalogo)
     suspend fun deleteSerie(serieCatalogo: SerieCatalogo)
+    suspend fun updateCatalogo()
 }
