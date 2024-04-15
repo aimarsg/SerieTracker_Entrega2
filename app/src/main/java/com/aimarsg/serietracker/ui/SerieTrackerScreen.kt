@@ -109,6 +109,7 @@ fun SerieTrackerApp(
                     LoginScreen(
                         onLogedIn = {
                                     navController.popBackStack()
+                                    viewModel.downloadUserData()
                                     navController.navigate(TrackerScreen.Siguiendo.name)
                                     },
                         register = {

@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                     if (logedIn) {
                         Log.d("login", "Usuario logeado1: $logedIn")
                         viewmodel.loginUsuarioGuardado()
+                        //viewmodel.downloadUserData()
                         suscribeToFCM(this)
                     }
                 }

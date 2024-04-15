@@ -89,6 +89,7 @@ fun SerieTrackerTopBar(
                     onDismiss = {logoutDialogOpened = false},
                     onDelete = {
                         logoutDialogOpened = false
+                        viewModel.uploadUserData()
                         viewModel.logout()
                         navController.navigate(TrackerScreen.Login.name)
                     }
