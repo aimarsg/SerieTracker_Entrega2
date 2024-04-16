@@ -46,11 +46,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.webclient.AuthenticationException
+import com.aimarsg.serietracker.services.AlarmScheduler
 import com.aimarsg.serietracker.services.suscribeToFCM
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.ConnectException
+import java.time.LocalDateTime
 
 /**
  * Screen to login
@@ -76,6 +78,8 @@ fun LoginScreen(
     var mostrarError by remember { mutableStateOf(false) }
     var mostrarErrorConexion by remember { mutableStateOf(false) }
 
+    val alarmScheduler = AlarmScheduler(context)
+
     val onLogin: () -> Unit = {
         coroutineScope.launch(Dispatchers.IO){
             try {
@@ -96,6 +100,7 @@ fun LoginScreen(
     }
     if (sesionIniciada) {
         suscribeToFCM(context)
+        alarmScheduler.schedule()
         onLogedIn()
     }
     if (mostrarError){

@@ -32,7 +32,6 @@ import dagger.hilt.android.AndroidEntryPoint
  * App's main activity
  */
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

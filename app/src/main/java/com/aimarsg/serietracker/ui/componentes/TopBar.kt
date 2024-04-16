@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.aimarsg.serietracker.R
+import com.aimarsg.serietracker.services.AlarmScheduler
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.TrackerScreen
 import com.aimarsg.serietracker.ui.isNetworkAvailable
@@ -54,6 +55,8 @@ fun SerieTrackerTopBar(
     var logoutDialogOpened by rememberSaveable{mutableStateOf(false)}
     var context = LocalContext.current
     var noConnection by rememberSaveable{mutableStateOf(false)}
+
+    val alarmScheduler = AlarmScheduler(context)
 
     TopAppBar(
         title = {  Text(text = stringResource(currentScreen.title), color = MaterialTheme.colorScheme.onPrimary) },
@@ -91,6 +94,7 @@ fun SerieTrackerTopBar(
                         logoutDialogOpened = false
                         viewModel.uploadUserData()
                         viewModel.logout()
+                        alarmScheduler.cancel()
                         navController.navigate(TrackerScreen.Login.name)
                     }
                 )

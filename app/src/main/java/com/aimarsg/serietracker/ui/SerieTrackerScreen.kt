@@ -1,15 +1,11 @@
 package com.aimarsg.serietracker.ui
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeNodeLifecycleCallback
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,8 +28,6 @@ import com.aimarsg.serietracker.ui.pantallas.MapaScreen
 import com.aimarsg.serietracker.ui.pantallas.PendienteScreen
 import com.aimarsg.serietracker.ui.pantallas.RegisterScreen
 import com.aimarsg.serietracker.ui.pantallas.SiguiendoScreen
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 
 /**
  * Definition of the different app screens
