@@ -104,7 +104,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    // GSON
+    // G:SON
     implementation ("com.google.code.gson:gson:2.8.6")
 
     // splash screen
@@ -132,16 +132,21 @@ dependencies {
     // geolocalizaccion
     implementation ("com.google.android.gms:play-services-location:21.0.1")
 
+    // firebase
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-
-
-    // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
-
-
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation("com.google.firebase:firebase-messaging-ktx")
+
+    // GLANCE
+    // For AppWidgets support
+    implementation("androidx.glance:glance-appwidget:1.0.0")
+    // For interop APIs with Material 2
+    implementation("androidx.glance:glance-material:1.0.0")
+    // For interop APIs with Material 3
+    implementation("androidx.glance:glance-material3:1.0.0")
+
 }

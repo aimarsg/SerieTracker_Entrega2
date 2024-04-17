@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.aimarsg.serietracker.R
+import com.aimarsg.serietracker.services.AlarmScheduler
 import com.aimarsg.serietracker.services.suscribeToFCM
 import com.aimarsg.serietracker.ui.theme.SerieTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 var logedIn by rememberSaveable {
                     mutableStateOf(false)
                 }
+                val alarmScheduler = AlarmScheduler(this)
 
                 // check if there is internet conection
                 if (!isNetworkAvailable(this)) {
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity() {
                         suscribeToFCM(this)
                     }
                 }
+                alarmScheduler.schedule()
                 // Update the app language, to restore the previous app language in case a different
                 // language has been stablished before closing the app
                 viewmodel.reloadLang(viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value, this)

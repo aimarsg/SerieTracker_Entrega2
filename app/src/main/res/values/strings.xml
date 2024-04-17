@@ -65,4 +65,6 @@
     <string name="subir">Subir los cambios a la nube</string>
     <string name="descargar">Descargar cambios de la nube</string>
     <string name="actualizar_catalogo">Actualizar catalogo de series</string>
+    <string name="seriesFavoritas">Mis series favoritas</string>
+    <string name="no_info_widget">No se puede mostrar la información</string>
 </resources>

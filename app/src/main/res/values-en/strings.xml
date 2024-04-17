@@ -65,4 +65,6 @@
     <string name="subir">Upload changes to the cloud</string>
     <string name="descargar">Download changes from the cloud</string>
     <string name="actualizar_catalogo">Update the catalogue</string>
+    <string name="seriesFavoritas">My favourite series</string>
+    <string name="no_info_widget">Information cannot be displayed</string>
 </resources>
