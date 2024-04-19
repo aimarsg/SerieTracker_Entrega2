@@ -2,6 +2,7 @@ package com.aimarsg.serietracker.model.webclient
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import com.aimarsg.serietracker.model.entities.SerieCatalogo
 import com.aimarsg.serietracker.model.entities.SerieUsuario
 import io.ktor.client.HttpClient
@@ -13,6 +14,7 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
@@ -44,6 +46,7 @@ import javax.inject.Singleton
 // Custom exceptions definition
 class AuthenticationException : Exception()
 class UserExistsException : Exception()
+class NotFoundException : Exception()
 
 // Data class that represents a user to send the register request
 @Serializable
@@ -88,6 +91,7 @@ class APIClient @Inject constructor() {
                 when {
                     exception is ClientRequestException && exception.response.status == HttpStatusCode.Unauthorized -> throw AuthenticationException()
                     exception is ClientRequestException && exception.response.status == HttpStatusCode.Conflict -> throw UserExistsException()
+                    exception is ClientRequestException && exception.response.status == HttpStatusCode.NotFound  -> throw NotFoundException()
                     else -> {
                         exception.printStackTrace()
                         throw exception
@@ -122,6 +126,7 @@ class APIClient @Inject constructor() {
                 append("username", user)
                 append("password", password)
             }).body()
+        Log.d("Token oauth", tokenInfo.accessToken)
         bearerTokenStorage.add(BearerTokens(tokenInfo.accessToken, ""))
     }
 
@@ -154,9 +159,14 @@ class APIClient @Inject constructor() {
     /**
      * Method to get the user's profile picture
      * @return the user's profile picture as a Bitmap
+     * @throws NotFoundException if the user's profile picture is not found
      */
+    @Throws(NotFoundException::class, Exception::class)
     suspend fun getFotoDePerfil(): Bitmap {
-        val response = httpClient.get("http://35.246.246.159:8000/users/obtenerFoto/")
+        Log.d("Token oauth", bearerTokenStorage.last().accessToken)
+        val response = httpClient.get("http://35.246.246.159:8000/users/obtenerFoto/"){
+            bearerAuth(bearerTokenStorage.last().accessToken)
+        }
         val image: ByteArray = response.body()
         return BitmapFactory.decodeByteArray(image, 0, image.size)
     }
@@ -179,6 +189,7 @@ class APIClient @Inject constructor() {
                 }
             )
             )
+            bearerAuth(bearerTokenStorage.last().accessToken)
         }
     }
 
@@ -191,6 +202,7 @@ class APIClient @Inject constructor() {
         httpClient.post("http://35.246.246.159:8000/suscribir_dispositivo/") {
             contentType(ContentType.Application.Json)
             setBody(mapOf("fcm_client_token" to token))
+            bearerAuth(bearerTokenStorage.last().accessToken)
         }
     }
 
@@ -199,10 +211,13 @@ class APIClient @Inject constructor() {
      * Method to upload user's local data to the API
      * @param series: list of series to upload
      */
+    @Throws(AuthenticationException::class, Exception::class)
     suspend fun uploadUserData(series: List<SerieUsuario>){
+        Log.d("Token oauth", bearerTokenStorage.last().accessToken)
         httpClient.post("http://35.246.246.159:8000/users/misSeries/sincronizar/"){
             contentType(ContentType.Application.Json)
             setBody(mapOf("seriesUsuario" to series))
+            bearerAuth(bearerTokenStorage.last().accessToken)
         }
     }
 
@@ -210,12 +225,16 @@ class APIClient @Inject constructor() {
      * Method to download user's data from the API
      * @return a list of SeriesUsuario
      */
-    suspend fun downloadUserData(): List<SerieUsuario> = httpClient.get("http://35.246.246.159:8000/users/misSeries/").body()
+    @Throws(AuthenticationException::class, Exception::class)
+    suspend fun downloadUserData(): List<SerieUsuario> = httpClient.get("http://35.246.246.159:8000/users/misSeries/"){
+        bearerAuth(bearerTokenStorage.last().accessToken)
+    }.body()
 
     /**
      * Method to download the catalogue from the API
      * @return a list of SeriesCatalogo
      */
+    @Throws(Exception::class)
     suspend fun downloadCatalogue(): List<SerieCatalogo> = httpClient.get("http://35.246.246.159:8000/series_catalogo/").body()
 
 }

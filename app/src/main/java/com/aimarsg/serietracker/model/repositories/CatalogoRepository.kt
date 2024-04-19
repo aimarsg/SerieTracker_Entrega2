@@ -23,6 +23,7 @@ class CatalogoRepository @Inject constructor(
 
     override suspend fun deleteSerie(serieCatalogo: SerieCatalogo) = serieCatalogoDao.delete(serieCatalogo)
 
+    @Throws(Exception::class)
     override suspend fun updateCatalogo() {
         // Delete all the series and download the new ones
         serieCatalogoDao.deleteAll()

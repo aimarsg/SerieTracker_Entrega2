@@ -95,7 +95,10 @@ fun SerieTrackerTopBar(
                         viewModel.uploadUserData()
                         viewModel.logout()
                         alarmScheduler.cancel()
+                        while (navController.popBackStack()){navController.popBackStack()}
                         navController.navigate(TrackerScreen.Login.name)
+                        //navController.navigate(TrackerScreen.Login.name)
+
                     }
                 )
             }

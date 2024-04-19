@@ -36,6 +36,7 @@
         </service>
 
         <service android:name=".services.UpdateService"
+            android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="dataSync">
         </service>

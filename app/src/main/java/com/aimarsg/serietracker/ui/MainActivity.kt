@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // TODO updateData()
         installSplashScreen()
         setContent {
             val windowSize = calculateWindowSizeClass(this)
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 var logedIn by rememberSaveable {
                     mutableStateOf(false)
                 }
-                val alarmScheduler = AlarmScheduler(this)
+                //val alarmScheduler = AlarmScheduler(this)
 
                 // check if there is internet conection
                 if (!isNetworkAvailable(this)) {
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                         suscribeToFCM(this)
                     }
                 }
-                alarmScheduler.schedule()
+                //alarmScheduler.schedule()
                 // Update the app language, to restore the previous app language in case a different
                 // language has been stablished before closing the app
                 viewmodel.reloadLang(viewmodel.idioma.collectAsState(initial = viewmodel.idiomaActual).value, this)

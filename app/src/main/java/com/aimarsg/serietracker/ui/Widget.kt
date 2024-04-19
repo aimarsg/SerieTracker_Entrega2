@@ -140,7 +140,7 @@ class WidgetReceiver : GlanceAppWidgetReceiver() {
         updateData(context)
     }
 
-    private fun updateData(context: Context) {
+    fun updateData(context: Context) {
         coroutineScope.launch {
             Log.d("Widget", "Actualizando datos")
 

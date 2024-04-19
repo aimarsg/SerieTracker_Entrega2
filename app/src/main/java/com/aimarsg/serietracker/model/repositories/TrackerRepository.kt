@@ -3,6 +3,7 @@ package com.aimarsg.serietracker.model.repositories
 import com.aimarsg.serietracker.model.daos.SerieUsuarioDao
 import com.aimarsg.serietracker.model.entities.SerieUsuario
 import com.aimarsg.serietracker.model.webclient.APIClient
+import com.aimarsg.serietracker.model.webclient.AuthenticationException
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class TrackerRepository @Inject constructor(
 
     override fun getSeriesSiguiendo(): Flow<List<SerieUsuario>> = serieUsuarioDao.getSeriesUsuarioSiguiendo()
 
+    @Throws(AuthenticationException::class, Exception::class)
     override suspend fun updateSeriesUsuario() {
         // Delete all the series and download the new ones
         serieUsuarioDao.deleteAll()

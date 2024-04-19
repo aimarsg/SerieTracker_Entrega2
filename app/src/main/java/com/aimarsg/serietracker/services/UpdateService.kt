@@ -14,6 +14,7 @@ import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.repositories.CatalogoRepository
 import com.aimarsg.serietracker.model.repositories.TrackerRepository
 import com.aimarsg.serietracker.model.webclient.APIClient
+import com.aimarsg.serietracker.model.webclient.AuthenticationException
 import com.aimarsg.serietracker.ui.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -62,7 +63,7 @@ class UpdateService : Service() {
                 }
             }
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
@@ -80,6 +81,9 @@ class UpdateService : Service() {
                 ApiClient.uploadUserData(seriesUsuario)
                 trackerRepository.updateSeriesUsuario()
                 catalogoRepository.updateCatalogo()
+            } catch (ae: AuthenticationException){
+                Log.e("UpdateService", "No se ha iniciado sesion")
+                errorNotification("No has iniciado sesion")
             } catch (e: Exception) {
                 Log.e("UpdateService", "Error al sincronizar datos", e)
                 errorNotification("Error al sincronizar datos")

@@ -26,7 +26,8 @@ class AlarmScheduler(
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             getTimeMillis(),
-            15*60*1000,// 15 minutos //AlarmManager.INTERVAL_DAY, // 15000
+            15*1000,// 15 segundos
+            //15*60*1000,// 15 minutos //AlarmManager.INTERVAL_DAY, // 15000
             pendingIntent
         )
         Log.e("Alarm", "Alarm set")

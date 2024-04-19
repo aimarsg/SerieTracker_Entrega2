@@ -1,5 +1,9 @@
 package com.aimarsg.serietracker.ui.pantallas
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -35,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.entities.SerieUsuario
 import com.aimarsg.serietracker.ui.SeriesViewModel
@@ -58,7 +63,7 @@ fun PendienteScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-
+        var context = LocalContext.current
         var dialogOpen by rememberSaveable {
             mutableStateOf(false)
         }
@@ -89,6 +94,7 @@ fun PendienteScreen(
                 .padding(16.dp)
         )
         if (dialogOpen){
+            comprobarPermisosCalendario(context)
             NuevoPendiente(
                 onDismissRequest = { dialogOpen = false },
                 onDoneButtonClicked = {} , // TODO onNextButtonClicked,
@@ -165,6 +171,7 @@ fun ItemPendiente(
                             }
                             if (datepickerOpen) {
                                 val desc = stringResource(R.string.description)
+                                comprobarPermisosCalendario(context)
                                 DateDialog(
                                     onDismissRequest = { datepickerOpen = false },
                                     onDateEntered = { viewModel.selectedDate = it.toString()
@@ -217,6 +224,27 @@ fun ItemPendiente(
                     })
             }
         }
+    }
+}
+
+fun comprobarPermisosCalendario(context: Context){
+    if (ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_CALENDAR
+        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.WRITE_CALENDAR
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        // Si no hay permisos, solicitarlos en tiempo de ejecución
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR
+            ),
+            1
+        )
     }
 }
 /*

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
@@ -48,6 +49,7 @@ import androidx.core.net.toUri
 import com.aimarsg.serietracker.NotificationID
 import com.aimarsg.serietracker.R
 import com.aimarsg.serietracker.model.Idioma
+import com.aimarsg.serietracker.model.webclient.NotFoundException
 import com.aimarsg.serietracker.ui.SeriesViewModel
 import com.aimarsg.serietracker.ui.componentes.ProfilePicture
 import com.aimarsg.serietracker.ui.componentes.createImageFileFromBitMap
@@ -136,11 +138,16 @@ fun Ajustes(
                 var uri by remember { mutableStateOf<Uri?>(Uri.parse("")) }
                 if (uri == Uri.parse("")){
                     if (isNetworkAvailable(context)) {
-                        viewModel.getProfilePicture { bitmap ->
-                            if (bitmap != null) {
-                                uri = context.createImageFileFromBitMap(bitmap)
+                        try {
+                            viewModel.getProfilePicture { bitmap ->
+                                if (bitmap != null) {
+                                    uri = context.createImageFileFromBitMap(bitmap)
+                                }
                             }
+                        }catch (e: NotFoundException){
+                            Log.d("Ajustes", "No se ha podido obtener la imagen de perfil")
                         }
+
                     }else{
                         Toast.makeText(
                             context,
@@ -340,10 +347,14 @@ fun AjustesLanscape(
                 var uri by remember { mutableStateOf<Uri?>(Uri.parse("")) }
                 if (uri == Uri.parse("")){
                     if (isNetworkAvailable(context)) {
-                        viewModel.getProfilePicture { bitmap ->
-                            if (bitmap != null) {
-                                uri = context.createImageFileFromBitMap(bitmap)
+                        try {
+                            viewModel.getProfilePicture { bitmap ->
+                                if (bitmap != null) {
+                                    uri = context.createImageFileFromBitMap(bitmap)
+                                }
                             }
+                        }catch (e: NotFoundException){
+                            Log.d("Ajustes", "No se ha podido obtener la imagen de perfil")
                         }
                     }else{
                         Toast.makeText(

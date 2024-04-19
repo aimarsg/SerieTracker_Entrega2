@@ -17,6 +17,7 @@ import com.aimarsg.serietracker.model.repositories.TrackerRepository
 import com.aimarsg.serietracker.model.webclient.APIClient
 import com.aimarsg.serietracker.model.webclient.AuthenticationException
 import com.aimarsg.serietracker.model.webclient.Marcador
+import com.aimarsg.serietracker.model.webclient.NotFoundException
 import com.aimarsg.serietracker.model.webclient.UserExistsException
 import com.aimarsg.serietracker.utils.CambioDeIdioma
 import com.aimarsg.serietracker.utils.today
@@ -74,12 +75,13 @@ class SeriesViewModel @Inject constructor(
      */
     fun loginUsuarioGuardado(){
         viewModelScope.launch {
-            val usuario: String = myPreferencesDataStore.getUsuarioLogeado().first()
+            val usuariog: String = myPreferencesDataStore.getUsuarioLogeado().first()
             val contrasena: String = myPreferencesDataStore.getContrasenaUsuarioLogeado().first()
-            Log.d("SeriesViewModel", "Usuario: $usuario, Contrasena: $contrasena")
-            if (usuario != "" && contrasena != ""){
+            Log.d("SeriesViewModel", "Usuario: $usuariog, Contrasena: $contrasena")
+            usuario = usuariog
+            if (usuariog != "" && contrasena != ""){
                 try {
-                    authenticate(usuario, contrasena)
+                    authenticate(usuariog, contrasena)
                     Log.d("SeriesViewModel", "Usuario guardado autenticado")
                 } catch (e: AuthenticationException){
                     Log.e("SeriesViewModel", "Error al autenticar usuario guardado")
@@ -206,10 +208,16 @@ class SeriesViewModel @Inject constructor(
      * Function to get the user's profile picture
      * @param callback: callback to return the user's profile picture
      */
+    @Throws(NotFoundException::class, Exception::class)
     fun getProfilePicture(callback: (Bitmap?) -> Unit) {
         viewModelScope.launch {
-            val bitmap = ApiClient.getFotoDePerfil()
-            callback(bitmap)
+            try {
+                val bitmap = ApiClient.getFotoDePerfil()
+                callback(bitmap)
+            } catch (e: NotFoundException){
+                Log.d("SeriesViewModel", "Error al obtener la foto de perfil")
+                callback(null)
+            }
         }
     }
     /**

@@ -38,7 +38,10 @@ class AlarmReceiver : BroadcastReceiver() {
                 val serviceIntent = Intent(context, UpdateService::class.java)
                 context.startForegroundService(serviceIntent)
             } else {
-                Log.d("AlarmReceiver", "No hay permisos")
+                //Log.d("AlarmReceiver", "No hay permisos")
+                Log.d("AlarmReceiver", "Lanzando servicio")
+                val serviceIntent = Intent(context, UpdateService::class.java)
+                context.startForegroundService(serviceIntent)
             }
         }
 
