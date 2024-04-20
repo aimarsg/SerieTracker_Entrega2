@@ -100,7 +100,7 @@ fun LoginScreen(
     }
     if (sesionIniciada) {
         suscribeToFCM(context)
-        //alarmScheduler.schedule()
+        alarmScheduler.schedule()
         onLogedIn()
     }
     if (mostrarError){
