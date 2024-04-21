@@ -16,7 +16,7 @@ class AlarmReceiver : BroadcastReceiver() {
         Log.d("AlarmReceiver", "Alarm received")
         //val message = intent?.getStringExtra("EXTRA_MESSAGE") ?: return
         val channelId = "0"
-        context?.let { ctx ->
+        /*context?.let { ctx ->
             val notificationManager =
                 ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val builder = NotificationCompat.Builder(ctx, channelId)
@@ -25,7 +25,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 .setContentText("Notification sent with message")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
             notificationManager.notify(1, builder.build())
-        }
+        }*/
 
         // llamar al servicio que realiza la sincronizacion de datos
         if (context!=null) {

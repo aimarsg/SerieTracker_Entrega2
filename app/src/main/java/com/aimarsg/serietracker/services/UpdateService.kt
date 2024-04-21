@@ -49,17 +49,24 @@ class UpdateService : Service() {
         startForeground(1, createNotification())
         serviceScope.launch {
             supervisorScope {
-                try {
-                    siconizarDatos()
-                    val successNotification = createSuccessNotification()
-                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.notify(1, successNotification)
-                } catch (e: Exception) {
-                    Log.e("UpdateService", "Error al sincronizar datos", e)
-                    errorNotification("Error al sincronizar datos")
-                    val errorNotification = createErrorNotification()
-                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.notify(1, errorNotification)
+                if (!isNetworkAvailable(context)) {
+                    errorNotification(context.getString(R.string.no_internet))
+                    Log.d("UpdateService", "No hay internet")
+                }else {
+                    try {
+                        siconizarDatos()
+                        val successNotification = createSuccessNotification()
+                        val notificationManager =
+                            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        notificationManager.notify(1, successNotification)
+                    } catch (e: Exception) {
+                        Log.e("UpdateService", "Error al sincronizar datos", e)
+                        errorNotification("Error al sincronizar datos")
+                        val errorNotification = createErrorNotification()
+                        val notificationManager =
+                            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        notificationManager.notify(1, errorNotification)
+                    }
                 }
             }
         }
@@ -74,13 +81,18 @@ class UpdateService : Service() {
     suspend fun siconizarDatos() {
         Log.d("UpdateService", "Sincronizando datos")
         if (!isNetworkAvailable(context)) {
+            Log.d("UpdateService", "No hay internet")
             errorNotification(context.getString(R.string.no_internet))
         } else {
             try {
                 val seriesUsuario = trackerRepository.getAllSeries()
+                Log.d("UpdateService", "Subiendo datos")
                 ApiClient.uploadUserData(seriesUsuario)
+                Log.d("UpdateService", "Actualizando datos")
                 trackerRepository.updateSeriesUsuario()
+                Log.d("UpdateService", "Actualizando catalogo")
                 catalogoRepository.updateCatalogo()
+                Log.d("UpdateService", "Datos sincronizados")
             } catch (ae: AuthenticationException){
                 Log.e("UpdateService", "No se ha iniciado sesion")
                 errorNotification("No has iniciado sesion")
@@ -118,7 +130,7 @@ class UpdateService : Service() {
             .build()
     }
     private fun createSuccessNotification(): Notification {
-        val notificationChannelId = "Task_channel"
+        val notificationChannelId = "0"
         return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Sincronización Completada")
             .setContentText("La sincronización ha terminado exitosamente.")
@@ -128,7 +140,7 @@ class UpdateService : Service() {
     }
 
     private fun createErrorNotification(): Notification {
-        val notificationChannelId = "Task_channel"
+        val notificationChannelId = "0"
         return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Error")
             .setContentText("Hubo un error durante la sincronización.")
