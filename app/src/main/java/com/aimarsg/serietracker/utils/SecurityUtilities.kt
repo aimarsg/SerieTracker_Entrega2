@@ -28,16 +28,10 @@ interface CipherUtil {
  */
 class AESCipher @Inject constructor() : CipherUtil {
 
-    /*************************************************
-     **              Static Attributes              **
-     *************************************************/
     companion object {
         private const val IV_SEPARATOR = "]"
     }
 
-    /*************************************************
-     **                  Attributes                 **
-     *************************************************/
 
     //-------   KeyStore Provider Related   --------//
     private val provider = "AndroidKeyStore"
@@ -47,15 +41,6 @@ class AESCipher @Inject constructor() : CipherUtil {
     //-------------   Cipher Related   -------------//
     private val cipher by lazy { Cipher.getInstance("AES/GCM/NoPadding") }
 
-
-    /*************************************************
-     **                   Methods                   **
-     *************************************************/
-
-
-    /*------------------------------------------------
-    |             Key Management Methods             |
-    ------------------------------------------------*/
 
     /**
      * Generates and returns an AES [SecretKey] and saves it in KeyStore with the given [keyAlias].
@@ -78,10 +63,6 @@ class AESCipher @Inject constructor() : CipherUtil {
      */
     private fun getSecretKey(keyAlias: String): SecretKey = (keyStore.getEntry(keyAlias, null) as KeyStore.SecretKeyEntry).secretKey
 
-
-    /*------------------------------------------------
-    |       Data Encryption/Decryption Methods       |
-    ------------------------------------------------*/
 
     /**
      * Encrypts the given [data] with AES algorithm using the key saved with [keyAlias].

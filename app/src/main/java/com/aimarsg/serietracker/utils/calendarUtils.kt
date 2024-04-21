@@ -117,6 +117,12 @@ fun addEventToCalendar(context: Context, title: String, description: String, sta
     return -1
 }
 
+
+/**
+ * Obtiene el ID del calendario de Google
+ * @param context Contexto de la aplicación
+ * @return ID del calendario
+ */
 private fun getCalendarId(context: Context): Long {
     // Projection array. Creating indices for this array instead of doing
     // dynamic lookups improves performance.
@@ -183,7 +189,11 @@ fun deleteEventFromCalendar(context: Context, title: String) {
     }
 }
 
-
+/**
+ * Comprueba si la aplicación tiene permisos para acceder al calendario
+ * @param context Contexto de la aplicación
+ * @return true si tiene permisos, false si no
+ */
 fun comprobarPermisos(context: Context): Boolean {
     if (ContextCompat.checkSelfPermission(
             context,

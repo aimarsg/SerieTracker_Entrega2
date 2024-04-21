@@ -54,7 +54,7 @@ fun MapaScreen(
         val requestPermissionLauncher = rememberLauncherForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
-            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true &&
+            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
             ) {
                 // Permission is granted
@@ -72,7 +72,7 @@ fun MapaScreen(
         if (ContextCompat.checkSelfPermission(
                 LocalContext.current,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
+            ) == PackageManager.PERMISSION_GRANTED ||
             ContextCompat.checkSelfPermission(
                 LocalContext.current,
                 Manifest.permission.ACCESS_COARSE_LOCATION
