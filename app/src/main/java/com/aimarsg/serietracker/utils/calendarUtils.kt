@@ -90,28 +90,37 @@ fun addEventToCalendar(context: Context, title: String, description: String, sta
         }
         Log.d("Calendar", "Creando evento")
         val uri = contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
+        try {
 
-        // Manejar el resultado si es necesario
-        if (uri == null) {
-            // Manejo de errores
+
+            // Manejar el resultado si es necesario
+            if (uri == null) {
+                // Manejo de errores
+                Log.d("Calendar", "Error al añadir evento")
+                return -1
+            } else {
+                // El evento se ha añadido exitosamente
+                val eventId = uri.lastPathSegment?.toLong()
+                if (eventId != null) {
+                    // El evento se ha añadido exitosamente
+                    // añadir el recordatorio
+                    val values = ContentValues().apply {
+                        put(CalendarContract.Reminders.MINUTES, 15)
+                        put(CalendarContract.Reminders.EVENT_ID, eventId)
+                        put(
+                            CalendarContract.Reminders.METHOD,
+                            CalendarContract.Reminders.METHOD_ALERT
+                        )
+                    }
+                    val uri = contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, values)
+                    Log.d("Calendar", "Recordatorio añadido con ID: $uri")
+                }
+                Log.d("Calendar", "Evento añadido con ID: $eventId")
+                return eventId ?: -1
+            }
+        } catch (e: Exception) {
             Log.d("Calendar", "Error al añadir evento")
             return -1
-        } else {
-            // El evento se ha añadido exitosamente
-            val eventId = uri.lastPathSegment?.toLong()
-            if (eventId != null) {
-                // El evento se ha añadido exitosamente
-                // añadir el recordatorio
-                val values = ContentValues().apply {
-                    put(CalendarContract.Reminders.MINUTES, 15)
-                    put(CalendarContract.Reminders.EVENT_ID, eventId)
-                    put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
-                }
-                val uri = contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, values)
-                Log.d("Calendar", "Recordatorio añadido con ID: $uri")
-            }
-            Log.d("Calendar", "Evento añadido con ID: $eventId")
-            return eventId ?: -1
         }
     }
     return -1

@@ -163,8 +163,10 @@ fun Ajustes(
                     directory = File("images"),
                     uri = uri,
                     onSetUri = {
-                        uri = it
-                        if (isNetworkAvailable(context)) context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
+                        if (isNetworkAvailable(context)) context.getFileFromUri(it)?.let {
+                            it1 -> viewModel.subirFotoDePerfil(it1)
+                            uri = it
+                        }
                         else Toast.makeText(context, R.string.no_internet_pic, Toast.LENGTH_SHORT).show()
                     }
                 )
@@ -371,8 +373,11 @@ fun AjustesLanscape(
                     directory = File("images"),
                     uri = uri,
                     onSetUri = {
-                        uri = it
-                        if (isNetworkAvailable(context)) context.getFileFromUri(it)?.let { it1 -> viewModel.subirFotoDePerfil(it1) }
+
+                        if (isNetworkAvailable(context)) context.getFileFromUri(it)?.let {
+                            it1 -> viewModel.subirFotoDePerfil(it1)
+                            uri = it
+                        }
                         else Toast.makeText(context, R.string.no_internet_pic, Toast.LENGTH_SHORT).show()
                     }
                 )

@@ -95,7 +95,8 @@ class UpdateService : Service() {
                 Log.d("UpdateService", "Datos sincronizados")
             } catch (ae: AuthenticationException){
                 Log.e("UpdateService", "No se ha iniciado sesion")
-                errorNotification("No has iniciado sesion")
+                //errorNotification("No has iniciado sesion")
+                errorNotification("Error al sincronizar datos")
             } catch (e: Exception) {
                 Log.e("UpdateService", "Error al sincronizar datos", e)
                 errorNotification("Error al sincronizar datos")
