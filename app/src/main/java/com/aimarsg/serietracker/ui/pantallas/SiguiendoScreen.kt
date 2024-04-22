@@ -350,6 +350,7 @@ private fun compartirSerie(context: Context, subject: String, summary: String){
  * @param epTemp: series information about the episodes per season
  */
 private fun calcularPorcentajeVisto(epActual: Int,  tempActual: Int, epTemp: String): Float{
+    Log.d("TAG", "Episodio actual: $epActual Temporada actual: $tempActual Episodios por temporada: $epTemp")
     // Convertir el string de episodios a una lista de enteros
     val episodiosPorTemporada = epTemp.split(",").map { it.toInt() }
 
