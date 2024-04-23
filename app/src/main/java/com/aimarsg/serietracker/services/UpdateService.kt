@@ -96,7 +96,7 @@ class UpdateService : Service() {
             } catch (ae: AuthenticationException){
                 Log.e("UpdateService", "No se ha iniciado sesion")
                 //errorNotification("No has iniciado sesion")
-                errorNotification("No se han podido sincronizar los datos. Inicia sesión o entra en la app para autenticarte vez.")
+                errorNotification("No se han podido sincronizar los datos personales. Inicia sesión o entra en la app para autenticarte vez.")
             } catch (e: Exception) {
                 Log.e("UpdateService", "Error al sincronizar datos", e)
                 errorNotification("Error al sincronizar datos")
@@ -134,7 +134,7 @@ class UpdateService : Service() {
         val notificationChannelId = "0"
         return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Sincronización Completada")
-            .setContentText("La sincronización ha terminado exitosamente.")
+            .setContentText("La sincronización de datos ha finalizado.")
             .setSmallIcon(R.drawable.icono_s)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
@@ -144,7 +144,7 @@ class UpdateService : Service() {
         val notificationChannelId = "0"
         return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Error")
-            .setContentText("Hubo un error durante la sincronización.")
+            .setContentText("Ha ocurrido un error durante la sincronización.")
             .setSmallIcon(R.drawable.icono_s)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
