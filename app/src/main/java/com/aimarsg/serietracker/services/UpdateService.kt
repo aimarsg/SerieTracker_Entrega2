@@ -96,7 +96,7 @@ class UpdateService : Service() {
             } catch (ae: AuthenticationException){
                 Log.e("UpdateService", "No se ha iniciado sesion")
                 //errorNotification("No has iniciado sesion")
-                errorNotification("Error al sincronizar datos")
+                errorNotification("No se han podido sincronizar los datos. Inicia sesión o entra en la app para autenticarte vez.")
             } catch (e: Exception) {
                 Log.e("UpdateService", "Error al sincronizar datos", e)
                 errorNotification("Error al sincronizar datos")

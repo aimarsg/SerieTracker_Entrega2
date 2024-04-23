@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 var logedIn by rememberSaveable {
                     mutableStateOf(false)
                 }
-                //val alarmScheduler = AlarmScheduler(this)
+                val alarmScheduler = AlarmScheduler(this)
 
                 // check if there is internet conection
                 if (!isNetworkAvailable(this)) {
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("login", "Usuario logeado1: $logedIn")
                         viewmodel.loginUsuarioGuardado()
                         //viewmodel.downloadUserData()
+                        alarmScheduler.schedule()
                         suscribeToFCM(this)
                     }
                 }

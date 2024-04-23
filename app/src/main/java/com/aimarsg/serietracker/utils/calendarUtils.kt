@@ -10,6 +10,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.CalendarContract
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
@@ -116,10 +117,12 @@ fun addEventToCalendar(context: Context, title: String, description: String, sta
                     Log.d("Calendar", "Recordatorio añadido con ID: $uri")
                 }
                 Log.d("Calendar", "Evento añadido con ID: $eventId")
+                Toast.makeText(context, "Evento añadido", Toast.LENGTH_SHORT).show()
                 return eventId ?: -1
             }
         } catch (e: Exception) {
             Log.d("Calendar", "Error al añadir evento")
+            Toast.makeText(context, "Error al añadir evento", Toast.LENGTH_SHORT).show()
             return -1
         }
     }
